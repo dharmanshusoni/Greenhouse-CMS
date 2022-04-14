@@ -19,6 +19,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatSelectModule} from '@angular/material/select';
 import { LoginComponent } from 'app/login/login.component';
 import { FarmComponent } from 'app/farm/farm.component';
+import { PestComponent } from 'app/pest/Pest.component';
 
 @NgModule({
   imports: [
@@ -43,7 +44,8 @@ import { FarmComponent } from 'app/farm/farm.component';
     NotificationsComponent,
     UpgradeComponent,
     LoginComponent,
-    FarmComponent
+    FarmComponent,
+    PestComponent
   ]
 })
 

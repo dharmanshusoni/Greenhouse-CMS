@@ -10,6 +10,7 @@ import { NotificationsComponent } from '../../notifications/notifications.compon
 import { UpgradeComponent } from '../../upgrade/upgrade.component';
 import { LoginComponent } from '../../login/login.component';
 import { FarmComponent } from 'app/farm/farm.component';
+import { PestComponent } from 'app/pest/Pest.component';
 
 export const AdminLayoutRoutes: Routes = [
     // {
@@ -57,6 +58,7 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'dashboard',      component: DashboardComponent },
     { path: 'user-profile',   component: UserProfileComponent },
     { path: 'farm',           component: FarmComponent },
+    { path: 'pest',           component: PestComponent },
     { path: 'table-list',     component: TableListComponent },
     { path: 'typography',     component: TypographyComponent },
     { path: 'icons',          component: IconsComponent },

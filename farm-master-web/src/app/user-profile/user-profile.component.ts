@@ -254,6 +254,9 @@ export class UserProfileComponent implements OnInit {
     var msg = '';
     this.farmModels.farm_Id = 0;
     this.farmModels.farmer_Id = this.userId;
+    if (this.farmModels.farmer_Id == '' || this.farmModels.farmer_Id == undefined || this.farmModels.farmer_Id == 'undefined' || this.farmModels.farmer_Id == '0' || this.farmModels.farmer_Id == 0) {
+      msg = msg + 'Select Farmer<br>';
+    }
     if (this.farmModels.farm_Name == '' || this.farmModels.farm_Name == undefined || this.farmModels.farm_Name == 'undefined') {
       msg = msg + 'Enter Farm Name<br>';
     }
