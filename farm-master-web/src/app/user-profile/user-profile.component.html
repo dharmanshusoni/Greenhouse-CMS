@@ -1,0 +1,231 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-6">
+        <!-- <div class="card card-profile">
+              <div class="card-avatar">
+                  <a href="javascript:void(0)">
+                      <img class="img" src="./assets/img/faces/marc.jpg" />
+                  </a>
+              </div>
+              <div class="card-body">
+                  <h6 class="card-category text-gray">CEO / Co-Founder</h6>
+                  <h4 class="card-title">Alec Thompson</h4>
+                  <p class="card-description">
+                      Don't be scared of the truth because we need to restart the human foundation in truth And I love you like Kanye loves Kanye I love Rick Owens’ bed design but the back is...
+                  </p>
+                  <a href="javascript:void(0)" class="btn btn-danger btn-round">Follow</a>
+              </div>
+          </div> -->
+        <div class="card">
+          <div class="card-header card-header-danger">
+            <h4 class="card-title" style="display: inline;">Farmers Profile - {{ProfileName}}</h4>
+            <button mat-button type="button" matTooltip="Add New" [matTooltipPosition]="'above'" class="pull-right" style="display: inline;" (click)="initialize()" >
+              <i class="material-icons" >add</i>
+            </button>
+          </div>
+          <div class="card-body">
+            <form *ngIf="AddNewProfile" >
+              <div class="row">
+                <div class="col-md-6">
+                  <mat-form-field class="example-full-width">
+                    <input [(ngModel)]="userModels.firstName" name="FirstName"  matInput placeholder="Fist Name" type="text" required >
+                  </mat-form-field>
+                </div>
+                <div class="col-md-6">
+                  <mat-form-field class="example-full-width">
+                    <input [(ngModel)]="userModels.lastName" name="LastName" matInput placeholder="Last Name" type="text" required >
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <mat-form-field class="example-full-width">
+                    <input [(ngModel)]="userModels.username" name="Email" matInput placeholder="Email" type="email" required >
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <mat-form-field class="example-full-width">
+                    <input [(ngModel)]="userModels.password" name="Password" matInput placeholder="Password" type="password" required >
+                  </mat-form-field>
+                </div>
+              </div>
+              
+              <button mat-raised-button type="submit" class="btn btn-danger pull-right" (click)="Update()" *ngIf="userModels.id != 0">Update Profile</button>
+              <button mat-raised-button type="submit" class="btn btn-danger pull-right" (click)="Save()" *ngIf="userModels.id == 0">Save Profile</button>
+              <button mat-raised-button type="submit" class="btn pull-right" (click)="Cancel()">Cancel</button>
+              <div class="clearfix"></div>
+            </form>
+            <div *ngIf="!AddNewProfile" class="table-responsive">
+              <table class="table">
+                <thead class=" text-primary">
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th></th>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of userList; let i = index">
+                    <td>
+                      {{item.id}}
+                    </td>
+                    <td>
+                      {{item.firstName}} {{item.lastName}}
+                    </td>
+                    <td class="text-primary">
+                      {{item.username}}
+                    </td>
+                    <td>
+                      <!-- <button mat-raised-button type="button" (click)="getFarmsDetails(item.id,item.firstName);" matTooltip="Farm Details" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
+                        <i class="material-icons">edit</i>
+                      </button> -->
+                      <button mat-raised-button type="button" (click)="getProfileDetail(item.id);getFarmsDetails(item.id);" matTooltip="Edit" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
+                        <i class="material-icons">edit</i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header card-header-danger">
+            <h4 class="card-title" style="display: inline;">{{ProfileName}} Farms</h4>
+            <button mat-button type="button" matTooltip="Add New" [matTooltipPosition]="'above'" class="pull-right" style="display: inline;" (click)="initializeFarm()" >
+              <i class="material-icons" >add</i>
+            </button>
+          </div>
+          <div class="card-body">
+            <form *ngIf="AddNewFarm" >
+              <div class="row">
+                <div class="col-md-12">
+                  <mat-form-field class="example-full-width">
+                    <input [(ngModel)]="farmModels.farm_Name" name="Farm Name"  matInput placeholder="Farm Name" type="text" required >
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <mat-form-field class="example-full-width">
+                    <input [(ngModel)]="farmModels.farm_Address" name="Farm_Address" matInput placeholder="Farm Address Line 1" type="text" required >
+                  </mat-form-field>
+                </div>
+                <div class="col-md-6">
+                  <mat-form-field class="example-full-width">
+                    <input [(ngModel)]="farmModels.farm_Address_2" name="Farm_Address_2" matInput placeholder="Farm Address Line 2" type="text" required >
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <mat-form-field class="example-full-width">
+                    <input [(ngModel)]="farmModels.city" name="City" matInput placeholder="City" type="text" required >
+                  </mat-form-field>
+                </div>
+                <div class="col-md-6">
+                  <mat-form-field class="example-full-width">
+                    <input [(ngModel)]="farmModels.state" name="State" matInput placeholder="State" type="text" required >
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <mat-form-field class="example-full-width">
+                    <input [(ngModel)]="farmModels.country" name="Country" matInput placeholder="Country" type="text" required >
+                  </mat-form-field>
+                </div>
+                <div class="col-md-6">
+                  <mat-form-field class="example-full-width">
+                    <input [(ngModel)]="farmModels.postalCode" name="PostalCode" matInput placeholder="PostalCode" type="text" required >
+                  </mat-form-field>
+                </div>
+              </div>
+              <button mat-raised-button type="submit" class="btn btn-danger pull-right" (click)="UpdateFarms()" *ngIf="farmModels.farm_Id != 0">Update Farm</button>
+              <button mat-raised-button type="submit" class="btn btn-danger pull-right" (click)="SaveFarms()" *ngIf="farmModels.farm_Id == 0">Save Farm</button>
+              <div class="clearfix"></div>
+            </form>
+            <div *ngIf="!AddNewFarm" class="table-responsive">
+              <table class="table" >
+                <thead class=" text-primary">
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Address</th>
+                  <th></th>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of farmList; let i = index">
+                    <td>
+                      {{item.farm_Id}}
+                    </td>
+                    <td>
+                      {{item.farm_Name}}
+                    </td>
+                    <td class="text-primary">
+                      {{item.farm_Address}} <br> {{item.farm_Address_2}} <br> {{item.city}}, {{item.postalCode}} <br> {{item.state}}, {{item.country}}
+                    </td>
+                    <td>
+                      <button mat-raised-button type="button"  (click)="getFarmDetail(item.farm_Id);" matTooltip="Edit" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
+                        <i class="material-icons">edit</i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="row" >
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header card-header-danger">
+            <h4 class="card-title" style="display: inline;">{{ProfileName}} Profile</h4>
+            <button mat-button type="button" matTooltip="Add New" [matTooltipPosition]="'above'" class="pull-right" style="display: inline;" (click)="initialize()" >
+              <i class="material-icons" >add</i>
+            </button>
+          </div>
+          <div class="card-body">
+            <form>
+              <div class="row">
+                <div class="col-md-6">
+                  <mat-form-field class="example-full-width">
+                    <input [(ngModel)]="userModels.firstName" name="FirstName"  matInput placeholder="Fist Name" type="text" required >
+                  </mat-form-field>
+                </div>
+                <div class="col-md-6">
+                  <mat-form-field class="example-full-width">
+                    <input [(ngModel)]="userModels.lastName" name="LastName" matInput placeholder="Last Name" type="text" required >
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <mat-form-field class="example-full-width">
+                    <input [(ngModel)]="userModels.username" name="Email" matInput placeholder="Email" type="email" required >
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <mat-form-field class="example-full-width">
+                    <input [(ngModel)]="userModels.password" name="Password" matInput placeholder="Password" type="password" required >
+                  </mat-form-field>
+                </div>
+              </div>
+              <button mat-raised-button type="submit" class="btn btn-danger pull-right" (click)="Update()" *ngIf="userModels.id != 0">Update Profile</button>
+              <button mat-raised-button type="submit" class="btn btn-danger pull-right" (click)="Save()" *ngIf="userModels.id == 0">Save Profile</button>
+              <div class="clearfix"></div>
+            </form>
+          </div>
+        </div>
+      </div>
+      
+    </div> -->
+  </div>
+</div>

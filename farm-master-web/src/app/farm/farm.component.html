@@ -1,0 +1,43 @@
+<div class="main-content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-header card-header-danger">
+              <h4 class="card-title ">Your Farms</h4>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table" >
+                  <thead class=" text-primary">
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Address</th>
+                    <th></th>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of farmList; let i = index">
+                      <td>
+                        {{item.farm_Id}}
+                      </td>
+                      <td>
+                        {{item.farm_Name}}
+                      </td>
+                      <td class="text-primary">
+                        {{item.farm_Address}} <br> {{item.farm_Address_2}} <br> {{item.city}}, {{item.postalCode}} <br> {{item.state}}, {{item.country}}
+                      </td>
+                      <td>
+                        <button mat-raised-button type="button" matTooltip="Edit" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
+                          <i class="material-icons">edit</i>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
