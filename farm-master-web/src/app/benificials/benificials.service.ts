@@ -15,7 +15,7 @@ const api_UPDATE_FARM = 'UpdateFarm/';
   providedIn: 'root'
 })
 
-export class PestService {
+export class BenificialsService {
 
   constructor(private http: HttpClient) {
   }

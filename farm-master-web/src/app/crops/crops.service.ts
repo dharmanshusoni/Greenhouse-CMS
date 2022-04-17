@@ -15,12 +15,12 @@ const api_UPDATE_FARM = 'UpdateFarm/';
   providedIn: 'root'
 })
 
-export class PestService {
+export class CropsService {
 
   constructor(private http: HttpClient) {
   }
 
-  GetFarmsForFarmer(): Observable<any> {
+  GetFarmsForFarmer(farmerId): Observable<any> {
     const headers = {
       'content-type': 'application/json',
       'Access-Control-Allow-Origin': '*',
@@ -28,7 +28,7 @@ export class PestService {
       'Access-Control-Allow-Credentials': 'true'
     }
 
-    return this.http.get(api_URL + api_BASE_FARM_GET , { 'headers': headers }).pipe(map(data => {
+    return this.http.get(api_URL + api_BASE_FARM_GET + farmerId, { 'headers': headers }).pipe(map(data => {
       if (data === null) return throwError("null data");
       return data;
     }));

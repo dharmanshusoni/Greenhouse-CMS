@@ -1,0 +1,96 @@
+<div class="main-content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-header card-header-danger">
+              <h4 class="card-title" style="display: inline;">Plantation</h4>
+              <button mat-button type="button" matTooltip="Add New" [matTooltipPosition]="'above'" class="pull-right" style="display: inline;" (click)="initialize();showAddUpdate=true;" >
+                <i class="material-icons" >add</i>
+              </button>
+            </div>
+            <div class="card-body">
+              <form *ngIf="showAddUpdate" >
+                <div class="row">
+                  <div class="col-md-12">
+                    <mat-form-field appearance="fill">
+                      <mat-label>Crop</mat-label>
+                      <mat-select [(ngModel)]="plantationModels.crop_Id">
+                        <mat-option *ngFor="let crop of cropsList" [value]="crop.crop_Id" >
+                          {{crop.crop_Name}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12">
+                    <mat-form-field class="example-full-width">
+                      <input [(ngModel)]="plantationModels.plantation_Date" name="plantation_Date"  matInput placeholder="Plantation Date" type="text" required >
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                      <mat-label>Input disabled</mat-label>
+                      <input matInput [matDatepicker]="dp3" disabled>
+                      <mat-hint>MM/DD/YYYY</mat-hint>
+                      <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
+                      <mat-datepicker #dp3 disabled="false"></mat-datepicker>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12">
+                    <mat-form-field class="example-full-width">
+                      <input [(ngModel)]="plantationModels.cleanout_Date" name="cleanout_Date" matInput placeholder="Cleanout Date" type="text" required >
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12">
+                    <mat-form-field class="example-full-width">
+                      <input [(ngModel)]="plantationModels.no_Acerage" name="no_Acerage" matInput placeholder="No Acerage" required >
+                    </mat-form-field>
+                  </div>
+                </div>
+                
+                <button mat-raised-button type="submit" class="btn btn-danger pull-right" (click)="Update()" *ngIf="plantationModels.plantation_Id != 0">Update Plantation</button>
+                <button mat-raised-button type="submit" class="btn btn-danger pull-right" (click)="Save()" *ngIf="plantationModels.plantation_Id == 0">Save Plantation</button>
+                <button mat-raised-button type="submit" class="btn pull-right" (click)="initialize();showAddUpdate=false;">Cancel</button>
+                <div class="clearfix"></div>
+              </form>
+              <div *ngIf="!showAddUpdate" class="table-responsive" >
+                <table class="table" >
+                  <thead class=" text-primary">
+                    <th>ID</th>
+                    <th>Plantation Date</th>
+                    <th>Cleanout Date</th>
+                    <th>No Acerage</th>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of plantationList; let i = index">
+                      <td>
+                        {{item.farm_Id}}
+                      </td>
+                      <td>
+                        {{item.farm_Name}}
+                      </td>
+                      <td class="text-primary">
+                        {{item.farm_Address}} <br> {{item.farm_Address_2}} <br> {{item.city}}, {{item.postalCode}} <br> {{item.state}}, {{item.country}}
+                      </td>
+                      <td class="text-primary">
+                        {{item.farm_Address}} <br> {{item.farm_Address_2}} <br> {{item.city}}, {{item.postalCode}} <br> {{item.state}}, {{item.country}}
+                      </td>
+                      <td>
+                        <button mat-raised-button type="button" matTooltip="Edit" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
+                          <i class="material-icons">edit</i>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

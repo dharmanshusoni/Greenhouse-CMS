@@ -20,6 +20,11 @@ import {MatSelectModule} from '@angular/material/select';
 import { LoginComponent } from 'app/login/login.component';
 import { FarmComponent } from 'app/farm/farm.component';
 import { PestComponent } from 'app/pest/Pest.component';
+import { CropsComponent } from 'app/crops/crops.component';
+import { BenificialsComponent } from 'app/benificials/benificials.component';
+import { PlantationComponent } from 'app/plantation/plantation.component';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { FarmLayoutComponent } from 'app/farm-layout/farm-layout.component';
 
 @NgModule({
   imports: [
@@ -33,6 +38,7 @@ import { PestComponent } from 'app/pest/Pest.component';
     MatInputModule,
     MatSelectModule,
     MatTooltipModule,
+    MatDatepickerModule
   ],
   declarations: [
     DashboardComponent,
@@ -45,7 +51,11 @@ import { PestComponent } from 'app/pest/Pest.component';
     UpgradeComponent,
     LoginComponent,
     FarmComponent,
-    PestComponent
+    PestComponent,
+    CropsComponent,
+    BenificialsComponent,
+    PlantationComponent,
+    FarmLayoutComponent
   ]
 })
 

@@ -11,6 +11,10 @@ import { UpgradeComponent } from '../../upgrade/upgrade.component';
 import { LoginComponent } from '../../login/login.component';
 import { FarmComponent } from 'app/farm/farm.component';
 import { PestComponent } from 'app/pest/Pest.component';
+import { CropsComponent } from 'app/crops/crops.component';
+import { BenificialsComponent } from 'app/benificials/benificials.component';
+import { PlantationComponent } from 'app/plantation/plantation.component';
+import { FarmLayoutComponent } from 'app/farm-layout/farm-layout.component';
 
 export const AdminLayoutRoutes: Routes = [
     // {
@@ -59,6 +63,10 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'user-profile',   component: UserProfileComponent },
     { path: 'farm',           component: FarmComponent },
     { path: 'pest',           component: PestComponent },
+    { path: 'crops',          component: CropsComponent },
+    { path: 'benificials',    component: BenificialsComponent },
+    { path: 'plantation',     component: PlantationComponent },
+    { path: 'farm-layout',    component: FarmLayoutComponent },
     { path: 'table-list',     component: TableListComponent },
     { path: 'typography',     component: TypographyComponent },
     { path: 'icons',          component: IconsComponent },
