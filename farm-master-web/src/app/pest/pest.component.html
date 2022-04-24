@@ -34,9 +34,26 @@
                 </div>
                 <div class="row">
                   <div class="col-md-12">
-                    <mat-form-field class="example-full-width">
+                    <!-- <mat-form-field class="example-full-width">
                       <input [(ngModel)]="pestModels.pest_Image" name="pest_Image" matInput placeholder="Pest_Image" type="password" required >
-                    </mat-form-field>
+                    </mat-form-field> -->
+                    <div class="row" style="margin-bottom:15px;">
+                      <div class="col-md-3">
+                        <input type="file" accept="image/*" #file placeholder="Choose file" (change)="uploadFile(file.files)" style="display:none;">
+                        <button type="button" class="btn btn-success" (click)="file.click()">Upload File</button>
+                      </div>
+                      <div class="col-md-4">
+                        <span class="upload" *ngIf="progress > 0">
+                          {{progress}}%
+                        </span>
+                        <span class="upload" *ngIf="message">
+                          {{message}}
+                        </span>
+                      </div>
+                    </div>
+                    <div class="row" style="margin-left:10px;" >
+                      <span><img [src]="createImgPath(pestModels.pest_Image)" alt="pest picture" style="width:120px; height:120px;"></span>
+                    </div>
                   </div>
                 </div>
                 
@@ -51,25 +68,29 @@
                     <th>ID</th>
                     <th>Pest</th>
                     <th>Detail</th>
-                    <th>No. Acerage</th>
+                    <th>Acerage</th>
+                    <th>Image</th>
                     <th></th>
                   </thead>
                   <tbody>
                     <tr *ngFor="let item of pestList; let i = index">
-                      <td>
-                        {{item.farm_Id}}
+                      <td >
+                        {{item.pest_Id}}
+                      </td>
+                      <td class="text-primary" (click)="getPestDetails(item.pest_Id);" >
+                        {{item.pest_Name}}
+                      </td>
+                      <td >
+                        {{item.pest_Details}}
                       </td>
                       <td>
-                        {{item.farm_Name}}
-                      </td>
-                      <td class="text-primary">
-                        {{item.farm_Address}} <br> {{item.farm_Address_2}} <br> {{item.city}}, {{item.postalCode}} <br> {{item.state}}, {{item.country}}
-                      </td>
-                      <td class="text-primary">
-                        {{item.farm_Address}} <br> {{item.farm_Address_2}} <br> {{item.city}}, {{item.postalCode}} <br> {{item.state}}, {{item.country}}
+                        {{item.no_Acerage}}
                       </td>
                       <td>
-                        <button mat-raised-button type="button" matTooltip="Edit" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
+                        <img [src]="createImgPath(item.pest_Image)" alt="pest picture" style="width:64px; height:64px;">
+                      </td>
+                      <td>
+                        <button mat-raised-button type="button" (click)="getPestDetails(item.pest_Id);" matTooltip="Edit" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
                           <i class="material-icons">edit</i>
                         </button>
                       </td>

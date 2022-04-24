@@ -41,6 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Crop.cs" />
+    <Compile Include="Pest.cs" />
     <Compile Include="Farm.cs" />
     <Compile Include="Result.cs" />
     <Compile Include="Module.cs" />

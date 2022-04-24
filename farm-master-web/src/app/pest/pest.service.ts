@@ -6,11 +6,10 @@ import { map } from 'rxjs/operators';
 import { environment } from 'environments/environment';
 
 const api_URL = environment.apiURL;
-const api_BASE_FARM_GET = 'farm?FarmerId=';
-const api_BASE_FARM_GET_BY_ID = 'GetFarmsForFarm?FarmId=';
-const api_BASE_FARM = 'farm/';
-const api_SAVE_FARM = 'SaveFarm/';
-const api_UPDATE_FARM = 'UpdateFarm/';
+const api_BASE_PEST_GET = 'GetPestDetail?PestId=';
+const api_BASE_PEST = 'pest/';
+const api_SAVE_PEST = 'SavePest/';
+const api_UPDATE_PEST = 'UpdatePest/';
 @Injectable({
   providedIn: 'root'
 })
@@ -20,7 +19,7 @@ export class PestService {
   constructor(private http: HttpClient) {
   }
 
-  GetFarmsForFarmer(): Observable<any> {
+  GetPests(): Observable<any> {
     const headers = {
       'content-type': 'application/json',
       'Access-Control-Allow-Origin': '*',
@@ -28,45 +27,45 @@ export class PestService {
       'Access-Control-Allow-Credentials': 'true'
     }
 
-    return this.http.get(api_URL + api_BASE_FARM_GET , { 'headers': headers }).pipe(map(data => {
+    return this.http.get(api_URL + api_BASE_PEST , { 'headers': headers }).pipe(map(data => {
       if (data === null) return throwError("null data");
       return data;
     }));
   }
 
-  getFarmDetail(FarmId): Observable<any> {
+  getPestDetail(PestId): Observable<any> {
     const headers = {
       'content-type': 'application/json',
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT',
       'Access-Control-Allow-Credentials': 'true'
     }
-    return this.http.get(api_URL + api_BASE_FARM + api_BASE_FARM_GET_BY_ID + FarmId, { 'headers': headers }).pipe(map(data => {
+    return this.http.get(api_URL + api_BASE_PEST + api_BASE_PEST_GET + PestId, { 'headers': headers }).pipe(map(data => {
       if (data === null) return throwError("null data");
       return data;
     }));
   }
 
-  SaveFarm(farm: any): Observable<any> {
+  SavePest(pest: any): Observable<any> {
     const headers = {
       'content-type': 'application/json',
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT',
       'Access-Control-Allow-Credentials': 'true'
     }
-    const body = JSON.stringify(farm);
-    return this.http.post(api_URL + api_BASE_FARM + api_SAVE_FARM, body, { 'headers': headers });
+    const body = JSON.stringify(pest);
+    return this.http.post(api_URL + api_BASE_PEST + api_SAVE_PEST, body, { 'headers': headers });
   }
 
-  UpdateFarm(farm: any): Observable<any> {
+  UpdatePest(pest: any): Observable<any> {
     const headers = {
       'content-type': 'application/json',
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT',
       'Access-Control-Allow-Credentials': 'true'
     }
-    const body = JSON.stringify(farm);
-    return this.http.post(api_URL + api_BASE_FARM + api_UPDATE_FARM, body, { 'headers': headers });
+    const body = JSON.stringify(pest);
+    return this.http.post(api_URL + api_BASE_PEST + api_UPDATE_PEST, body, { 'headers': headers });
   }
 
 }

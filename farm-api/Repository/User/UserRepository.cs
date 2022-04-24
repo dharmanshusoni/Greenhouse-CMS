@@ -120,10 +120,10 @@ namespace Repository.User
                 cmd.Parameters.AddWithValue("@StatementType", "In");
                 cmd.Parameters.AddWithValue("@id", 0);
                 cmd.Parameters.AddWithValue("@Columns", "");
-                cmd.Parameters.AddWithValue("@Farmer_email_id", ((userData.Username).ToLower()).Trim());
-                cmd.Parameters.AddWithValue("@Farmer_First_name", ((userData.FirstName).ToLower()).Trim());
-                cmd.Parameters.AddWithValue("@Farmer_Last_name", ((userData.LastName).ToLower()).Trim());
-                cmd.Parameters.AddWithValue("@Password", ((userData.Password).ToLower()).Trim());
+                cmd.Parameters.AddWithValue("@Farmer_email_id", ((userData.Username)).Trim());
+                cmd.Parameters.AddWithValue("@Farmer_First_name", ((userData.FirstName)).Trim());
+                cmd.Parameters.AddWithValue("@Farmer_Last_name", ((userData.LastName)).Trim());
+                cmd.Parameters.AddWithValue("@Password", ((userData.Password)).Trim());
                 cmd.Parameters.AddWithValue("@UserType", 1 );
                 
                 //var returnParameter = cmd.Parameters.Add("@ErrorCode", SqlDbType.Int);
@@ -178,10 +178,10 @@ namespace Repository.User
                 cmd.Parameters.AddWithValue("@StatementType", "Up");
                 cmd.Parameters.AddWithValue("@id", userData.id);
                 cmd.Parameters.AddWithValue("@Columns", "");
-                cmd.Parameters.AddWithValue("@Farmer_email_id", ((userData.Username).ToLower()).Trim());
-                cmd.Parameters.AddWithValue("@Farmer_First_name", ((userData.FirstName).ToLower()).Trim());
-                cmd.Parameters.AddWithValue("@Farmer_Last_name", ((userData.LastName).ToLower()).Trim());
-                cmd.Parameters.AddWithValue("@Password", ((userData.Password).ToLower()).Trim());
+                cmd.Parameters.AddWithValue("@Farmer_email_id", ((userData.Username)).Trim());
+                cmd.Parameters.AddWithValue("@Farmer_First_name", ((userData.FirstName)).Trim());
+                cmd.Parameters.AddWithValue("@Farmer_Last_name", ((userData.LastName)).Trim());
+                cmd.Parameters.AddWithValue("@Password", ((userData.Password)).Trim());
                 cmd.Parameters.AddWithValue("@UserType", 1);
 
                 //var returnParameter = cmd.Parameters.Add("@ErrorCode", SqlDbType.Int);

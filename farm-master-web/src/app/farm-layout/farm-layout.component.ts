@@ -12,24 +12,26 @@ export class FarmLayoutComponent implements OnInit {
   
   farmLayoutServiceObj: FarmLayoutService;
   showAddUpdate=false;
-  pestModels: any;
+  layoutModels: any;
   pestList: any;
   userId: any;
   farmId: any;
 
   constructor(farmLayoutServiceObj: FarmLayoutService, private router: Router) {
-    this.pestModels = {};
+    this.layoutModels = {};
     this.farmLayoutServiceObj = farmLayoutServiceObj;
   }
 
   initialize() {
-    this.pestModels = {};
-    this.pestModels.id = 0;
-    this.pestModels.pest_Id = 0;
-    this.pestModels.pest_Name = '';
-    this.pestModels.pest_Details = '';
-    this.pestModels.no_Acerage = 0;
-    this.pestModels.pest_Image = '';
+    this.layoutModels = {};
+    this.layoutModels.id = 0;
+    this.layoutModels.Farm_Layout_Id = 0;
+    this.layoutModels.House = '';
+    this.layoutModels.Zone = '';
+    this.layoutModels.Phases = '';
+    this.layoutModels.Rows = '';
+    this.layoutModels.Posts = '';
+    this.layoutModels.Farm_Id = 0
   }
 
   ngOnInit() {

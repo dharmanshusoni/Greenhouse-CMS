@@ -15,10 +15,10 @@ namespace Repository.Farm
         public FarmRepository()
         {
             // Local
-            // con = new SqlConnection("Data Source=LAPTOP-7Q3NO3O1\\SQLEXPRESS;Initial Catalog=Farm;Trusted_Connection=True;");
+            //con = new SqlConnection("Data Source=LAPTOP-7Q3NO3O1\\SQLEXPRESS;Initial Catalog=Farm;Trusted_Connection=True;");
 
             // Live
-            con = new SqlConnection("Data Source=SQL8001.site4now.net;Initial Catalog=db_a85a28_scouts;User Id=db_a85a28_scouts_admin;Password=scouts@123;");
+             con = new SqlConnection("Data Source=SQL8001.site4now.net;Initial Catalog=db_a85a28_scouts;User Id=db_a85a28_scouts_admin;Password=scouts@123;");
             SqlConnection.ClearAllPools();
         }
 
@@ -110,13 +110,13 @@ namespace Repository.Farm
                 cmd.Parameters.AddWithValue("@StatementType", "In");
                 cmd.Parameters.AddWithValue("@id", 0);
                 cmd.Parameters.AddWithValue("@Columns", "");
-                cmd.Parameters.AddWithValue("@Farm_Name", ((farmData.Farm_Name).ToLower()).Trim());
-                cmd.Parameters.AddWithValue("@Farm_Address", ((farmData.Farm_Address).ToLower()).Trim());
-                cmd.Parameters.AddWithValue("@Farm_Address_2", ((farmData.Farm_Address_2).ToLower()).Trim());
-                cmd.Parameters.AddWithValue("@City", ((farmData.City).ToLower()).Trim());
-                cmd.Parameters.AddWithValue("@State", ((farmData.State).ToLower()).Trim());
-                cmd.Parameters.AddWithValue("@Country", ((farmData.Country).ToLower()).Trim());
-                cmd.Parameters.AddWithValue("@PostalCode", ((farmData.PostalCode).ToLower()).Trim());
+                cmd.Parameters.AddWithValue("@Farm_Name", ((farmData.Farm_Name)).Trim());
+                cmd.Parameters.AddWithValue("@Farm_Address", ((farmData.Farm_Address)).Trim());
+                cmd.Parameters.AddWithValue("@Farm_Address_2", ((farmData.Farm_Address_2)).Trim());
+                cmd.Parameters.AddWithValue("@City", ((farmData.City)).Trim());
+                cmd.Parameters.AddWithValue("@State", ((farmData.State)).Trim());
+                cmd.Parameters.AddWithValue("@Country", ((farmData.Country)).Trim());
+                cmd.Parameters.AddWithValue("@PostalCode", ((farmData.PostalCode)).Trim());
                 cmd.Parameters.AddWithValue("@Farmer_Id", farmData.Farmer_Id);
 
                 //var returnParameter = cmd.Parameters.Add("@ErrorCode", SqlDbType.Int);
@@ -171,13 +171,13 @@ namespace Repository.Farm
                 cmd.Parameters.AddWithValue("@StatementType", "Up");
                 cmd.Parameters.AddWithValue("@id", farmData.Farm_Id);
                 cmd.Parameters.AddWithValue("@Columns", "");
-                cmd.Parameters.AddWithValue("@Farm_Name", ((farmData.Farm_Name).ToLower()).Trim());
-                cmd.Parameters.AddWithValue("@Farm_Address", ((farmData.Farm_Address).ToLower()).Trim());
-                cmd.Parameters.AddWithValue("@Farm_Address_2", ((farmData.Farm_Address_2).ToLower()).Trim());
-                cmd.Parameters.AddWithValue("@City", ((farmData.City).ToLower()).Trim());
-                cmd.Parameters.AddWithValue("@State", ((farmData.State).ToLower()).Trim());
-                cmd.Parameters.AddWithValue("@Country", ((farmData.Country).ToLower()).Trim());
-                cmd.Parameters.AddWithValue("@PostalCode", ((farmData.PostalCode).ToLower()).Trim());
+                cmd.Parameters.AddWithValue("@Farm_Name", ((farmData.Farm_Name)).Trim());
+                cmd.Parameters.AddWithValue("@Farm_Address", ((farmData.Farm_Address)).Trim());
+                cmd.Parameters.AddWithValue("@Farm_Address_2", ((farmData.Farm_Address_2)).Trim());
+                cmd.Parameters.AddWithValue("@City", ((farmData.City)).Trim());
+                cmd.Parameters.AddWithValue("@State", ((farmData.State)).Trim());
+                cmd.Parameters.AddWithValue("@Country", ((farmData.Country)).Trim());
+                cmd.Parameters.AddWithValue("@PostalCode", ((farmData.PostalCode)).Trim());
                 cmd.Parameters.AddWithValue("@Farmer_Id", farmData.Farmer_Id);
 
                 //var returnParameter = cmd.Parameters.Add("@ErrorCode", SqlDbType.Int);

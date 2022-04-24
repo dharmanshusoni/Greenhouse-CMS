@@ -40,8 +40,8 @@
                 <div class="col-md-12">
                   <mat-form-field appearance="fill">
                     <mat-label>Pest</mat-label>
-                    <mat-select [(ngModel)]="cropModels.Pest_Id">
-                      <mat-option *ngFor="let pest of pestList" [value]="pest.Pest_Id" >
+                    <mat-select [(ngModel)]="cropModels.pest_Id">
+                      <mat-option *ngFor="let pest of pestList" [value]="pest.pest_Id" >
                         {{pest.pest_Name}}
                       </mat-option>
                     </mat-select>
@@ -87,26 +87,30 @@
                   <th>Crop</th>
                   <th>No Acerage</th>
                   <th>Intensity</th>
+                  <th>Farmer</th>
+                  <th>Farm</th>
+                  <th>Pest</th>
                   <th></th>
                 </thead>
                 <tbody>
                   <tr *ngFor="let item of cropList; let i = index">
                     <td>
-                      {{item.farm_Id}}
+                      {{item.crops_Id}}
+                    </td>
+                    <td class="text-primary" >
+                      {{item.crop_Name}}
                     </td>
                     <td>
-                      {{item.farm_Name}}
-                    </td>
-                    <td class="text-primary">
-                      {{item.farm_Address}} <br> {{item.farm_Address_2}} <br> {{item.city}}, {{item.postalCode}} <br>
-                      {{item.state}}, {{item.country}}
-                    </td>
-                    <td class="text-primary">
-                      {{item.farm_Address}} <br> {{item.farm_Address_2}} <br> {{item.city}}, {{item.postalCode}} <br>
-                      {{item.state}}, {{item.country}}
+                      {{item.no_Acerage}}
                     </td>
                     <td>
-                      <button mat-raised-button type="button" matTooltip="Edit" [matTooltipPosition]="'above'"
+                      {{item.intensity}}
+                    </td>
+                    <td class="text-primary" >{{getFarmerById(item.farmer_Id)}}</td>
+                    <td class="text-primary" >{{getFarmById(item.farm_Id)}}</td>
+                    <td class="text-primary" > <img [src]="createImgPath(this.pestImage)" alt="pest picture" style="width:32px; height:32px;"> {{getPestById(item.pest_Id)}}</td>
+                    <td>
+                      <button mat-raised-button type="button" (click)="getCropDetails(item.crops_Id);" matTooltip="Edit" [matTooltipPosition]="'above'"
                         class="btn btn-primary btn-link btn-sm btn-just-icon">
                         <i class="material-icons">edit</i>
                       </button>
