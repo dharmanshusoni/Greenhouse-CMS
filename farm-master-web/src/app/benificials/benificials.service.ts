@@ -6,11 +6,10 @@ import { map } from 'rxjs/operators';
 import { environment } from 'environments/environment';
 
 const api_URL = environment.apiURL;
-const api_BASE_FARM_GET = 'farm?FarmerId=';
-const api_BASE_FARM_GET_BY_ID = 'GetFarmsForFarm?FarmId=';
-const api_BASE_FARM = 'farm/';
-const api_SAVE_FARM = 'SaveFarm/';
-const api_UPDATE_FARM = 'UpdateFarm/';
+const api_BASE_BENIFICIAL_GET = 'GetBenificialDetail?BenificialsId=';
+const api_BASE_BENIFICIAL = 'Benificial/';
+const api_SAVE_BENIFICIAL = 'SaveBenificial/';
+const api_UPDATE_BENIFICIAL = 'UpdateBenificial/';
 @Injectable({
   providedIn: 'root'
 })
@@ -20,7 +19,7 @@ export class BenificialsService {
   constructor(private http: HttpClient) {
   }
 
-  GetFarmsForFarmer(): Observable<any> {
+  GetBenificials(): Observable<any> {
     const headers = {
       'content-type': 'application/json',
       'Access-Control-Allow-Origin': '*',
@@ -28,45 +27,45 @@ export class BenificialsService {
       'Access-Control-Allow-Credentials': 'true'
     }
 
-    return this.http.get(api_URL + api_BASE_FARM_GET , { 'headers': headers }).pipe(map(data => {
+    return this.http.get(api_URL + api_BASE_BENIFICIAL , { 'headers': headers }).pipe(map(data => {
       if (data === null) return throwError("null data");
       return data;
     }));
   }
 
-  getFarmDetail(FarmId): Observable<any> {
+  getBenificialDetail(BenificialId): Observable<any> {
     const headers = {
       'content-type': 'application/json',
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT',
       'Access-Control-Allow-Credentials': 'true'
     }
-    return this.http.get(api_URL + api_BASE_FARM + api_BASE_FARM_GET_BY_ID + FarmId, { 'headers': headers }).pipe(map(data => {
+    return this.http.get(api_URL + api_BASE_BENIFICIAL + api_BASE_BENIFICIAL_GET + BenificialId, { 'headers': headers }).pipe(map(data => {
       if (data === null) return throwError("null data");
       return data;
     }));
   }
 
-  SaveFarm(farm: any): Observable<any> {
+  SaveBenificial(benificial: any): Observable<any> {
     const headers = {
       'content-type': 'application/json',
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT',
       'Access-Control-Allow-Credentials': 'true'
     }
-    const body = JSON.stringify(farm);
-    return this.http.post(api_URL + api_BASE_FARM + api_SAVE_FARM, body, { 'headers': headers });
+    const body = JSON.stringify(benificial);
+    return this.http.post(api_URL + api_BASE_BENIFICIAL + api_SAVE_BENIFICIAL, body, { 'headers': headers });
   }
 
-  UpdateFarm(farm: any): Observable<any> {
+  UpdateBenificial(benificial: any): Observable<any> {
     const headers = {
       'content-type': 'application/json',
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT',
       'Access-Control-Allow-Credentials': 'true'
     }
-    const body = JSON.stringify(farm);
-    return this.http.post(api_URL + api_BASE_FARM + api_UPDATE_FARM, body, { 'headers': headers });
+    const body = JSON.stringify(benificial);
+    return this.http.post(api_URL + api_BASE_BENIFICIAL + api_UPDATE_BENIFICIAL, body, { 'headers': headers });
   }
 
 }

@@ -23,9 +23,10 @@ import { PestComponent } from 'app/pest/Pest.component';
 import { CropsComponent } from 'app/crops/crops.component';
 import { BenificialsComponent } from 'app/benificials/benificials.component';
 import { PlantationComponent } from 'app/plantation/plantation.component';
-import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 import { FarmLayoutComponent } from 'app/farm-layout/farm-layout.component';
-
+import { DatePipe } from '@angular/common';
 @NgModule({
   imports: [
     CommonModule,
@@ -38,7 +39,8 @@ import { FarmLayoutComponent } from 'app/farm-layout/farm-layout.component';
     MatInputModule,
     MatSelectModule,
     MatTooltipModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   declarations: [
     DashboardComponent,
@@ -56,6 +58,9 @@ import { FarmLayoutComponent } from 'app/farm-layout/farm-layout.component';
     BenificialsComponent,
     PlantationComponent,
     FarmLayoutComponent
+  ],
+  providers: [
+    DatePipe
   ]
 })
 

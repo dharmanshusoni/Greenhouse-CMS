@@ -27,9 +27,26 @@
                 </div>
                 <div class="row">
                   <div class="col-md-12">
-                    <mat-form-field class="example-full-width">
+                    <!-- <mat-form-field class="example-full-width">
                       <input [(ngModel)]="benificialModels.benificial_Image" name="benificial_Image" matInput placeholder="Benificial Image" required >
-                    </mat-form-field>
+                    </mat-form-field> -->
+                    <div class="row" style="margin-bottom:15px;">
+                      <div class="col-md-3">
+                        <input type="file" accept="image/*" #file placeholder="Choose file" (change)="uploadFile(file.files)" style="display:none;">
+                        <button type="button" class="btn btn-success" (click)="file.click()">Upload File</button>
+                      </div>
+                      <div class="col-md-4">
+                        <span class="upload" *ngIf="progress > 0">
+                          {{progress}}%
+                        </span>
+                        <span class="upload" *ngIf="message">
+                          {{message}}
+                        </span>
+                      </div>
+                    </div>
+                    <div class="row" style="margin-left:10px;" >
+                      <span><img [src]="createImgPath(benificialModels.benificial_Image)" alt="benificial picture" style="width:120px; height:120px;"></span>
+                    </div>
                   </div>
                 </div>
                 
@@ -44,21 +61,25 @@
                     <th>ID</th>
                     <th>Benificials</th>
                     <th>Description</th>
+                    <th>Image</th>
                     <th></th>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let item of pestList; let i = index">
+                    <tr *ngFor="let item of benificialList; let i = index">
                       <td>
-                        {{item.farm_Id}}
+                        {{item.benificials_ID}}
+                      </td>
+                      <td  class="text-primary" >
+                        {{item.benificial_Name}}
                       </td>
                       <td>
-                        {{item.farm_Name}}
-                      </td>
-                      <td class="text-primary">
-                        {{item.farm_Address}} <br> {{item.farm_Address_2}} <br> {{item.city}}, {{item.postalCode}} <br> {{item.state}}, {{item.country}}
+                        {{item.benificial_Description}}
                       </td>
                       <td>
-                        <button mat-raised-button type="button" matTooltip="Edit" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
+                        <img [src]="createImgPath(item.benificial_Image)" alt="Benificial picture" style="width:64px; height:64px;">
+                      </td>
+                      <td>
+                        <button mat-raised-button type="button" (click)="getBenificialDetails(item.benificials_ID);" matTooltip="Edit" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
                           <i class="material-icons">edit</i>
                         </button>
                       </td>

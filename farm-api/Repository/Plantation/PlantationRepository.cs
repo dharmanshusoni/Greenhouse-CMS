@@ -7,12 +7,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Repository.Crop
+namespace Repository.Plantation
 {
-    public class CropRepository : ICropInterface
+    public class PlantationRepository : IPlantationInterface
     {
         SqlConnection con;
-        public CropRepository()
+        public PlantationRepository()
         {
             //Local
             //con = new SqlConnection("Data Source=LAPTOP-7Q3NO3O1\\SQLEXPRESS;Initial Catalog=Farm;Trusted_Connection=True;");
@@ -22,10 +22,10 @@ namespace Repository.Crop
             SqlConnection.ClearAllPools();
         }
 
-        public object GetCropDetail(int cropId)
+        public object GetPlantationDetail(int plantationId)
         {
             Result result = new Result();
-            string query = string.Format("GetCrops " + cropId);
+            string query = string.Format("GetPlantation " + plantationId);
             using (SqlCommand cmd = new SqlCommand(query, con))
             {
                 con.Open();
@@ -35,16 +35,14 @@ namespace Repository.Crop
                     result.message = "Data Found";
                     while (reader.Read())
                     {
-                        Model.Crop crop = new Model.Crop();
-                        crop.Crops_Id = (reader.GetValue(0) != null) ? int.Parse(reader.GetInt32(0).ToString()) : 0;
-                        crop.Crop_Name = (reader.GetValue(1) != null) ? reader.GetString(1) : string.Empty;
-                        crop.No_Acerage = (reader.GetValue(2) != null) ? int.Parse(reader.GetInt32(2).ToString()) : 0;
-                        crop.Intensity = (reader.GetValue(3) != null) ? int.Parse(reader.GetInt32(3).ToString()) : 0;
-                        crop.Farmer_Id = (reader.GetValue(4) != null) ? int.Parse(reader.GetInt32(4).ToString()) : 0;
-                        crop.Farm_Id = (reader.GetValue(5) != null) ? int.Parse(reader.GetInt32(5).ToString()) : 0;
-                        crop.Pest_Id = (reader.GetValue(6) != null) ? int.Parse(reader.GetInt32(6).ToString()) : 0;
+                        Model.Plantation plantation = new Model.Plantation();
+                        plantation.Plantation_Id = (reader.GetValue(0) != null) ? int.Parse(reader.GetInt32(0).ToString()) : 0;
+                        plantation.Plantation_Date = (reader.GetValue(1) != null) ? reader.GetDateTime(1) : DateTime.Now;
+                        plantation.Cleanout_Date= (reader.GetValue(2) != null) ? reader.GetDateTime(2) : DateTime.Now;
+                        plantation.No_Acerage = (reader.GetValue(3) != null) ? int.Parse(reader.GetInt32(3).ToString()) : 0;
+                        plantation.Crop_Id = (reader.GetValue(4) != null) ? int.Parse(reader.GetInt32(4).ToString()) : 0;
 
-                        result.data.Add(crop);
+                        result.data.Add(plantation);
                     }
                 }
                 else
@@ -53,28 +51,26 @@ namespace Repository.Crop
                 }
                 con.Close();
             }
-            result.data_name = "Crop";
+            result.data_name = "Plantation";
             result.status = 1;
             result.count = result.data.Count;
             return result;
         }
 
-        public object SaveCrop(Model.Crop cropData)
+        public object SavePlantation(Model.Plantation plantationData)
         {
             Result result = new Result();
-            string query = string.Format("InUpDeCrops");
+            string query = string.Format("InUpDePlantation");
             using (SqlCommand cmd = new SqlCommand(query, con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@StatementType", "In");
                 cmd.Parameters.AddWithValue("@id", 0);
                 cmd.Parameters.AddWithValue("@Columns", "");
-                cmd.Parameters.AddWithValue("@Crop_Name", cropData.Crop_Name.Trim());
-                cmd.Parameters.AddWithValue("@No_Acerage", cropData.No_Acerage);
-                cmd.Parameters.AddWithValue("@Intensity", cropData.Intensity);
-                cmd.Parameters.AddWithValue("@Farmer_Id", cropData.Farmer_Id);
-                cmd.Parameters.AddWithValue("@Farm_Id", cropData.Farm_Id);
-                cmd.Parameters.AddWithValue("@Pest_Id", cropData.Pest_Id);
+                cmd.Parameters.AddWithValue("@Plantation_Date", plantationData.Plantation_Date.ToString("MM/dd/yyyy"));
+                cmd.Parameters.AddWithValue("@Cleanout_Date", plantationData.Cleanout_Date.ToString("MM/dd/yyyy"));
+                cmd.Parameters.AddWithValue("@No_Acerage", plantationData.No_Acerage);
+                cmd.Parameters.AddWithValue("@Crop_Id", plantationData.Crop_Id);
                 con.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
 
@@ -82,20 +78,20 @@ namespace Repository.Crop
                 {
                     while (reader.Read())
                     {
-                        Model.Crop crop = new Model.Crop();
-                        crop.Crops_Id = (reader.GetValue(0) != null) ? int.Parse(reader.GetInt32(0).ToString()) : 0;
-                        if (crop.Crops_Id == -101)
+                        Model.Plantation plantation = new Model.Plantation();
+                        plantation.Plantation_Id = (reader.GetValue(0) != null) ? int.Parse(reader.GetInt32(0).ToString()) : 0;
+                        if (plantation.Plantation_Id == -101)
                         {
-                            result.message = "Crop Already Exist";
+                            result.message = "Plantation Already Exist";
                         }
-                        else if (crop.Crops_Id == -102)
+                        else if (plantation.Plantation_Id == -102)
                         {
-                            result.message = "InActive Pest";
+                            result.message = "InActive Plantation";
                         }
                         else
                         {
                             result.message = "Data Saved";
-                            result.data.Add(crop);
+                            result.data.Add(plantation);
                         }
                     }
                 }
@@ -107,50 +103,48 @@ namespace Repository.Crop
             }
             result.status = 1;
             result.count = result.data.Count;
-            result.data_name = "Crop";
+            result.data_name = "Plantation";
             return result;
         }
 
-        public object UpdateCrop(Model.Crop cropData)
+        public object UpdatePlantation(Model.Plantation plantationData)
         {
             Result result = new Result();
-            string query = string.Format("InUpDeCrops");
+            string query = string.Format("InUpDePlantation");
             using (SqlCommand cmd = new SqlCommand(query, con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@StatementType", "Up");
-                cmd.Parameters.AddWithValue("@id", cropData.Crops_Id);
+                cmd.Parameters.AddWithValue("@id", plantationData.Plantation_Id);
                 cmd.Parameters.AddWithValue("@Columns", "");
-                cmd.Parameters.AddWithValue("@Crop_Name", cropData.Crop_Name.Trim());
-                cmd.Parameters.AddWithValue("@No_Acerage", cropData.No_Acerage);
-                cmd.Parameters.AddWithValue("@Intensity", cropData.Intensity);
-                cmd.Parameters.AddWithValue("@Farmer_Id", cropData.Farmer_Id);
-                cmd.Parameters.AddWithValue("@Farm_Id", cropData.Farm_Id);
-                cmd.Parameters.AddWithValue("@Pest_Id", cropData.Pest_Id);
+                cmd.Parameters.AddWithValue("@Plantation_Date", plantationData.Plantation_Date.ToString("MM/dd/yyyy"));
+                cmd.Parameters.AddWithValue("@Cleanout_Date", plantationData.Cleanout_Date.ToString("MM/dd/yyyy"));
+                cmd.Parameters.AddWithValue("@No_Acerage", plantationData.No_Acerage);
+                cmd.Parameters.AddWithValue("@Crop_Id", plantationData.Crop_Id);
                 con.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
                 if (reader.HasRows)
                 {
                     while (reader.Read())
                     {
-                        Model.Crop crop = new Model.Crop();
-                        crop.Crops_Id = (reader.GetValue(0) != null) ? int.Parse(reader.GetInt32(0).ToString()) : 0;
-                        if (crop.Crops_Id == -101)
+                        Model.Plantation plantation= new Model.Plantation();
+                        plantation.Plantation_Id = (reader.GetValue(0) != null) ? int.Parse(reader.GetInt32(0).ToString()) : 0;
+                        if (plantation.Plantation_Id == -101)
                         {
-                            result.message = "Crop Already Exist";
+                            result.message = "Plantation Already Exist";
                         }
-                        else if (crop.Crops_Id == -102)
+                        else if (plantation.Plantation_Id == -102)
                         {
-                            result.message = "InActive Crop";
+                            result.message = "InActive Plantation";
                         }
-                        else if (crop.Crops_Id == -103)
+                        else if (plantation.Plantation_Id == -103)
                         {
-                            result.message = "Crop Not Exist";
+                            result.message = "Plantation Not Exist";
                         }
                         else
                         {
                             result.message = "Data Updated";
-                            result.data.Add(crop);
+                            result.data.Add(plantation);
                         }
                     }
                 }
@@ -162,7 +156,7 @@ namespace Repository.Crop
             }
             result.status = 1;
             result.count = result.data.Count;
-            result.data_name = "Crop";
+            result.data_name = "Plantation";
             return result;
         }
     }

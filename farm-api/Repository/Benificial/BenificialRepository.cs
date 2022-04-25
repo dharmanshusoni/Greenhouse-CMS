@@ -7,12 +7,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Repository.Crop
+namespace Repository.Benificial
 {
-    public class CropRepository : ICropInterface
+    public class BenificialRepository : IBenificialInterface
     {
         SqlConnection con;
-        public CropRepository()
+        public BenificialRepository()
         {
             //Local
             //con = new SqlConnection("Data Source=LAPTOP-7Q3NO3O1\\SQLEXPRESS;Initial Catalog=Farm;Trusted_Connection=True;");
@@ -22,10 +22,10 @@ namespace Repository.Crop
             SqlConnection.ClearAllPools();
         }
 
-        public object GetCropDetail(int cropId)
+        public object GetBenificialDetail(int benificialId)
         {
             Result result = new Result();
-            string query = string.Format("GetCrops " + cropId);
+            string query = string.Format("GetBenificials " + benificialId);
             using (SqlCommand cmd = new SqlCommand(query, con))
             {
                 con.Open();
@@ -35,16 +35,13 @@ namespace Repository.Crop
                     result.message = "Data Found";
                     while (reader.Read())
                     {
-                        Model.Crop crop = new Model.Crop();
-                        crop.Crops_Id = (reader.GetValue(0) != null) ? int.Parse(reader.GetInt32(0).ToString()) : 0;
-                        crop.Crop_Name = (reader.GetValue(1) != null) ? reader.GetString(1) : string.Empty;
-                        crop.No_Acerage = (reader.GetValue(2) != null) ? int.Parse(reader.GetInt32(2).ToString()) : 0;
-                        crop.Intensity = (reader.GetValue(3) != null) ? int.Parse(reader.GetInt32(3).ToString()) : 0;
-                        crop.Farmer_Id = (reader.GetValue(4) != null) ? int.Parse(reader.GetInt32(4).ToString()) : 0;
-                        crop.Farm_Id = (reader.GetValue(5) != null) ? int.Parse(reader.GetInt32(5).ToString()) : 0;
-                        crop.Pest_Id = (reader.GetValue(6) != null) ? int.Parse(reader.GetInt32(6).ToString()) : 0;
+                        Model.Benificials benificials = new Model.Benificials();
+                        benificials.Benificials_ID = (reader.GetValue(0) != null) ? int.Parse(reader.GetInt32(0).ToString()) : 0;
+                        benificials.Benificial_Name = (reader.GetValue(1) != null) ? reader.GetString(1) : string.Empty;
+                        benificials.Benificial_Description = (reader.GetValue(2) != null) ? reader.GetString(2) : string.Empty;
+                        benificials.Benificial_Image = (reader.GetValue(3) != null) ? reader.GetString(3) : string.Empty;
 
-                        result.data.Add(crop);
+                        result.data.Add(benificials);
                     }
                 }
                 else
@@ -53,28 +50,25 @@ namespace Repository.Crop
                 }
                 con.Close();
             }
-            result.data_name = "Crop";
+            result.data_name = "Benificials";
             result.status = 1;
             result.count = result.data.Count;
             return result;
         }
 
-        public object SaveCrop(Model.Crop cropData)
+        public object SaveBenificial(Model.Benificials benificialData)
         {
             Result result = new Result();
-            string query = string.Format("InUpDeCrops");
+            string query = string.Format("InUpDeBenificials");
             using (SqlCommand cmd = new SqlCommand(query, con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@StatementType", "In");
                 cmd.Parameters.AddWithValue("@id", 0);
                 cmd.Parameters.AddWithValue("@Columns", "");
-                cmd.Parameters.AddWithValue("@Crop_Name", cropData.Crop_Name.Trim());
-                cmd.Parameters.AddWithValue("@No_Acerage", cropData.No_Acerage);
-                cmd.Parameters.AddWithValue("@Intensity", cropData.Intensity);
-                cmd.Parameters.AddWithValue("@Farmer_Id", cropData.Farmer_Id);
-                cmd.Parameters.AddWithValue("@Farm_Id", cropData.Farm_Id);
-                cmd.Parameters.AddWithValue("@Pest_Id", cropData.Pest_Id);
+                cmd.Parameters.AddWithValue("@Benificial_Name", benificialData.Benificial_Name.Trim());
+                cmd.Parameters.AddWithValue("@Benificial_Description", benificialData.Benificial_Description.Trim());
+                cmd.Parameters.AddWithValue("@Benificial_Image", benificialData.Benificial_Image.Trim());
                 con.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
 
@@ -82,20 +76,20 @@ namespace Repository.Crop
                 {
                     while (reader.Read())
                     {
-                        Model.Crop crop = new Model.Crop();
-                        crop.Crops_Id = (reader.GetValue(0) != null) ? int.Parse(reader.GetInt32(0).ToString()) : 0;
-                        if (crop.Crops_Id == -101)
+                        Model.Benificials benificials = new Model.Benificials();
+                        benificials.Benificials_ID = (reader.GetValue(0) != null) ? int.Parse(reader.GetInt32(0).ToString()) : 0;
+                        if (benificials.Benificials_ID == -101)
                         {
-                            result.message = "Crop Already Exist";
+                            result.message = "Benificial Already Exist";
                         }
-                        else if (crop.Crops_Id == -102)
+                        else if (benificials.Benificials_ID == -102)
                         {
-                            result.message = "InActive Pest";
+                            result.message = "InActive Benificial";
                         }
                         else
                         {
                             result.message = "Data Saved";
-                            result.data.Add(crop);
+                            result.data.Add(benificials);
                         }
                     }
                 }
@@ -107,50 +101,47 @@ namespace Repository.Crop
             }
             result.status = 1;
             result.count = result.data.Count;
-            result.data_name = "Crop";
+            result.data_name = "Benificial";
             return result;
         }
 
-        public object UpdateCrop(Model.Crop cropData)
+        public object UpdateBenificial(Model.Benificials benificialData)
         {
             Result result = new Result();
-            string query = string.Format("InUpDeCrops");
+            string query = string.Format("InUpDeBenificials");
             using (SqlCommand cmd = new SqlCommand(query, con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@StatementType", "Up");
-                cmd.Parameters.AddWithValue("@id", cropData.Crops_Id);
+                cmd.Parameters.AddWithValue("@id", benificialData.Benificials_ID);
                 cmd.Parameters.AddWithValue("@Columns", "");
-                cmd.Parameters.AddWithValue("@Crop_Name", cropData.Crop_Name.Trim());
-                cmd.Parameters.AddWithValue("@No_Acerage", cropData.No_Acerage);
-                cmd.Parameters.AddWithValue("@Intensity", cropData.Intensity);
-                cmd.Parameters.AddWithValue("@Farmer_Id", cropData.Farmer_Id);
-                cmd.Parameters.AddWithValue("@Farm_Id", cropData.Farm_Id);
-                cmd.Parameters.AddWithValue("@Pest_Id", cropData.Pest_Id);
+                cmd.Parameters.AddWithValue("@Benificial_Name", benificialData.Benificial_Name.Trim());
+                cmd.Parameters.AddWithValue("@Benificial_Description", benificialData.Benificial_Description.Trim());
+                cmd.Parameters.AddWithValue("@Benificial_Image", benificialData.Benificial_Image.Trim());
                 con.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
                 if (reader.HasRows)
                 {
                     while (reader.Read())
                     {
-                        Model.Crop crop = new Model.Crop();
-                        crop.Crops_Id = (reader.GetValue(0) != null) ? int.Parse(reader.GetInt32(0).ToString()) : 0;
-                        if (crop.Crops_Id == -101)
+                        Model.Benificials benificials = new Model.Benificials();
+                        benificials.Benificials_ID = (reader.GetValue(0) != null) ? int.Parse(reader.GetInt32(0).ToString()) : 0;
+                        if (benificials.Benificials_ID == -101)
                         {
-                            result.message = "Crop Already Exist";
+                            result.message = "Benificial Already Exist";
                         }
-                        else if (crop.Crops_Id == -102)
+                        else if (benificials.Benificials_ID == -102)
                         {
-                            result.message = "InActive Crop";
+                            result.message = "InActive Benificial";
                         }
-                        else if (crop.Crops_Id == -103)
+                        else if (benificials.Benificials_ID == -103)
                         {
-                            result.message = "Crop Not Exist";
+                            result.message = "Benificial Not Exist";
                         }
                         else
                         {
                             result.message = "Data Updated";
-                            result.data.Add(crop);
+                            result.data.Add(benificials);
                         }
                     }
                 }
@@ -162,7 +153,7 @@ namespace Repository.Crop
             }
             result.status = 1;
             result.count = result.data.Count;
-            result.data_name = "Crop";
+            result.data_name = "Benificial";
             return result;
         }
     }

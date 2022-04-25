@@ -51,8 +51,12 @@
     <Compile Include="Farm\IFarmInterface.cs" />
     <Compile Include="Module\IModuleInterface.cs" />
     <Compile Include="Module\ModuleRepository.cs" />
+    <Compile Include="Benificial\IBenificialInterface.cs" />
+    <Compile Include="Benificial\BenificialRepository.cs" />
     <Compile Include="Pest\PestRepository.cs" />
     <Compile Include="Pest\IPestInterface.cs" />
+    <Compile Include="Plantation\PlantationRepository.cs" />
+    <Compile Include="Plantation\IPlantationInterface.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="User\IUserInterface.cs" />
     <Compile Include="User\UserRepository.cs" />

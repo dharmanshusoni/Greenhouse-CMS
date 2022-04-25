@@ -6,11 +6,10 @@ import { map } from 'rxjs/operators';
 import { environment } from 'environments/environment';
 
 const api_URL = environment.apiURL;
-const api_BASE_FARM_GET = 'farm?FarmerId=';
-const api_BASE_FARM_GET_BY_ID = 'GetFarmsForFarm?FarmId=';
-const api_BASE_FARM = 'farm/';
-const api_SAVE_FARM = 'SaveFarm/';
-const api_UPDATE_FARM = 'UpdateFarm/';
+const api_BASE_PLANTATION_GET = 'GetPlantationDetail?PlantationId=';
+const api_BASE_PLANTATION = 'Plantation/';
+const api_SAVE_PLANTATION = 'SavePlantation/';
+const api_UPDATE_PLANTATION = 'UpdatePlantation/';
 @Injectable({
   providedIn: 'root'
 })
@@ -20,7 +19,7 @@ export class PlantationService {
   constructor(private http: HttpClient) {
   }
 
-  GetFarmsForFarmer(): Observable<any> {
+  GetPlantations(): Observable<any> {
     const headers = {
       'content-type': 'application/json',
       'Access-Control-Allow-Origin': '*',
@@ -28,45 +27,45 @@ export class PlantationService {
       'Access-Control-Allow-Credentials': 'true'
     }
 
-    return this.http.get(api_URL + api_BASE_FARM_GET , { 'headers': headers }).pipe(map(data => {
+    return this.http.get(api_URL + api_BASE_PLANTATION , { 'headers': headers }).pipe(map(data => {
       if (data === null) return throwError("null data");
       return data;
     }));
   }
 
-  getFarmDetail(FarmId): Observable<any> {
+  getPlantationDetail(PlantationId): Observable<any> {
     const headers = {
       'content-type': 'application/json',
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT',
       'Access-Control-Allow-Credentials': 'true'
     }
-    return this.http.get(api_URL + api_BASE_FARM + api_BASE_FARM_GET_BY_ID + FarmId, { 'headers': headers }).pipe(map(data => {
+    return this.http.get(api_URL + api_BASE_PLANTATION + api_BASE_PLANTATION_GET + PlantationId, { 'headers': headers }).pipe(map(data => {
       if (data === null) return throwError("null data");
       return data;
     }));
   }
 
-  SaveFarm(farm: any): Observable<any> {
+  SavePlantation(plantation: any): Observable<any> {
     const headers = {
       'content-type': 'application/json',
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT',
       'Access-Control-Allow-Credentials': 'true'
     }
-    const body = JSON.stringify(farm);
-    return this.http.post(api_URL + api_BASE_FARM + api_SAVE_FARM, body, { 'headers': headers });
+    const body = JSON.stringify(plantation);
+    return this.http.post(api_URL + api_BASE_PLANTATION + api_SAVE_PLANTATION, body, { 'headers': headers });
   }
 
-  UpdateFarm(farm: any): Observable<any> {
+  UpdatePlantation(plantation: any): Observable<any> {
     const headers = {
       'content-type': 'application/json',
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT',
       'Access-Control-Allow-Credentials': 'true'
     }
-    const body = JSON.stringify(farm);
-    return this.http.post(api_URL + api_BASE_FARM + api_UPDATE_FARM, body, { 'headers': headers });
+    const body = JSON.stringify(plantation);
+    return this.http.post(api_URL + api_BASE_PLANTATION + api_UPDATE_PLANTATION, body, { 'headers': headers });
   }
 
 }
