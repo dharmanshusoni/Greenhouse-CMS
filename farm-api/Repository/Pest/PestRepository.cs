@@ -15,10 +15,10 @@ namespace Repository.Pest
         public PestRepository()
         {
             //Local
-            //con = new SqlConnection("Data Source=LAPTOP-7Q3NO3O1\\SQLEXPRESS;Initial Catalog=Farm;Trusted_Connection=True;");
+            con = new SqlConnection("Data Source=LAPTOP-7Q3NO3O1\\SQLEXPRESS;Initial Catalog=Farm;Trusted_Connection=True;");
 
             //Live
-            con = new SqlConnection("Data Source=SQL8001.site4now.net;Initial Catalog=db_a85a28_scouts;User Id=db_a85a28_scouts_admin;Password=scouts@123;");
+            //con = new SqlConnection("Data Source=SQL8001.site4now.net;Initial Catalog=db_a85a28_scouts;User Id=db_a85a28_scouts_admin;Password=scouts@123;");
             SqlConnection.ClearAllPools();
         }
 
