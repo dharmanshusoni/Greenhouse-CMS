@@ -44,6 +44,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Application\IApplicationInterface.cs" />
+    <Compile Include="Application\ApplicationRepository.cs" />
     <Compile Include="Class1.cs" />
     <Compile Include="Crop\ICropInterface.cs" />
     <Compile Include="Crop\CropRepository.cs" />

@@ -27,6 +27,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { FarmLayoutComponent } from 'app/farm-layout/farm-layout.component';
 import { DatePipe } from '@angular/common';
+import { ApplicationComponent } from 'app/application/application.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -57,7 +58,8 @@ import { DatePipe } from '@angular/common';
     CropsComponent,
     BenificialsComponent,
     PlantationComponent,
-    FarmLayoutComponent
+    FarmLayoutComponent,
+    ApplicationComponent
   ],
   providers: [
     DatePipe
