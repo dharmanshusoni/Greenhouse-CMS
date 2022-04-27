@@ -7,7 +7,7 @@ import { environment } from 'environments/environment';
 
 const api_URL = environment.apiURL;
 const api_BASE_APPLICATIONTYPE_GET = 'GetApplicationType?ApplicationTypeId=';
-const api_BASE_APPLICATION_GET = 'GetPlantationDetail?PlantationId=';
+const api_BASE_APPLICATION_GET = 'GetApplicationDetail?ApplicationId=';
 const api_BASE_APPLICATION = 'Application/';
 const api_SAVE_APPLICATION = 'SaveApplication/';
 const api_UPDATE_APPLICATION = 'UpdateApplication/';

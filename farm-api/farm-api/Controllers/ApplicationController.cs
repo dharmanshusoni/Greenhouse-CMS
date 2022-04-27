@@ -81,7 +81,7 @@ namespace farm_api.Controllers
             {
                 return JsonConvert.SerializeObject(new Result { message = "Select Assingn To" });
             }
-            if (application.Appilication_who_Assigned == 0)
+            if (application.Application_who_Assigned == 0)
             {
                 return JsonConvert.SerializeObject(new Result { message = "Invalid User Found" });
             }
@@ -116,7 +116,7 @@ namespace farm_api.Controllers
             {
                 return JsonConvert.SerializeObject(new Result { message = "Select Assingn To" });
             }
-            if (application.Appilication_who_Assigned == 0)
+            if (application.Application_who_Assigned == 0)
             {
                 return JsonConvert.SerializeObject(new Result { message = "Invalid User Found" });
             }

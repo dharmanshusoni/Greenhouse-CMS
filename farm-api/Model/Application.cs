@@ -12,8 +12,8 @@ namespace Model
         public int Application_type { get; set; }
         public string Application_Name { get; set; }
         public DateTime Application_Date { get; set; }
-        public DateTime Application_Time { get; set; }
-        public int Appilication_who_Assigned { get; set; }
+        public string Application_Time { get; set; }
+        public int Application_who_Assigned { get; set; }
         public int Application_Assigned_To { get; set; }
         public int Decease_Id { get; set; }
     }

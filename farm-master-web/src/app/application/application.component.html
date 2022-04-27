@@ -14,8 +14,8 @@
                 <div class="row">
                   <div class="col-md-12">
                     <mat-form-field appearance="fill">
-                      <mat-label>Appilication type</mat-label>
-                      <mat-select [(ngModel)]="applicationModels.appilication_type">
+                      <mat-label>Application type</mat-label>
+                      <mat-select [(ngModel)]="applicationModels.application_type">
                         <mat-option *ngFor="let appType of applicationTypeList" [value]="appType.applicationTypeId" >
                             <span>{{appType.applicationTypes}}</span>
                             <!-- <i class="material-icons">{{appType.icon}}</i> -->
@@ -27,10 +27,22 @@
                 <div class="row">
                   <div class="col-md-12">
                     <mat-form-field appearance="fill">
-                      <mat-label>Crop</mat-label>
+                      <mat-label>Decease</mat-label>
                       <mat-select [(ngModel)]="applicationModels.decease_Id">
-                        <mat-option *ngFor="let decease of deceaseList" [value]="crop.decease_Id" >
+                        <mat-option *ngFor="let decease of deceaseList" [value]="decease.decease_Id" >
                           {{decease.decease_Name}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12">
+                    <mat-form-field appearance="fill">
+                      <mat-label>Assign To</mat-label>
+                      <mat-select [(ngModel)]="applicationModels.application_Assigned_To" >
+                        <mat-option *ngFor="let user of userList" [value]="user.id" >
+                          {{user.firstName}}
                         </mat-option>
                       </mat-select>
                     </mat-form-field>
@@ -44,28 +56,6 @@
                   </div>
                 </div>
 
-                <!-- <div class="row">
-                  <div class="col-md-12">
-                    <mat-form-field appearance="fill">
-                      <mat-label>Plantation Date</mat-label>
-                      <input  [(ngModel)]="plantationModels.plantation_Date" name="plantation_Date" matInput [matDatepicker]="dp3" disabled>
-                      <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
-                      <mat-datepicker #dp3 disabled="false"></mat-datepicker>
-                    </mat-form-field>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-12">
-                    <mat-form-field appearance="fill">
-                      <mat-label>Cleanout Date</mat-label>
-                      <input  [(ngModel)]="plantationModels.cleanout_Date" name="cleanout_Date" matInput [matDatepicker]="dp4" disabled>
-                      <mat-hint>MM/DD/YYYY</mat-hint>
-                      <mat-datepicker-toggle matSuffix [for]="dp4"></mat-datepicker-toggle>
-                      <mat-datepicker #dp4 disabled="false"></mat-datepicker>
-                    </mat-form-field>
-                  </div>
-                </div> -->
-                
                 <button mat-raised-button type="submit" class="btn btn-danger pull-right" (click)="Update()" *ngIf="applicationModels.application_Id != 0">Update Application</button>
                 <button mat-raised-button type="submit" class="btn btn-danger pull-right" (click)="Save()" *ngIf="applicationModels.application_Id == 0">Save Application</button>
                 <button mat-raised-button type="submit" class="btn pull-right" (click)="initialize();showAddUpdate=false;">Cancel</button>
@@ -89,22 +79,22 @@
                         {{item.application_Id}}
                       </td>
                       <td class="text-primary" >
-                        {{getDate(item.application_Name)}}
+                        {{item.application_Name}}
                       </td>
                       <td class="text-primary" >
-                        {{getDate(item.appilication_type)}}
+                        {{getApplicationType(item.application_type)}}
                       </td>
                       <td >
-                        {{item.Application_Assigned_To}}
+                        {{getUserByID(item.application_Assigned_To)}}
                       </td>
                       <td>
-                        {{getCropById(item.appilication_who_Assigned)}}
+                        {{getUserByID(item.application_who_Assigned)}}
                       </td>
                       <td>
-                        {{item.decease_Id}}
+                        {{getDeceaseById(item.decease_Id)}}
                       </td>
                       <td>
-                        {{item.application_Date}} {{item.application_Time}}
+                        {{item.application_Date}}
                       </td>
                       <td>
                         <button mat-raised-button type="button" (click)="getApplicationDetails(item.application_Id);" matTooltip="Edit" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">

@@ -4,6 +4,8 @@ import { CropsService } from 'app/crops/crops.service';
 import { ApplicationService } from './application.service';
 declare var $: any;
 import { DatePipe } from '@angular/common';
+import { DeceaseService } from 'app/Decease/decease.service';
+import { UserService } from 'app/user-profile/User.service';
 
 @Component({
   selector: 'app-application',
@@ -13,31 +15,38 @@ import { DatePipe } from '@angular/common';
 export class ApplicationComponent implements OnInit {
 
   applicationServiceObj: ApplicationService;
+  deceaseServiceObj: DeceaseService;
+  usersServiceObj: UserService;
   showAddUpdate=false;
   applicationModels: any;
   applicationList: any;
   applicationTypeList:any;
+  userList: any;
   deceaseList: any;
   userId: any;
   datePipes : any;
 
-  constructor(applicationServiceObj: ApplicationService,private datePipe: DatePipe, private router: Router) {
+  constructor(applicationServiceObj: ApplicationService,deceaseServiceObj: DeceaseService,usersServiceObj: UserService,private datePipe: DatePipe, private router: Router) {
     this.applicationModels = {};
     this.applicationServiceObj = applicationServiceObj;
+    this.deceaseServiceObj = deceaseServiceObj;
+    this.usersServiceObj = usersServiceObj;
     this.datePipes = datePipe;
   }
 
   initialize() {
     this.applicationModels = {};
-    this.applicationModels.Application_Id = 0;
-    this.applicationModels.appilication_type = 0;
+    this.applicationModels.application_Id = 0;
+    this.applicationModels.application_type = 0;
     this.applicationModels.application_Name = '';
     this.applicationModels.application_Date = '';
     this.applicationModels.application_Time = '';
-    this.applicationModels.appilication_who_Assigned = 0;
+    this.applicationModels.application_who_Assigned = 0;
     this.applicationModels.application_Assigned_To = 0;
     this.applicationModels.decease_Id = 0; 
     this.getApplicationTypes();
+    this.getDeceases();
+    this.getUsers();
   }
 
   ngOnInit() {
@@ -62,10 +71,34 @@ export class ApplicationComponent implements OnInit {
         this.showNotification(res.message, 4);
       }
       else if (res.count > 0) {
-        if (res.data[0].applicationTypeId > 0) {
           this.applicationTypeList = res.data;
           console.log("this.applicationTypeList");
           console.log(this.applicationTypeList);
+        }
+    });
+  }
+
+  getDeceases() {
+    this.deceaseServiceObj.GetDeceases().subscribe((res) => {
+      if (res.count == 0) {
+        this.deceaseList = [];
+        this.showNotification(res.message, 4);
+      }
+      else if (res.count > 0) {
+          this.deceaseList = res.data;
+      }
+    });
+  }
+
+  getUsers(){
+    this.usersServiceObj.getProfileDetail(0).subscribe((res) => {
+      if (res.count == 0) {
+        this.showNotification(res.message, 4);
+      }
+      else if (res.count > 0) {
+        if (res.data[0].id > 0) {
+          this.userList = res.data;
+          console.log(this.userList);
         }
       }
     });
@@ -91,14 +124,15 @@ export class ApplicationComponent implements OnInit {
       }
       else if (res.count > 0) {
           this.applicationModels = res.data[0];
+          console.log(this.applicationModels);
           this.showAddUpdate = true;
       }
     });
   }
 
   Update(){
-    this.applicationModels.application_Date = this.datePipes.transform(this.applicationModels.application_Date, 'MM/dd/yyyy');
-    this.applicationModels.application_Time = this.datePipes.transform(this.applicationModels.application_Time, 'MM/dd/yyyy');
+    const now = new Date();
+    this.applicationModels.application_who_Assigned = this.userId;
     var msg = '';
     if(this.applicationModels.application_Id == 0 || this.applicationModels.application_Id == undefined || this.applicationModels.application_Id == 'undefined'){
       msg = msg+'Invalid Application<br>';
@@ -109,16 +143,16 @@ export class ApplicationComponent implements OnInit {
     if(this.applicationModels.application_Time == '' || this.applicationModels.application_Time == undefined || this.applicationModels.application_Time == 'undefined'){
       msg =  msg+'Unable to Get Time<br>';
     }
-    if(this.applicationModels.appilication_type == 0 || this.applicationModels.appilication_type == undefined || this.applicationModels.appilication_type == 'undefined'){
+    if(this.applicationModels.application_type == 0 || this.applicationModels.application_type == undefined || this.applicationModels.application_type == 'undefined'){
       msg =  msg+'Invalid Type<br>';
     }
-    if(this.applicationModels.appilication_Name == 0 || this.applicationModels.appilication_Name == undefined || this.applicationModels.appilication_Name == 'undefined'){
+    if(this.applicationModels.application_Name == '' || this.applicationModels.application_Name == undefined || this.applicationModels.application_Name == 'undefined'){
       msg =  msg+'Enter Name<br>';
     }
     if(this.applicationModels.decease_Id == 0 || this.applicationModels.decease_Id == undefined || this.applicationModels.decease_Id == 'undefined'){
       msg =  msg+'Select Decease<br>';
     }
-    if(this.applicationModels.Application_Assigned_To == 0 || this.applicationModels.Application_Assigned_To == undefined || this.applicationModels.Application_Assigned_To == 'undefined'){
+    if(this.applicationModels.application_Assigned_To == 0 || this.applicationModels.application_Assigned_To == undefined || this.applicationModels.application_Assigned_To == 'undefined'){
       msg =  msg+'Select Assigned To<br>';
     }
     if(msg == '')
@@ -143,8 +177,10 @@ export class ApplicationComponent implements OnInit {
   }
 
   Save(){
-    this.applicationModels.application_Date = this.datePipes.transform(this.applicationModels.application_Date, 'MM/dd/yyyy');
-    this.applicationModels.application_Time = this.datePipes.transform(this.applicationModels.application_Time, 'MM/dd/yyyy');
+    const now = new Date();
+    this.applicationModels.application_Date = now.toLocaleDateString();
+    this.applicationModels.application_Time = this.CurrentTime();
+    this.applicationModels.application_who_Assigned = this.userId;
     var msg = '';
     if(this.applicationModels.application_Date == '' || this.applicationModels.application_Date == undefined || this.applicationModels.application_Date  == 'undefined'){
       msg =  msg+'Unable to Get Date<br>';
@@ -152,16 +188,16 @@ export class ApplicationComponent implements OnInit {
     if(this.applicationModels.application_Time == '' || this.applicationModels.application_Time == undefined || this.applicationModels.application_Time == 'undefined'){
       msg =  msg+'Unable to Get Time<br>';
     }
-    if(this.applicationModels.appilication_type == 0 || this.applicationModels.appilication_type == undefined || this.applicationModels.appilication_type == 'undefined'){
+    if(this.applicationModels.application_type == 0 || this.applicationModels.application_type == undefined || this.applicationModels.application_type == 'undefined'){
       msg =  msg+'Invalid Type<br>';
     }
-    if(this.applicationModels.appilication_Name == 0 || this.applicationModels.appilication_Name == undefined || this.applicationModels.appilication_Name == 'undefined'){
+    if(this.applicationModels.application_Name == '' || this.applicationModels.application_Name == undefined || this.applicationModels.application_Name == 'undefined'){
       msg =  msg+'Enter Name<br>';
     }
     if(this.applicationModels.decease_Id == 0 || this.applicationModels.decease_Id == undefined || this.applicationModels.decease_Id == 'undefined'){
       msg =  msg+'Select Decease<br>';
     }
-    if(this.applicationModels.Application_Assigned_To == 0 || this.applicationModels.Application_Assigned_To == undefined || this.applicationModels.Application_Assigned_To == 'undefined'){
+    if(this.applicationModels.application_Assigned_To == 0 || this.applicationModels.application_Assigned_To == undefined || this.applicationModels.application_Assigned_To == 'undefined'){
       msg =  msg+'Select Assigned To<br>';
     }
     if(msg == '')
@@ -186,16 +222,40 @@ export class ApplicationComponent implements OnInit {
     }
   }
 
-  getDeceaseById(CropId){
-    let findedData = this.deceaseList.find(i => i.crops_Id === CropId);
+  getDeceaseById(DeceaseId){
+    let findedData = this.deceaseList.find(i => i.decease_Id === DeceaseId);
     if (typeof findedData === 'undefined') {
        return null;
     }
-    return findedData.crop_Name;
+    return findedData.decease_Name;
+  }
+
+  getApplicationType(ApplicationTypeId){
+    let findedData = this.applicationTypeList.find(i => i.applicationTypeId === ApplicationTypeId);
+    if (typeof findedData === 'undefined') {
+       return null;
+    }
+    return findedData.applicationTypes;
+  }
+
+  getUserByID(UserId){
+    let findedData = this.userList.find(i => i.id === UserId);
+    if (typeof findedData === 'undefined') {
+       return null;
+    }
+    return findedData.firstName;
   }
 
   getDate(date){
     return this.datePipes.transform(date,'MM/dd/yyyy')
+  }
+
+  CurrentTime() {
+    var today = new Date();
+    var hours = (today.getHours() < 10 ? '0' : '') + today.getHours();
+    var minutes = (today.getMinutes() < 10 ? '0' : '') + today.getMinutes();
+    var seconds = (today.getSeconds() < 10 ? '0' : '') + today.getSeconds();
+    return hours + ':' + minutes + ':' + seconds;
   }
 
   showNotification(Message, type) {

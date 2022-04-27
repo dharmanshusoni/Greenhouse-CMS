@@ -11,12 +11,12 @@ import { IconsComponent } from '../../icons/icons.component';
 import { MapsComponent } from '../../maps/maps.component';
 import { NotificationsComponent } from '../../notifications/notifications.component';
 import { UpgradeComponent } from '../../upgrade/upgrade.component';
-import {MatButtonModule} from '@angular/material/button';
-import {MatInputModule} from '@angular/material/input';
-import {MatRippleModule} from '@angular/material/core';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatTooltipModule} from '@angular/material/tooltip';
-import {MatSelectModule} from '@angular/material/select';
+import { MatButtonModule} from '@angular/material/button';
+import { MatInputModule} from '@angular/material/input';
+import { MatRippleModule} from '@angular/material/core';
+import { MatFormFieldModule} from '@angular/material/form-field';
+import { MatTooltipModule} from '@angular/material/tooltip';
+import { MatSelectModule} from '@angular/material/select';
 import { LoginComponent } from 'app/login/login.component';
 import { FarmComponent } from 'app/farm/farm.component';
 import { PestComponent } from 'app/pest/Pest.component';
@@ -28,6 +28,8 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { FarmLayoutComponent } from 'app/farm-layout/farm-layout.component';
 import { DatePipe } from '@angular/common';
 import { ApplicationComponent } from 'app/application/application.component';
+import { DeceaseComponent } from 'app/Decease/decease.component';
+import { MatCheckboxModule} from '@angular/material/checkbox';
 @NgModule({
   imports: [
     CommonModule,
@@ -41,7 +43,8 @@ import { ApplicationComponent } from 'app/application/application.component';
     MatSelectModule,
     MatTooltipModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatCheckboxModule
   ],
   declarations: [
     DashboardComponent,
@@ -59,7 +62,8 @@ import { ApplicationComponent } from 'app/application/application.component';
     BenificialsComponent,
     PlantationComponent,
     FarmLayoutComponent,
-    ApplicationComponent
+    ApplicationComponent,
+    DeceaseComponent
   ],
   providers: [
     DatePipe

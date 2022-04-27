@@ -49,6 +49,8 @@
     <Compile Include="Class1.cs" />
     <Compile Include="Crop\ICropInterface.cs" />
     <Compile Include="Crop\CropRepository.cs" />
+    <Compile Include="Decease\IDeceaseInterface.cs" />
+    <Compile Include="Decease\DeceaseRepository.cs" />
     <Compile Include="Farm\FarmRepository.cs" />
     <Compile Include="Farm\IFarmInterface.cs" />
     <Compile Include="Module\IModuleInterface.cs" />

@@ -73,8 +73,8 @@ namespace Repository.Application
                         application.Application_type = (reader.GetValue(1) != null) ? int.Parse(reader.GetInt32(1).ToString()) : 0;
                         application.Application_Name = (reader.GetValue(2) != null) ? reader.GetString(2) : string.Empty;
                         application.Application_Date = (reader.GetValue(3) != null) ? reader.GetDateTime(3) : DateTime.Now;
-                        application.Application_Time = (reader.GetValue(4) != null) ? reader.GetDateTime(4) : DateTime.Now;
-                        application.Appilication_who_Assigned = (reader.GetValue(5) != null) ? int.Parse(reader.GetInt32(5).ToString()) : 0;
+                        application.Application_Time = (reader.GetValue(4) != null) ? reader.GetString(4) : string.Empty;
+                        application.Application_who_Assigned = (reader.GetValue(5) != null) ? int.Parse(reader.GetInt32(5).ToString()) : 0;
                         application.Application_Assigned_To = (reader.GetValue(6) != null) ? int.Parse(reader.GetInt32(6).ToString()) : 0;
                         application.Decease_Id = (reader.GetValue(7) != null) ? int.Parse(reader.GetInt32(7).ToString()) : 0;
 
@@ -105,9 +105,9 @@ namespace Repository.Application
                 cmd.Parameters.AddWithValue("@Columns", "");
                 cmd.Parameters.AddWithValue("@Appilication_type", applicationData.Application_type);
                 cmd.Parameters.AddWithValue("@Application_Name", applicationData.Application_Name.Trim());
-                cmd.Parameters.AddWithValue("@Application_Date", DateTime.Now.ToString("MM/dd/yyyy"));
+                cmd.Parameters.AddWithValue("@Application_Date", DateTime.Now);
                 cmd.Parameters.AddWithValue("@Application_Time", DateTime.Now.ToString("hh:mm tt"));
-                cmd.Parameters.AddWithValue("@Appilication_who_Assigned", applicationData.Appilication_who_Assigned);
+                cmd.Parameters.AddWithValue("@Appilication_who_Assigned", applicationData.Application_who_Assigned);
                 cmd.Parameters.AddWithValue("@Application_Assigned_To", applicationData.Application_Assigned_To);
                 cmd.Parameters.AddWithValue("@Decease_Id", applicationData.Decease_Id);
                 con.Open();
@@ -149,7 +149,7 @@ namespace Repository.Application
         public object UpdateApplication(Model.Application applicationData)
         {
             Result result = new Result();
-            string query = string.Format("InUpDePests");
+            string query = string.Format("InUpDeApplication");
             using (SqlCommand cmd = new SqlCommand(query, con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -158,9 +158,9 @@ namespace Repository.Application
                 cmd.Parameters.AddWithValue("@Columns", "");
                 cmd.Parameters.AddWithValue("@Appilication_type", applicationData.Application_type);
                 cmd.Parameters.AddWithValue("@Application_Name", applicationData.Application_Name.Trim());
-                cmd.Parameters.AddWithValue("@Application_Date", DateTime.Now.ToString("MM/dd/yyyy"));
+                cmd.Parameters.AddWithValue("@Application_Date", DateTime.Now);
                 cmd.Parameters.AddWithValue("@Application_Time", DateTime.Now.ToString("hh:mm tt"));
-                cmd.Parameters.AddWithValue("@Appilication_who_Assigned", applicationData.Appilication_who_Assigned);
+                cmd.Parameters.AddWithValue("@Appilication_who_Assigned", applicationData.Application_who_Assigned);
                 cmd.Parameters.AddWithValue("@Application_Assigned_To", applicationData.Application_Assigned_To);
                 cmd.Parameters.AddWithValue("@Decease_Id", applicationData.Decease_Id);
                 con.Open();
