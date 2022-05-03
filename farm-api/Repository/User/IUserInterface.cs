@@ -8,9 +8,10 @@ namespace Repository.User
 {
     public interface IUserInterface
     {
-        Object Login(Model.User user);
-        Object GetProfile(int userId);
-        Object SaveProfile(Model.User user);
-        Object UpdateProfile(Model.User user);
+        Object Login(Model.Users user);
+        Object GetUser(int farmerId, int userId);
+        Object GetUserType(int userTypeId);
+        Object SaveUser(Model.Users user);
+        Object UpdateUser(Model.Users user);
     }
 }

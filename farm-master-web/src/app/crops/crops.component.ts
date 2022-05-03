@@ -23,12 +23,11 @@ export class CropsComponent implements OnInit {
   cropModels: any;
   pestList: any;
   farmList: any;
-  farmerList: any;
+  //farmerList: any;
   farmId: any;
   farmerId: any;
   pestId:any;
   userId: any;
-  pestImage='';
 
   constructor(pestServiceObj: PestService,usersServiceObj: UserService,cropServiceObj: CropsService,farmServiceObj: FarmService, private router: Router) {
     this.cropModels = {};
@@ -36,7 +35,7 @@ export class CropsComponent implements OnInit {
     this.usersServiceObj = usersServiceObj;
     this.cropServiceObj = cropServiceObj;
     this.farmServiceObj = farmServiceObj;
-    this.farmerList = [];
+    //this.farmerList = [];
     this.farmList = [];
     this.pestList = [];
     this.cropList = [];
@@ -52,8 +51,8 @@ export class CropsComponent implements OnInit {
     this.cropModels.farmer_Id = 0;
     this.cropModels.farm_Id = 0;
     this.cropModels.pest_Id = 0;
-    this.getFarmer();
-    this.getFarmsByFarmerId(0);
+    //this.getFarmer();
+    this.getFarmsByFarmerId(this.userId);
     this.getPest();
   }
 
@@ -72,19 +71,19 @@ export class CropsComponent implements OnInit {
 
   }
 
-  getFarmer(){
-    this.usersServiceObj.getProfileDetail(0).subscribe((res) => {
-      if (res.count == 0) {
-        this.showNotification(res.message, 4);
-      }
-      else if (res.count > 0) {
-        if (res.data[0].id > 0) {
-          this.farmerList = res.data;
-          console.log(this.farmerList);
-        }
-      }
-    });
-  }
+  // getFarmer(){
+  //   this.usersServiceObj.getProfileDetail(0).subscribe((res) => {
+  //     if (res.count == 0) {
+  //       this.showNotification(res.message, 4);
+  //     }
+  //     else if (res.count > 0) {
+  //       if (res.data[0].id > 0) {
+  //         this.farmerList = res.data;
+  //         console.log(this.farmerList);
+  //       }
+  //     }
+  //   });
+  // }
 
   getFarmsByFarmerId(userId) {
     console.log("this.farmList");
@@ -127,6 +126,7 @@ export class CropsComponent implements OnInit {
   }
 
   getCropDetails(CropId) {
+    console.log(CropId);
     this.cropServiceObj.getCropDetail(CropId).subscribe((res) => {
       if (res.count == 0) {
         this.pestList = [];
@@ -141,14 +141,15 @@ export class CropsComponent implements OnInit {
 
   Update(){
     var msg = '';
+    this.cropModels.farmer_Id = this.userId;
     if(this.cropModels.crop_Name == '' || this.cropModels.crop_Name == undefined || this.cropModels.crop_Name == 'undefined'){
       msg = msg+'Enter Crop Name<br>';
     }
     if(this.cropModels.no_Acerage == undefined || this.cropModels.no_Acerage == 'undefined'){
-      msg =  msg+'Enter No of Acerage<br>';
+      msg =  msg+'Refresh and try again<br>';
     }
     if(this.cropModels.intensity == undefined || this.cropModels.intensity == 'undefined'){
-      msg =  msg+'Enter Intensity<br>';
+      msg =  msg+'Refresh and try again<br>';
     }
     if(this.cropModels.farmer_Id == 0 || this.cropModels.farmer_Id == undefined || this.cropModels.farmer_Id == 'undefined'){
       msg =  msg+'Select Farmer<br>';
@@ -186,14 +187,15 @@ export class CropsComponent implements OnInit {
 
   Save(){
     var msg = '';
+    this.cropModels.farmer_Id = this.userId;
     if(this.cropModels.crop_Name == '' || this.cropModels.crop_Name == undefined || this.cropModels.crop_Name == 'undefined'){
       msg = msg+'Enter Crop Name<br>';
     }
     if(this.cropModels.no_Acerage == undefined || this.cropModels.no_Acerage == 'undefined'){
-      msg =  msg+'Enter No of Acerage<br>';
+      msg =  msg+'Refresh and try again<br>';
     }
     if(this.cropModels.intensity == undefined || this.cropModels.intensity == 'undefined'){
-      msg =  msg+'Enter Intensity<br>';
+      msg =  msg+'Refresh and try again<br>';
     }
     if(this.cropModels.farmer_Id == 0 || this.cropModels.farmer_Id == undefined || this.cropModels.farmer_Id == 'undefined'){
       msg =  msg+'Select Farmer<br>';
@@ -226,13 +228,13 @@ export class CropsComponent implements OnInit {
     }
   }
 
-  getFarmerById(FarmerId){
-    let findedData = this.farmerList.find(i => i.id === FarmerId);
-    if (typeof findedData === 'undefined') {
-       return null;
-    }
-    return findedData.firstName;
-  }
+  // getFarmerById(FarmerId){
+  //   let findedData = this.farmerList.find(i => i.id === FarmerId);
+  //   if (typeof findedData === 'undefined') {
+  //      return null;
+  //   }
+  //   return findedData.firstName;
+  // }
   
   getFarmById(FarmId){
     let findedData = this.farmList.find(i => i.farm_Id === FarmId);
@@ -247,7 +249,6 @@ export class CropsComponent implements OnInit {
     if (typeof findedData === 'undefined') {
        return null;
     }
-    this.pestImage =  findedData.pest_Image;
     return findedData.pest_Name;
   }
 
@@ -255,7 +256,15 @@ export class CropsComponent implements OnInit {
     if(serverPath == "" || serverPath == 'undefined' || serverPath == undefined){
       return environment.apiBASE+`Resources/default.png`;
     }
-    return environment.apiBASE+`${serverPath}`;
+    return environment.apiBASE+`${this.getPestImage(serverPath)}`;
+  }
+
+  public getPestImage(PestId){
+    let findedData = this.pestList.find(i => i.pest_Id === PestId);
+    if (typeof findedData === 'undefined') {
+       return null;
+    }
+    return findedData.pest_Image;
   }
   
   showNotification(Message, type) {

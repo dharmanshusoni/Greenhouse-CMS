@@ -6,29 +6,30 @@ import { map } from 'rxjs/operators';
 import { environment } from 'environments/environment';
 
 const api_URL = environment.apiURL;
-const api_BASE_FARMER_GET = 'Farmer?userId=';
+const api_BASE_USER_GET = 'User?farmerId=&userId=';
 const api_BASE_USERTYPE_GET = 'GetUserType?userTypeId=';
-const api_BASE_FARMER = 'Farmer/';
-const api_SAVE_FARMER = 'SaveProfile/';
-const api_UPDATE_FARMER = 'UpdateProfile/';
+const api_BASE_USER = 'User/';
+const api_SAVE_USER = 'SaveUser/';
+const api_UPDATE_USER = 'UpdateUser/';
 @Injectable({
   providedIn: 'root'
 })
 
-export class UserService {
+export class UsersService {
 
   constructor(private http: HttpClient) {
   }
 
-  getProfileDetail(userId): Observable<any> {
+  getUserDetail(farmerId,userId): Observable<any> {
     const headers = {
       'content-type': 'application/json',
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT',
       'Access-Control-Allow-Credentials': 'true'
     }
-
-    return this.http.get(api_URL + api_BASE_FARMER_GET + userId, { 'headers': headers }).pipe(map(data => {
+    console.log('get link');
+    console.log(api_URL + 'User?farmerId='+ farmerId + '&userId=' + userId);
+    return this.http.get(api_URL + 'User?farmerId='+ farmerId + '&userId=' + userId, { 'headers': headers }).pipe(map(data => {
       if (data === null) return throwError("null data");
       return data;
     }));
@@ -41,13 +42,13 @@ export class UserService {
       'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT',
       'Access-Control-Allow-Credentials': 'true'
     }
-    return this.http.get(api_URL + api_BASE_FARMER + api_BASE_USERTYPE_GET + userTypeId, { 'headers': headers }).pipe(map(data => {
+    return this.http.get(api_URL + api_BASE_USER + api_BASE_USERTYPE_GET + userTypeId, { 'headers': headers }).pipe(map(data => {
       if (data === null) return throwError("null data");
       return data;
     }));
   }
 
-  SaveProfile(user: any): Observable<any> {
+  SaveUser(user: any): Observable<any> {
     const headers = {
       'content-type': 'application/json',
       'Access-Control-Allow-Origin': '*',
@@ -55,10 +56,10 @@ export class UserService {
       'Access-Control-Allow-Credentials': 'true'
     }
     const body = JSON.stringify(user);
-    return this.http.post(api_URL + api_BASE_FARMER + api_SAVE_FARMER , body, { 'headers': headers });
+    return this.http.post(api_URL + api_BASE_USER + api_SAVE_USER , body, { 'headers': headers });
   }
 
-  UpdateProfile(user: any): Observable<any> {
+  UpdateUser(user: any): Observable<any> {
     const headers = {
       'content-type': 'application/json',
       'Access-Control-Allow-Origin': '*',
@@ -66,7 +67,7 @@ export class UserService {
       'Access-Control-Allow-Credentials': 'true'
     }
     const body = JSON.stringify(user);
-    return this.http.post(api_URL + api_BASE_FARMER + api_UPDATE_FARMER , body, { 'headers': headers });
+    return this.http.post(api_URL + api_BASE_USER + api_UPDATE_USER , body, { 'headers': headers });
   }
   
 }

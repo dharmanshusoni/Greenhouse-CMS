@@ -4,17 +4,17 @@ import { Router } from '@angular/router';
 import { FarmComponent } from 'app/farm/farm.component';
 import { FarmService } from 'app/farm/Farm.service';
 import { environment } from 'environments/environment';
-import { UserService } from './User.service';
+import { UsersService } from './Users.service';
 declare var $: any;
 
 @Component({
-  selector: 'app-user-profile',
-  templateUrl: './user-profile.component.html',
-  styleUrls: ['./user-profile.component.css']
+  selector: 'app-user',
+  templateUrl: './user.component.html',
+  styleUrls: ['./user.component.css']
 })
-export class UserProfileComponent implements OnInit {
+export class UserComponent implements OnInit {
 
-  profileServiceObj: UserService;
+  profileServiceObj: UsersService;
   farmServiceObj: FarmService;
   userModels: any;
   userList: any;
@@ -29,7 +29,7 @@ export class UserProfileComponent implements OnInit {
   public message: string;
   public imageResponse: {dbPath: ''};
 
-  constructor(profileServiceObj: UserService, private router: Router, farmServiceObj: FarmService,private http: HttpClient) {
+  constructor(profileServiceObj: UsersService, private router: Router, farmServiceObj: FarmService,private http: HttpClient) {
     this.userModels = {};
     this.profileServiceObj = profileServiceObj;
     this.farmServiceObj = farmServiceObj;
@@ -37,34 +37,20 @@ export class UserProfileComponent implements OnInit {
 
   initialize() {
     this.userModels = {};
-    this.userModels.id = 0;
-    this.userModels.username = '';
+    this.userModels.user_Id = 0;
+    this.userModels.user_First_Name = '';
+    this.userModels.user_Last_Name = '';
+    this.userModels.user_Email_Id = '';
     this.userModels.password = '';
-    this.userModels.firstName = '';
-    this.userModels.lastName = '';
-    this.userModels.phone = '';
-    this.userModels.image = '';
+    this.userModels.user_Image = '';
+    this.userModels.user_Phone = '';
+    this.userModels.userType_Id = 1;
+    this.userModels.farmer_Id = 0;
     this.AddNewProfile = true;
-    //this.getUserType(0);
+    this.getUserType(0);
     //this.initializeFarm();
-    this.getProfileDetail(this.userId);
+    //this.getUsers(this.userId,0);
   }
-
-  // initializeFarm(){
-  //   this.farmModels = {};
-  //   this.farmModels.farm_Id = 0;
-  //   this.farmModels.farmer_Id = 0;
-  //   this.farmModels.farm_Name = '';
-  //   this.farmModels.farm_Address = '';
-  //   this.farmModels.farm_Address_2 = '';
-  //   this.farmModels.city = '';
-  //   this.farmModels.state = '';
-  //   this.farmModels.country = '';
-  //   this.farmModels.postalCode = '';
-  //   this.ProfileName = '';
-  //   this.farmList = [];
-  //   this.AddNewFarm = true;
-  // }
 
   ngOnInit() {
 
@@ -79,24 +65,24 @@ export class UserProfileComponent implements OnInit {
       //this.initializeFarm();
       //this.getProfileDetail(this.userId);
       //this.getFarmsDetails(this.userId);
-      //this.getAllUsers();
+      this.getAllUsers();
     }
 
   }
 
-  // getUserType(userTypeId){
-  //   this.profileServiceObj.getUserType(userTypeId).subscribe((res) => {
-  //     if (res.count == 0) {
-  //       this.showNotification(res.message, 4);
-  //     }
-  //     else if (res.count > 0) {
-  //         this.userTypeList = res.data;
-  //       }
-  //   });
-  // }
+  getUserType(userTypeId){
+    this.profileServiceObj.getUserType(userTypeId).subscribe((res) => {
+      if (res.count == 0) {
+        this.showNotification(res.message, 4);
+      }
+      else if (res.count > 0) {
+          this.userTypeList = res.data;
+        }
+    });
+  }
 
-  getProfileDetail(userId) {
-    this.profileServiceObj.getProfileDetail(userId).subscribe((res) => {
+  getUserDetail(farmerId,userId) {
+    this.profileServiceObj.getUserDetail(farmerId,userId).subscribe((res) => {
       console.log(res);
       //this.AddNewFarm = false;
       this.AddNewProfile = true;
@@ -104,85 +90,59 @@ export class UserProfileComponent implements OnInit {
         this.showNotification(res.message, 4);
       }
       else if (res.count > 0) {
-        if (res.data[0].id > 0) {
-          this.userId = res.data[0].id;
+        if (res.data[0].user_Id > 0) {
           this.userModels = res.data[0];
-          if (sessionStorage.getItem('userId') == this.userModels.id) {
+          if (sessionStorage.getItem('userId') == this.userModels.user_Id) {
             this.ProfileName = 'Your';
           }
           else {
-            this.ProfileName = this.userModels.firstName;
+            this.ProfileName = this.userModels.user_First_Name;
           }
         }
       }
     });
   }
 
-  // getFarmDetail(FarmId){
-  //   this.AddNewFarm = true;
-  //   this.farmServiceObj.getFarmDetail(FarmId).subscribe((res) => {
-  //     if (res.count == 0) {
-  //       this.showNotification(res.message, 4);
-  //     }
-  //     else if (res.count > 0) {
-  //       if (res.data[0].farm_Id > 0) {
-  //         this.farmModels = res.data[0];
-  //       }
-  //     }
-  //   });
-  // }
-
-  // getFarmsDetails(userId) {
-  //   this.farmServiceObj.GetFarmsForFarmer(userId).subscribe((res) => {
-  //     if (res.count == 0) {
-  //       this.farmList = [];
-  //       this.showNotification(res.message, 4);
-  //     }
-  //     else if (res.count > 0) {
-  //       this.farmList = res.data;
-  //     }
-  //   });
-  // }
-
-  // getAllUsers() {
-  //   this.AddNewProfile = false;
-  //   this.profileServiceObj.getProfileDetail(0).subscribe((res) => {
-  //     if (res.count == 0) {
-  //       this.showNotification(res.message, 4);
-  //     }
-  //     else if (res.count > 0) {
-  //       if (res.data[0].id > 0) {
-  //         this.userId = res.data[0].id;
-  //         this.userList = res.data;
-  //       }
-  //     }
-  //   });
-  // }
+  getAllUsers() {
+    this.AddNewProfile = false;
+    this.profileServiceObj.getUserDetail(this.userId,0).subscribe((res) => {
+      if (res.count == 0) {
+        this.showNotification(res.message, 4);
+      }
+      else if (res.count > 0) {
+          this.userList = res.data;
+      }
+    });
+  }
 
   Update() {
     var msg = '';
-    if (this.userModels.username == '' || this.userModels.username == undefined || this.userModels.username == 'undefined') {
-      msg = msg + 'Enter Username<br>';
+    this.userModels.farmer_Id = this.userId;
+    if (this.userModels.user_Email_Id == '' || this.userModels.user_Email_Id == undefined || this.userModels.user_Email_Id == 'undefined') {
+      msg = msg + 'Enter Email<br>';
     }
     if (this.userModels.password == '' || this.userModels.password == undefined || this.userModels.password == 'undefined') {
       msg = msg + 'Enter Password<br>';
     }
-    if (this.userModels.firstName == '' || this.userModels.firstName == undefined || this.userModels.firstName == 'undefined') {
+    if (this.userModels.user_First_Name == '' || this.userModels.user_First_Name == undefined || this.userModels.user_First_Name == 'undefined') {
       msg = msg + 'Enter First Name<br>';
     }
-    if (this.userModels.phone == '' || this.userModels.phone == undefined || this.userModels.phone == 'undefined') {
+    if (this.userModels.user_Last_Name == '' || this.userModels.user_Last_Name == undefined || this.userModels.user_Last_Name == 'undefined') {
+      msg = msg + 'Enter Last Name<br>';
+    }
+    if (this.userModels.user_Phone == '' || this.userModels.user_Phone == undefined || this.userModels.user_Phone == 'undefined') {
       msg = msg + 'Enter Phone No<br>';
     }
     if (msg == '') {
-      this.profileServiceObj.UpdateProfile(this.userModels).subscribe((res) => {
+      this.profileServiceObj.UpdateUser(this.userModels).subscribe((res) => {
         console.log(res);
         if (res.count == 0) {
           this.showNotification(res.message, 4);
         }
         else if (res.count > 0) {
-          if (res.data[0].id > 0) {
+          if (res.data[0].user_Id > 0) {
             this.initialize();
-            //this.getAllUsers();
+            this.getAllUsers();
             this.AddNewProfile = false;
             this.showNotification('Data Updated Successfull', 2);
           }
@@ -194,40 +154,44 @@ export class UserProfileComponent implements OnInit {
     }
   }
 
-  // Save() {
-  //   console.log(this.userModels);
-  //   var msg = '';
-  //   debugger;
-  //   if (this.userModels.username == '' || this.userModels.username == undefined || this.userModels.username == 'undefined') {
-  //     msg = msg + 'Enter Username<br>';
-  //   }
-  //   if (this.userModels.password == '' || this.userModels.password == undefined || this.userModels.password == 'undefined') {
-  //     msg = msg + 'Enter Password<br>';
-  //   }
-  //   if (this.userModels.firstName == '' || this.userModels.firstName == undefined || this.userModels.firstName == 'undefined') {
-  //     msg = msg + 'Enter Firstname<br>';
-  //   }
-  //   if (msg == '') {
-  //     this.profileServiceObj.SaveProfile(this.userModels).subscribe((res) => {
-  //       console.log(res);
-  //       if (res.count == 0) {
-  //         this.showNotification(res.message, 4);
-  //       }
-  //       else if (res.count > 0) {
-  //         if (res.data[0].id > 0) {
-  //           this.initialize();
-  //           //this.getAllUsers();
-  //           this.AddNewProfile = false;
-  //           //this.getFarmsDetails(this.userId);
-  //           this.showNotification('Data Saved Successfull', 2);
-  //         }
-  //       }
-  //     });
-  //   }
-  //   else {
-  //     this.showNotification(msg, 3);
-  //   }
-  // }
+  Save() {
+    var msg = '';
+    this.userModels.farmer_Id = this.userId;
+    if (this.userModels.user_Email_Id == '' || this.userModels.user_Email_Id == undefined || this.userModels.user_Email_Id == 'undefined') {
+      msg = msg + 'Enter Email<br>';
+    }
+    if (this.userModels.password == '' || this.userModels.password == undefined || this.userModels.password == 'undefined') {
+      msg = msg + 'Enter Password<br>';
+    }
+    if (this.userModels.user_First_Name == '' || this.userModels.user_First_Name == undefined || this.userModels.user_First_Name == 'undefined') {
+      msg = msg + 'Enter First Name<br>';
+    }
+    if (this.userModels.user_Last_Name == '' || this.userModels.user_Last_Name == undefined || this.userModels.user_Last_Name == 'undefined') {
+      msg = msg + 'Enter Last Name<br>';
+    }
+    if (this.userModels.user_Phone == '' || this.userModels.user_Phone == undefined || this.userModels.user_Phone == 'undefined') {
+      msg = msg + 'Enter Phone No<br>';
+    }
+    if (msg == '') {
+      this.profileServiceObj.SaveUser(this.userModels).subscribe((res) => {
+        console.log(res);
+        if (res.count == 0) {
+          this.showNotification(res.message, 4);
+        }
+        else if (res.count > 0) {
+          if (res.data[0].user_Id > 0) {
+            this.initialize();
+            this.getAllUsers();
+            this.AddNewProfile = false;
+            this.showNotification('Data Saved Successfull', 2);
+          }
+        }
+      });
+    }
+    else {
+      this.showNotification(msg, 3);
+    }
+  }
 
   // UpdateFarms(){
   //   var msg = '';
@@ -325,12 +289,10 @@ export class UserProfileComponent implements OnInit {
   //   }
   // }
 
-  // Cancel(){
-  //   this.initialize();
-  //   //this.initializeFarm();
-  //   //this.AddNewFarm = false;
-  //   this.AddNewProfile = false; 
-  // }
+  Cancel(){
+    this.initialize();
+    this.AddNewProfile = false; 
+  }
 
   showNotification(Message, type) {
     const types = ['', 'info', 'success', 'warning', 'danger'];
@@ -366,7 +328,7 @@ export class UserProfileComponent implements OnInit {
     let fileToUpload = <File>files[0];
     const formData = new FormData();
     formData.append('file', fileToUpload, fileToUpload.name);
-    this.http.post(environment.apiURL+'upload?_context=FarmerProfile', formData, {reportProgress: true, observe: 'events'})
+    this.http.post(environment.apiURL+'upload?_context=UserProfile', formData, {reportProgress: true, observe: 'events'})
       .subscribe(event => {
         if (event.type === HttpEventType.UploadProgress)
           this.progress = Math.round(100 * event.loaded / event.total);
@@ -379,7 +341,7 @@ export class UserProfileComponent implements OnInit {
 
   public uploadFinished = (event) => {
     this.imageResponse = event;
-    this.userModels.image = this.imageResponse.dbPath;
+    this.userModels.user_Image = this.imageResponse.dbPath;
   }
 
   public createImgPath = (serverPath: string) => {

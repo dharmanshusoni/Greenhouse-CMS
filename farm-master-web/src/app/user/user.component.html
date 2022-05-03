@@ -20,37 +20,37 @@
           </div> -->
         <div class="card">
           <div class="card-header card-header-danger">
-            <h4 class="card-title" style="display: inline;">{{ProfileName}} Profile</h4>
-            <!-- <button mat-button type="button" matTooltip="Add New" [matTooltipPosition]="'above'" class="pull-right" style="display: inline;" (click)="initialize()" >
+            <h4 class="card-title" style="display: inline;">{{ProfileName}} User</h4>
+            <button mat-button type="button" matTooltip="Add New" [matTooltipPosition]="'above'" class="pull-right" style="display: inline;" (click)="initialize()" >
               <i class="material-icons" >add</i>
-            </button> -->
+            </button>
           </div>
           <div class="card-body" >
             <form *ngIf="AddNewProfile" >
-              <!-- <div class="row">
+              <div class="row">
                 <div class="col-md-12">
                   <mat-form-field appearance="fill">
                     <mat-label>User Type</mat-label>
-                    <mat-select [(ngModel)]="userModels.userTypeId">
+                    <mat-select [(ngModel)]="userModels.userType_Id">
                       <mat-option *ngFor="let type of userTypeList" [value]="type.userTypeId" >
                         {{type.userTypeName}}
                       </mat-option>
                     </mat-select>
                   </mat-form-field>
                 </div>
-              </div> -->
+              </div>
               <div class="row">
                 <div class="col-md-9">
                   <div class="row">
                     <div class="col-md-6">
                       <mat-form-field class="example-full-width">
-                        <input [(ngModel)]="userModels.firstName" name="FirstName" matInput placeholder="Fist Name" type="text"
+                        <input [(ngModel)]="userModels.user_First_Name" name="user_First_Name" matInput placeholder="Fist Name" type="text"
                           required>
                       </mat-form-field>
                     </div>
                     <div class="col-md-6">
                       <mat-form-field class="example-full-width">
-                        <input [(ngModel)]="userModels.lastName" name="LastName" matInput placeholder="Last Name" type="text"
+                        <input [(ngModel)]="userModels.user_Last_Name" name="user_Last_Name" matInput placeholder="Last Name" type="text"
                           required>
                       </mat-form-field>
                     </div>
@@ -58,7 +58,7 @@
                   <div class="row">
                     <div class="col-md-12">
                       <mat-form-field class="example-full-width">
-                        <input [(ngModel)]="userModels.username" name="Email" matInput placeholder="Email" type="email" required>
+                        <input [(ngModel)]="userModels.user_Email_Id" name="user_Email_Id" matInput placeholder="Email" type="email" required>
                       </mat-form-field>
                     </div>
                   </div>
@@ -73,7 +73,7 @@
                   <div class="row">
                     <div class="col-md-12">
                       <mat-form-field class="example-full-width">
-                        <input [(ngModel)]="userModels.phone" name="Phone" matInput placeholder="phone" type="text" required>
+                        <input [(ngModel)]="userModels.user_Phone" name="Phone" matInput placeholder="phone" type="text" required>
                       </mat-form-field>
                     </div>
                   </div>
@@ -82,7 +82,7 @@
                   <div class="row" style="float: right;">
                     <div class="col-md-12">
                       <div class="row" style="margin-right:20px;">
-                        <span><img [src]="createImgPath(userModels.image)" alt="pest picture"
+                        <span><img [src]="createImgPath(userModels.user_Image)" alt="pest picture"
                             style="width:120px; height:120px;"></span>
                       </div>
                       <div class="row" style="margin-right:20px;">
@@ -105,39 +105,47 @@
                   </div>
                 </div>
               </div>
-              <button mat-raised-button type="submit" class="btn btn-danger pull-right" (click)="Update()" *ngIf="userModels.id != 0">Update Profile</button>
-              <!-- <button mat-raised-button type="submit" class="btn btn-danger pull-right" (click)="Save()" *ngIf="userModels.id == 0">Save Profile</button> -->
-              <!-- <button mat-raised-button type="submit" class="btn pull-right" (click)="Cancel()">Cancel</button> -->
+              <button mat-raised-button type="submit" class="btn btn-danger pull-right" (click)="Update()" *ngIf="userModels.user_Id != 0">Update Profile</button>
+              <button mat-raised-button type="submit" class="btn btn-danger pull-right" (click)="Save()" *ngIf="userModels.user_Id == 0">Save Profile</button>
+              <button mat-raised-button type="submit" class="btn pull-right" (click)="Cancel()">Cancel</button>
               <div class="clearfix"></div>
             </form>
-            <!-- <div *ngIf="!AddNewProfile" class="table-responsive">
+            <div *ngIf="!AddNewProfile" class="table-responsive">
               <table class="table">
                 <thead class=" text-primary">
                   <th>ID</th>
+                  <th></th>
                   <th>Name</th>
                   <th>Email</th>
+                  <th>Phone</th>
                   <th></th>
                 </thead>
                 <tbody>
                   <tr *ngFor="let item of userList; let i = index">
                     <td>
-                      {{item.id}}
+                      {{item.user_Id}}
                     </td>
                     <td>
-                      {{item.firstName}} {{item.lastName}}
-                    </td>
-                    <td class="text-primary">
-                      {{item.username}}
+                      <img [src]="createImgPath(item.user_Image)" alt="Profile picture"  style="width:64px; height:64px;border-radius: 50%;">
                     </td>
                     <td>
-                      <button mat-raised-button type="button" (click)="getProfileDetail(item.id);getFarmsDetails(item.id);" matTooltip="Edit" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
+                      {{item.user_First_Name}} {{item.user_Last_Name}}
+                    </td>
+                    <td class="text-primary" (click)="getUserDetail(userId,item.user_Id)">
+                      {{item.user_Email_Id}}
+                    </td>
+                    <td class="text-primary" (click)="getUserDetail(userId,item.user_Id)">
+                      {{item.user_Phone}}
+                    </td>
+                    <td>
+                      <button mat-raised-button type="button" (click)="getUserDetail(userId,item.user_Id)" matTooltip="Edit" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
                         <i class="material-icons">edit</i>
                       </button>
                     </td>
                   </tr>
                 </tbody>
               </table>
-            </div> -->
+            </div>
           </div>
         </div>
       </div>

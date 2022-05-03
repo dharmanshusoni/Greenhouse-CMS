@@ -8,20 +8,21 @@ using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Cors;
+using Repository.Farmer;
 
 namespace farm_api.Controllers
 {
     [ApiController]
     [Route("api/v1/[controller]")]
-    public class UserController : ControllerBase
+    public class FarmerController : ControllerBase
     {
-        public IUserInterface repository = new UserRepository();
+        public IFarmerInterface repository = new FarmerRepository();
 
         [EnableCors()]
         [HttpPost]
-        public Object Login([FromBody] Users user)
+        public Object Login([FromBody] Farmer user)
         {
-            if (user.User_Email_Id == "")
+            if (user.Username == "")
             {
                 return JsonConvert.SerializeObject(new Result { message="Insert Username" } );
             }
@@ -33,7 +34,7 @@ namespace farm_api.Controllers
 
         [EnableCors()]
         [HttpGet]
-        public Object GetUser(int farmerId, int userId)
+        public Object GetProfile(int userId)
         {
             if (userId < 0)
             {
@@ -41,7 +42,7 @@ namespace farm_api.Controllers
             }
             else
             {
-                return repository.GetUser(farmerId,userId);
+                return repository.GetProfile(userId);
             }
             
         }
@@ -64,18 +65,18 @@ namespace farm_api.Controllers
 
         [EnableCors()]
         [HttpPost]
-        [Route("SaveUser")]
-        public Object SaveUser([FromBody] Users user)
+        [Route("SaveProfile")]
+        public Object SaveProfile([FromBody] Farmer user)
         {
-            if (user.User_Email_Id == "")
+            if (user.Username == "")
             {
-                return JsonConvert.SerializeObject(new Result { message = "Insert Email" });
+                return JsonConvert.SerializeObject(new Result { message = "Insert Username" });
             }
-            if (user.User_First_Name == "")
+            if (user.FirstName == "")
             {
                 return JsonConvert.SerializeObject(new Result { message = "Insert Firstname" });
             }
-            if (user.User_Last_Name == "")
+            if (user.LastName == "")
             {
                 return JsonConvert.SerializeObject(new Result { message = "Insert Lastname" });
             }
@@ -83,34 +84,30 @@ namespace farm_api.Controllers
             {
                 return JsonConvert.SerializeObject(new Result { message = "Insert Password" });
             }
-            if (user.User_Phone == "")
-            {
-                return JsonConvert.SerializeObject(new Result { message = "Insert Phone" });
-            }
             else
             {
-                return repository.SaveUser(user);
+                return repository.SaveProfile(user);
             }
         }
 
         [EnableCors()]
         [HttpPost]
-        [Route("UpdateUser")]
-        public Object UpdateUser([FromBody] Users user)
+        [Route("UpdateProfile")]
+        public Object UpdateProfile([FromBody] Farmer user)
         {
-            if (user.User_Id == 0)
+            if (user.id == 0)
             {
                 return JsonConvert.SerializeObject(new Result { message = "Invalid User" });
             }
-            if (user.User_Email_Id == "")
+            if (user.Username == "")
             {
                 return JsonConvert.SerializeObject(new Result { message = "Insert Username" });
             }
-            if (user.User_First_Name == "")
+            if (user.FirstName == "")
             {
                 return JsonConvert.SerializeObject(new Result { message = "Insert Firstname" });
             }
-            if (user.User_Last_Name == "")
+            if (user.LastName == "")
             {
                 return JsonConvert.SerializeObject(new Result { message = "Insert Lastname" });
             }
@@ -118,13 +115,9 @@ namespace farm_api.Controllers
             {
                 return JsonConvert.SerializeObject(new Result { message = "Insert Password" });
             }
-            if (user.User_Phone == "")
-            {
-                return JsonConvert.SerializeObject(new Result { message = "Insert Phone" });
-            }
             else
             {
-                return repository.UpdateUser(user);
+                return repository.UpdateProfile(user);
             }
         }
     }

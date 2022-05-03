@@ -17,6 +17,7 @@ import { PlantationComponent } from 'app/plantation/plantation.component';
 import { FarmLayoutComponent } from 'app/farm-layout/farm-layout.component';
 import { ApplicationComponent } from 'app/application/application.component';
 import { DeceaseComponent } from 'app/Decease/decease.component';
+import { UserComponent } from 'app/user/user.component';
 
 export const AdminLayoutRoutes: Routes = [
     // {
@@ -71,6 +72,8 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'farm-layout',    component: FarmLayoutComponent },
     { path: 'application',    component: ApplicationComponent },
     { path: 'decease',        component: DeceaseComponent },
+    { path: 'users',          component: UserComponent },
+
     { path: 'table-list',     component: TableListComponent },
     { path: 'typography',     component: TypographyComponent },
     { path: 'icons',          component: IconsComponent },

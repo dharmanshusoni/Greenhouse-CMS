@@ -86,7 +86,7 @@ export class PestComponent implements OnInit {
       msg =  msg+'Enter Details<br>';
     }
     if(this.pestModels.no_Acerage == undefined || this.pestModels.no_Acerage == 'undefined'){
-      msg =  msg+'Enter No of Acerage<br>';
+      msg =  msg+'Refresh and try again<br>';
     }
     if(this.pestModels.pest_Image == '' || this.pestModels.pest_Image == undefined || this.pestModels.pest_Image == 'undefined'){
       msg =  msg+'Select Image<br>';
@@ -125,7 +125,7 @@ export class PestComponent implements OnInit {
       msg =  msg+'Enter Details<br>';
     }
     if(this.pestModels.no_Acerage == undefined || this.pestModels.no_Acerage == 'undefined'){
-      msg =  msg+'Enter No of Acerage<br>';
+      msg =  msg+'Refresh and try again<br>';
     }
     if(this.pestModels.pest_Image == '' || this.pestModels.pest_Image == undefined || this.pestModels.pest_Image == 'undefined'){
       msg =  msg+'Select Image<br>';

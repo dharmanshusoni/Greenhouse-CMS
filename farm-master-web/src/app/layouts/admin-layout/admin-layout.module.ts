@@ -30,6 +30,7 @@ import { DatePipe } from '@angular/common';
 import { ApplicationComponent } from 'app/application/application.component';
 import { DeceaseComponent } from 'app/Decease/decease.component';
 import { MatCheckboxModule} from '@angular/material/checkbox';
+import { UserComponent } from 'app/user/user.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -63,7 +64,8 @@ import { MatCheckboxModule} from '@angular/material/checkbox';
     PlantationComponent,
     FarmLayoutComponent,
     ApplicationComponent,
-    DeceaseComponent
+    DeceaseComponent,
+    UserComponent
   ],
   providers: [
     DatePipe

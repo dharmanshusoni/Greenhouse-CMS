@@ -59,9 +59,9 @@
                 <table class="table" >
                   <thead class=" text-primary">
                     <th>ID</th>
+                    <th>Image</th>
                     <th>Benificials</th>
                     <th>Description</th>
-                    <th>Image</th>
                     <th></th>
                   </thead>
                   <tbody>
@@ -69,14 +69,14 @@
                       <td>
                         {{item.benificials_ID}}
                       </td>
+                      <td>
+                        <img [src]="createImgPath(item.benificial_Image)" alt="Benificial picture" style="width:64px; height:64px;border-radius: 50%;">
+                      </td>
                       <td  class="text-primary" >
                         {{item.benificial_Name}}
                       </td>
                       <td>
                         {{item.benificial_Description}}
-                      </td>
-                      <td>
-                        <img [src]="createImgPath(item.benificial_Image)" alt="Benificial picture" style="width:64px; height:64px;">
                       </td>
                       <td>
                         <button mat-raised-button type="button" (click)="getBenificialDetails(item.benificials_ID);" matTooltip="Edit" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">

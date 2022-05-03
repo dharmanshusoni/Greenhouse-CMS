@@ -46,7 +46,7 @@
   <ItemGroup>
     <Compile Include="Application\IApplicationInterface.cs" />
     <Compile Include="Application\ApplicationRepository.cs" />
-    <Compile Include="Class1.cs" />
+    <Compile Include="Connections.cs" />
     <Compile Include="Crop\ICropInterface.cs" />
     <Compile Include="Crop\CropRepository.cs" />
     <Compile Include="Decease\IDeceaseInterface.cs" />
@@ -62,6 +62,8 @@
     <Compile Include="Plantation\PlantationRepository.cs" />
     <Compile Include="Plantation\IPlantationInterface.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Farmer\IFarmerInterface.cs" />
+    <Compile Include="Farmer\FarmerRepository.cs" />
     <Compile Include="User\IUserInterface.cs" />
     <Compile Include="User\UserRepository.cs" />
   </ItemGroup>

@@ -6,7 +6,7 @@ import { map } from 'rxjs/operators';
 import { environment } from 'environments/environment';
 
 const api_URL = environment.apiURL;
-const api_BASE_USER = 'User/';
+const api_BASE_USER = 'Farmer/';
 
 @Injectable({
   providedIn: 'root'

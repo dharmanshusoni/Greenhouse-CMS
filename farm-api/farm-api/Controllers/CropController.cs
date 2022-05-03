@@ -31,15 +31,15 @@ namespace farm_api.Controllers
         [EnableCors()]
         [HttpGet]
         [Route("GetCropDetail")]
-        public Object GetCropDetail(int PestId)
+        public Object GetCropDetail(int CropId)
         {
-            if (PestId < 0)
+            if (CropId < 0)
             {
                 return JsonConvert.SerializeObject(new Result { message = "No Crop Found" });
             }
             else
             {
-                return repository.GetCropDetail(PestId);
+                return repository.GetCropDetail(CropId);
             }
 
         }
