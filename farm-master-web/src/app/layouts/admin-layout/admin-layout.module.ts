@@ -31,6 +31,7 @@ import { ApplicationComponent } from 'app/application/application.component';
 import { DeceaseComponent } from 'app/Decease/decease.component';
 import { MatCheckboxModule} from '@angular/material/checkbox';
 import { UserComponent } from 'app/user/user.component';
+import { StickeyCardComponent } from 'app/stickey-card/stickey-card.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -65,7 +66,8 @@ import { UserComponent } from 'app/user/user.component';
     FarmLayoutComponent,
     ApplicationComponent,
     DeceaseComponent,
-    UserComponent
+    UserComponent,
+    StickeyCardComponent
   ],
   providers: [
     DatePipe

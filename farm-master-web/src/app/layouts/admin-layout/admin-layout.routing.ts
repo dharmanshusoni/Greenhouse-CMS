@@ -73,6 +73,7 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'application',    component: ApplicationComponent },
     { path: 'decease',        component: DeceaseComponent },
     { path: 'users',          component: UserComponent },
+    { path: 'stickey-card',   component: UserComponent },
 
     { path: 'table-list',     component: TableListComponent },
     { path: 'typography',     component: TypographyComponent },

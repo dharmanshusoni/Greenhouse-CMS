@@ -44,7 +44,7 @@ export class UserComponent implements OnInit {
     this.userModels.password = '';
     this.userModels.user_Image = '';
     this.userModels.user_Phone = '';
-    this.userModels.userType_Id = 1;
+    this.userModels.userType_Id = 0;
     this.userModels.farmer_Id = 0;
     this.AddNewProfile = true;
     this.getUserType(0);

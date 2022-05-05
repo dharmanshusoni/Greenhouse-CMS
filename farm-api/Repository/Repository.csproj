@@ -64,6 +64,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Farmer\IFarmerInterface.cs" />
     <Compile Include="Farmer\FarmerRepository.cs" />
+    <Compile Include="StickyCard\IStickeyCardInterface.cs" />
+    <Compile Include="StickyCard\StickeyCardRepository.cs" />
     <Compile Include="User\IUserInterface.cs" />
     <Compile Include="User\UserRepository.cs" />
   </ItemGroup>

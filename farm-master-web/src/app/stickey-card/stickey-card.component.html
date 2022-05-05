@@ -1,0 +1,106 @@
+<div class="main-content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-header card-header-danger">
+              <h4 class="card-title" style="display: inline;">Pests</h4>
+              <button mat-button type="button" matTooltip="Add New" [matTooltipPosition]="'above'" class="pull-right" style="display: inline;" (click)="initialize();showAddUpdate=true;" >
+                <i class="material-icons" >add</i>
+              </button>
+            </div>
+            <div class="card-body">
+              <form *ngIf="showAddUpdate" >
+                <div class="row">
+                  <div class="col-md-12">
+                    <mat-form-field class="example-full-width">
+                      <input [(ngModel)]="pestModels.pest_Name" name="Pest_Name"  matInput placeholder="Pest Name" type="text" required >
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12">
+                    <mat-form-field class="example-full-width">
+                      <input [(ngModel)]="pestModels.pest_Details" name="Pest_Details" matInput placeholder="Pest Details" type="text" required >
+                    </mat-form-field>
+                  </div>
+                </div>
+                <!-- <div class="row">
+                  <div class="col-md-12">
+                    <mat-form-field class="example-full-width">
+                      <input [(ngModel)]="pestModels.no_Acerage" name="no_Acerage" matInput placeholder="No Acerage" type="email" required >
+                    </mat-form-field>
+                  </div>
+                </div> -->
+                <div class="row">
+                  <div class="col-md-12">
+                    <!-- <mat-form-field class="example-full-width">
+                      <input [(ngModel)]="pestModels.pest_Image" name="pest_Image" matInput placeholder="Pest_Image" type="password" required >
+                    </mat-form-field> -->
+                    <div class="row" style="margin-bottom:15px;">
+                      <div class="col-md-3">
+                        <input type="file" accept="image/*" #file placeholder="Choose file" (change)="uploadFile(file.files)" style="display:none;">
+                        <button type="button" class="btn btn-success" (click)="file.click()">Upload File</button>
+                      </div>
+                      <div class="col-md-4">
+                        <span class="upload" *ngIf="progress > 0">
+                          {{progress}}%
+                        </span>
+                        <span class="upload" *ngIf="message">
+                          {{message}}
+                        </span>
+                      </div>
+                    </div>
+                    <div class="row" style="margin-left:10px;" >
+                      <span><img [src]="createImgPath(pestModels.pest_Image)" alt="pest picture" style="width:120px; height:120px;"></span>
+                    </div>
+                  </div>
+                </div>
+                
+                <button mat-raised-button type="submit" class="btn btn-danger pull-right" (click)="Update()" *ngIf="pestModels.pest_Id != 0">Update Pest</button>
+                <button mat-raised-button type="submit" class="btn btn-danger pull-right" (click)="Save()" *ngIf="pestModels.pest_Id == 0">Save Pest</button>
+                <button mat-raised-button type="submit" class="btn pull-right" (click)="initialize();showAddUpdate=false;">Cancel</button>
+                <div class="clearfix"></div>
+              </form>
+              <div *ngIf="!showAddUpdate" class="table-responsive" >
+                <table class="table" >
+                  <thead class=" text-primary">
+                    <th>ID</th>
+                    <th>Image</th>
+                    <th>Pest</th>
+                    <th>Detail</th>
+                    <!-- <th>Acerage</th> -->
+                    <th></th>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let item of pestList; let i = index">
+                      <td >
+                        {{item.pest_Id}}
+                      </td>
+                      <td>
+                        <img [src]="createImgPath(item.pest_Image)" alt="pest picture" style="width:64px; height:64px;border-radius: 50%;">
+                      </td>
+                      <td class="text-primary" (click)="getPestDetails(item.pest_Id);" >
+                        {{item.pest_Name}}
+                      </td>
+                      <td >
+                        {{item.pest_Details}}
+                      </td>
+                      <!-- <td>
+                        {{item.no_Acerage}}
+                      </td> -->
+                      <td>
+                        <button mat-raised-button type="button" (click)="getPestDetails(item.pest_Id);" matTooltip="Edit" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">
+                          <i class="material-icons">edit</i>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
