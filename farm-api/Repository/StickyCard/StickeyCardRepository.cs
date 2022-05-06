@@ -71,20 +71,20 @@ namespace Repository.StickeyCard
                 {
                     while (reader.Read())
                     {
-                        Model.Pest pest = new Model.Pest();
-                        pest.Pest_Id = (reader.GetValue(0) != null) ? int.Parse(reader.GetInt32(0).ToString()) : 0;
-                        if (pest.Pest_Id == -101)
+                        Model.StickeyCard stickeyCard = new Model.StickeyCard();
+                        stickeyCard.StickeyCard_Id = (reader.GetValue(0) != null) ? int.Parse(reader.GetInt32(0).ToString()) : 0;
+                        if (stickeyCard.StickeyCard_Id == -101)
                         {
                             result.message = "StickeyCard Already Exist";
                         }
-                        else if (pest.Pest_Id == -102)
+                        else if (stickeyCard.StickeyCard_Id == -102)
                         {
                             result.message = "InActive StickeyCard";
                         }
                         else
                         {
                             result.message = "Data Saved";
-                            result.data.Add(pest);
+                            result.data.Add(stickeyCard);
                         }
                     }
                 }
@@ -119,24 +119,24 @@ namespace Repository.StickeyCard
                 {
                     while (reader.Read())
                     {
-                        Model.Pest pest = new Model.Pest();
-                        pest.Pest_Id = (reader.GetValue(0) != null) ? int.Parse(reader.GetInt32(0).ToString()) : 0;
-                        if (pest.Pest_Id == -101)
+                        Model.StickeyCard stickeyCard = new Model.StickeyCard();
+                        stickeyCard.StickeyCard_Id = (reader.GetValue(0) != null) ? int.Parse(reader.GetInt32(0).ToString()) : 0;
+                        if (stickeyCard.StickeyCard_Id == -101)
                         {
                             result.message = "StickeyCard Already Exist";
                         }
-                        else if (pest.Pest_Id == -102)
+                        else if (stickeyCard.StickeyCard_Id == -102)
                         {
                             result.message = "InActive StickeyCard";
                         }
-                        else if (pest.Pest_Id == -103)
+                        else if (stickeyCard.StickeyCard_Id == -103)
                         {
                             result.message = "StickeyCard Not Exist";
                         }
                         else
                         {
                             result.message = "Data Updated";
-                            result.data.Add(pest);
+                            result.data.Add(stickeyCard);
                         }
                     }
                 }
