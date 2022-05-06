@@ -103,7 +103,7 @@ namespace Repository.StickeyCard
         public object UpdateStickeyCard(Model.StickeyCard stickeyCardData)
         {
             Result result = new Result();
-            string query = string.Format("InUpDePests");
+            string query = string.Format("InUpDeStickeyCard");
             using (SqlCommand cmd = new SqlCommand(query, con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;

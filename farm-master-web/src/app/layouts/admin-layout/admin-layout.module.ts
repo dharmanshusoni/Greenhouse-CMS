@@ -14,7 +14,7 @@ import { UpgradeComponent } from '../../upgrade/upgrade.component';
 import { MatButtonModule} from '@angular/material/button';
 import { MatInputModule} from '@angular/material/input';
 import { MatRippleModule} from '@angular/material/core';
-import { MatFormFieldModule} from '@angular/material/form-field';
+import { MatFormFieldModule, MAT_FORM_FIELD_DEFAULT_OPTIONS} from '@angular/material/form-field';
 import { MatTooltipModule} from '@angular/material/tooltip';
 import { MatSelectModule} from '@angular/material/select';
 import { LoginComponent } from 'app/login/login.component';
@@ -46,7 +46,7 @@ import { StickeyCardComponent } from 'app/stickey-card/stickey-card.component';
     MatTooltipModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatCheckboxModule
+    MatCheckboxModule,
   ],
   declarations: [
     DashboardComponent,
@@ -67,10 +67,11 @@ import { StickeyCardComponent } from 'app/stickey-card/stickey-card.component';
     ApplicationComponent,
     DeceaseComponent,
     UserComponent,
-    StickeyCardComponent
+    StickeyCardComponent,
   ],
   providers: [
-    DatePipe
+    DatePipe,
+    { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'fill' } },
   ]
 })
 

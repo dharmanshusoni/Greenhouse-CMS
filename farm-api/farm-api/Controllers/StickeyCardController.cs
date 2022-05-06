@@ -8,7 +8,7 @@ using System;
 
 namespace farm_api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class StickeyCardController : ControllerBase
     {

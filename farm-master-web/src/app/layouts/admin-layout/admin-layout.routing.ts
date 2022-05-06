@@ -18,6 +18,7 @@ import { FarmLayoutComponent } from 'app/farm-layout/farm-layout.component';
 import { ApplicationComponent } from 'app/application/application.component';
 import { DeceaseComponent } from 'app/Decease/decease.component';
 import { UserComponent } from 'app/user/user.component';
+import { StickeyCardComponent } from 'app/stickey-card/stickey-card.component';
 
 export const AdminLayoutRoutes: Routes = [
     // {
@@ -73,7 +74,7 @@ export const AdminLayoutRoutes: Routes = [
     { path: 'application',    component: ApplicationComponent },
     { path: 'decease',        component: DeceaseComponent },
     { path: 'users',          component: UserComponent },
-    { path: 'stickey-card',   component: UserComponent },
+    { path: 'stickey-card',   component: StickeyCardComponent },
 
     { path: 'table-list',     component: TableListComponent },
     { path: 'typography',     component: TypographyComponent },

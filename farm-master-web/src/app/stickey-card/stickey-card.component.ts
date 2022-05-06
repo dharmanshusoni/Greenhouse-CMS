@@ -12,29 +12,27 @@ declare var $: any;
 })
 export class StickeyCardComponent implements OnInit {
 
-  pestServiceObj: StickeyCardService;
+  stickeyCardServiceObj: StickeyCardService;
   showAddUpdate=false;
-  pestModels: any;
-  pestList: any;
+  stickeyCardModels: any;
+  stickeyCardList: any;
   userId: any;
-  farmId: any;
+  presetColors='red';
   public progress: number;
   public message: string;
   public imageResponse: {dbPath: ''};
   
-  constructor(pestServiceObj: StickeyCardService, private router: Router,private http: HttpClient) {
-    this.pestModels = {};
-    this.pestServiceObj = pestServiceObj;
+  constructor(stickeyCardServiceObj: StickeyCardService, private router: Router,private http: HttpClient) {
+    this.stickeyCardModels = {};
+    this.stickeyCardServiceObj = stickeyCardServiceObj;
   }
 
   initialize() {
-    this.pestModels = {};
-    this.pestModels.id = 0;
-    this.pestModels.pest_Id = 0;
-    this.pestModels.pest_Name = '';
-    this.pestModels.pest_Details = '';
-    this.pestModels.no_Acerage = 0;
-    this.pestModels.pest_Image = '';
+    this.stickeyCardModels = {};
+    this.stickeyCardModels.id = 0;
+    this.stickeyCardModels.stickeyCard_Id = 0;
+    this.stickeyCardModels.stickey_Card_color = '';
+    this.stickeyCardModels.stickey_Card_Image = '';
   }
 
   ngOnInit() {
@@ -47,31 +45,31 @@ export class StickeyCardComponent implements OnInit {
       console.log('user logged in : ' + sessionStorage.getItem('userId'));
       this.userId = sessionStorage.getItem('userId');
       this.initialize();
-      this.getPests();
+      this.getStickeyCards();
     }
 
   }
 
-  getPests() {
-    this.pestServiceObj.GetPests().subscribe((res) => {
+  getStickeyCards() {
+    this.stickeyCardServiceObj.GetStickeyCards().subscribe((res) => {
       if (res.count == 0) {
-        this.pestList = [];
+        this.stickeyCardList = [];
         this.showNotification(res.message, 4);
       }
       else if (res.count > 0) {
-          this.pestList = res.data;
+          this.stickeyCardList = res.data;
       }
     });
   }
 
-  getPestDetails(PestId) {
-    this.pestServiceObj.getPestDetail(PestId).subscribe((res) => {
+  getStickeyCardDetails(StickeyCardId) {
+    this.stickeyCardServiceObj.getStickeyCardDetail(StickeyCardId).subscribe((res) => {
       if (res.count == 0) {
-        this.pestList = [];
+        this.stickeyCardList = [];
         this.showNotification(res.message, 4);
       }
       else if (res.count > 0) {
-          this.pestModels = res.data[0];
+          this.stickeyCardModels = res.data[0];
           this.showAddUpdate = true;
       }
     });
@@ -79,33 +77,27 @@ export class StickeyCardComponent implements OnInit {
 
   Update(){
     var msg = '';
-    if(this.pestModels.pest_Name == '' || this.pestModels.pest_Name == undefined || this.pestModels.pest_Name == 'undefined'){
+    if(this.stickeyCardModels.stickey_Card_color == '' || this.stickeyCardModels.stickey_Card_color == undefined || this.stickeyCardModels.stickey_Card_color == 'undefined'){
       msg = msg+'Enter Pest Name<br>';
     }
-    if(this.pestModels.pest_Details == '' || this.pestModels.pest_Details == undefined || this.pestModels.pest_Details == 'undefined'){
+    if(this.stickeyCardModels.stickey_Card_Image == '' || this.stickeyCardModels.stickey_Card_Image == undefined || this.stickeyCardModels.stickey_Card_Image == 'undefined'){
       msg =  msg+'Enter Details<br>';
     }
-    if(this.pestModels.no_Acerage == undefined || this.pestModels.no_Acerage == 'undefined'){
-      msg =  msg+'Refresh and try again<br>';
-    }
-    if(this.pestModels.pest_Image == '' || this.pestModels.pest_Image == undefined || this.pestModels.pest_Image == 'undefined'){
-      msg =  msg+'Select Image<br>';
-    }
-    if(this.pestModels.pest_Id == 0 || this.pestModels.pest_Id == undefined || this.pestModels.pest_Id == 'undefined'){
+    if(this.stickeyCardModels.stickeyCard_Id == 0 || this.stickeyCardModels.stickeyCard_Id == undefined || this.stickeyCardModels.stickeyCard_Id == 'undefined'){
       msg =  msg+'Invalid Pest<br>';
     }
     if(msg == '')
     {
-      this.pestServiceObj.UpdatePest(this.pestModels).subscribe((res) => {
+      this.stickeyCardServiceObj.UpdateStickeyCard(this.stickeyCardModels).subscribe((res) => {
         console.log(res);
         if (res.count == 0) {
           this.showNotification(res.message, 4);
         }
         else if (res.count > 0) {
-          if (res.data[0].pest_Id > 0) {
+          if (res.data[0].stickeyCard_Id > 0) {
             this.showAddUpdate = false;
             this.initialize();
-            this.getPests();
+            this.getStickeyCards();
             this.showNotification('Data Updated Successfull', 2);
           }
         }
@@ -118,30 +110,24 @@ export class StickeyCardComponent implements OnInit {
 
   Save(){
     var msg = '';
-    if(this.pestModels.pest_Name == '' || this.pestModels.pest_Name == undefined || this.pestModels.pest_Name == 'undefined'){
+    if(this.stickeyCardModels.stickey_Card_color == '' || this.stickeyCardModels.stickey_Card_color == undefined || this.stickeyCardModels.stickey_Card_color == 'undefined'){
       msg = msg+'Enter Pest Name<br>';
     }
-    if(this.pestModels.pest_Details == '' || this.pestModels.pest_Details == undefined || this.pestModels.pest_Details == 'undefined'){
+    if(this.stickeyCardModels.stickey_Card_Image == '' || this.stickeyCardModels.stickey_Card_Image == undefined || this.stickeyCardModels.stickey_Card_Image == 'undefined'){
       msg =  msg+'Enter Details<br>';
-    }
-    if(this.pestModels.no_Acerage == undefined || this.pestModels.no_Acerage == 'undefined'){
-      msg =  msg+'Refresh and try again<br>';
-    }
-    if(this.pestModels.pest_Image == '' || this.pestModels.pest_Image == undefined || this.pestModels.pest_Image == 'undefined'){
-      msg =  msg+'Select Image<br>';
     }
     if(msg == '')
     {
-      this.pestServiceObj.SavePest(this.pestModels).subscribe((res) => {
+      this.stickeyCardServiceObj.SaveStickeyCard(this.stickeyCardModels).subscribe((res) => {
         console.log(res);
         if (res.count == 0) {
           this.showNotification(res.message, 4);
         }
         else if (res.count > 0) {
-          if (res.data[0].pest_Id > 0) {
+          if (res.data[0].stickeyCard_Id > 0) {
             this.showAddUpdate = false;
             this.initialize();
-            this.getPests();
+            this.getStickeyCards();
             this.showNotification('Data Saved Successfull', 2);
           }
         }
@@ -186,7 +172,7 @@ export class StickeyCardComponent implements OnInit {
     let fileToUpload = <File>files[0];
     const formData = new FormData();
     formData.append('file', fileToUpload, fileToUpload.name);
-    this.http.post(environment.apiURL+'upload?_context=Pest', formData, {reportProgress: true, observe: 'events'})
+    this.http.post(environment.apiURL+'upload?_context=StickeyCard', formData, {reportProgress: true, observe: 'events'})
       .subscribe(event => {
         if (event.type === HttpEventType.UploadProgress)
           this.progress = Math.round(100 * event.loaded / event.total);
@@ -199,7 +185,7 @@ export class StickeyCardComponent implements OnInit {
 
   public uploadFinished = (event) => {
     this.imageResponse = event;
-    this.pestModels.pest_Image = this.imageResponse.dbPath;
+    this.stickeyCardModels.stickey_Card_Image = this.imageResponse.dbPath;
   }
 
   public createImgPath = (serverPath: string) => {
