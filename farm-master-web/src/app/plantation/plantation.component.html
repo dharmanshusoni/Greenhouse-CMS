@@ -16,7 +16,7 @@
                     <mat-form-field appearance="fill">
                       <mat-label>Crop</mat-label>
                       <mat-select [(ngModel)]="plantationModels.crop_Id">
-                        <mat-option *ngFor="let crop of cropsList" [value]="crop.crops_Id" >
+                        <mat-option *ngFor="let crop of cropsList" [value]="crop.crop_Id" >
                           {{crop.crop_Name}}
                         </mat-option>
                       </mat-select>

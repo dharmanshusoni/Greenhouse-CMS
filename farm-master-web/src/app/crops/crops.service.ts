@@ -6,10 +6,10 @@ import { map } from 'rxjs/operators';
 import { environment } from 'environments/environment';
 
 const api_URL = environment.apiURL;
-const api_BASE_CROP_GET = 'GetCropDetail?CropId=';
-const api_BASE_CROP = 'crop/';
-const api_SAVE_CROP = 'SaveCrop/';
-const api_UPDATE_CROP = 'UpdateCrop/';
+const api_BASE_CROPS_GET = 'GetCropDetail?CropId=';
+const api_BASE_CROPS = 'Crop/';
+const api_SAVE_CROPS = 'SaveCrop/';
+const api_UPDATE_CROPS = 'UpdateCrop/';
 @Injectable({
   providedIn: 'root'
 })
@@ -27,7 +27,7 @@ export class CropsService {
       'Access-Control-Allow-Credentials': 'true'
     }
 
-    return this.http.get(api_URL + api_BASE_CROP , { 'headers': headers }).pipe(map(data => {
+    return this.http.get(api_URL + api_BASE_CROPS , { 'headers': headers }).pipe(map(data => {
       if (data === null) return throwError("null data");
       return data;
     }));
@@ -40,7 +40,7 @@ export class CropsService {
       'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT',
       'Access-Control-Allow-Credentials': 'true'
     }
-    return this.http.get(api_URL + api_BASE_CROP + api_BASE_CROP_GET + CropId, { 'headers': headers }).pipe(map(data => {
+    return this.http.get(api_URL + api_BASE_CROPS + api_BASE_CROPS_GET + CropId, { 'headers': headers }).pipe(map(data => {
       if (data === null) return throwError("null data");
       return data;
     }));
@@ -54,7 +54,7 @@ export class CropsService {
       'Access-Control-Allow-Credentials': 'true'
     }
     const body = JSON.stringify(crop);
-    return this.http.post(api_URL + api_BASE_CROP + api_SAVE_CROP, body, { 'headers': headers });
+    return this.http.post(api_URL + api_BASE_CROPS + api_SAVE_CROPS, body, { 'headers': headers });
   }
 
   UpdatCrop(crop: any): Observable<any> {
@@ -65,7 +65,7 @@ export class CropsService {
       'Access-Control-Allow-Credentials': 'true'
     }
     const body = JSON.stringify(crop);
-    return this.http.post(api_URL + api_BASE_CROP + api_UPDATE_CROP, body, { 'headers': headers });
+    return this.http.post(api_URL + api_BASE_CROPS + api_UPDATE_CROPS, body, { 'headers': headers });
   }
 
 }

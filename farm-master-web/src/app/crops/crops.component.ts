@@ -1,3 +1,4 @@
+import { HttpClient, HttpEventType } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FarmService } from 'app/farm/Farm.service';
@@ -23,13 +24,15 @@ export class CropsComponent implements OnInit {
   cropModels: any;
   pestList: any;
   farmList: any;
-  //farmerList: any;
   farmId: any;
   farmerId: any;
   pestId:any;
   userId: any;
+  public progress: number;
+  public message: string;
+  public imageResponse: {dbPath: ''};
 
-  constructor(pestServiceObj: PestService,usersServiceObj: UserService,cropServiceObj: CropsService,farmServiceObj: FarmService, private router: Router) {
+  constructor(pestServiceObj: PestService,usersServiceObj: UserService,cropServiceObj: CropsService,farmServiceObj: FarmService, private router: Router,private http: HttpClient) {
     this.cropModels = {};
     this.pestServiceObj = pestServiceObj;
     this.usersServiceObj = usersServiceObj;
@@ -44,16 +47,12 @@ export class CropsComponent implements OnInit {
   initialize() {
     this.cropModels = {};
     this.cropModels.id = 0;
-    this.cropModels.crops_Id = 0;
+    this.cropModels.crop_Id = 0;
     this.cropModels.crop_Name = '';
-    this.cropModels.no_Acerage = 0;
-    this.cropModels.intensity = 0;
-    this.cropModels.farmer_Id = 0;
-    this.cropModels.farm_Id = 0;
-    this.cropModels.pest_Id = 0;
-    //this.getFarmer();
-    this.getFarmsByFarmerId(this.userId);
-    this.getPest();
+    this.cropModels.crop_Image = '';
+    
+    // this.getFarmsByFarmerId(this.userId);
+    // this.getPest();
   }
 
   ngOnInit() {
@@ -85,33 +84,33 @@ export class CropsComponent implements OnInit {
   //   });
   // }
 
-  getFarmsByFarmerId(userId) {
-    console.log("this.farmList");
-    this.farmServiceObj.GetFarmsForFarmer(userId).subscribe((res) => {
-      if (res.count == 0) {
-        this.farmList = [];
-        this.showNotification(res.message, 4);
-      }
-      else if (res.count > 0) {
-        this.farmList = res.data;
-        //this.getPest();
-        console.log(this.farmList);
-      }
-    });
-  }
+  // getFarmsByFarmerId(userId) {
+  //   console.log("this.farmList");
+  //   this.farmServiceObj.GetFarmsForFarmer(userId).subscribe((res) => {
+  //     if (res.count == 0) {
+  //       this.farmList = [];
+  //       this.showNotification(res.message, 4);
+  //     }
+  //     else if (res.count > 0) {
+  //       this.farmList = res.data;
+  //       //this.getPest();
+  //       console.log(this.farmList);
+  //     }
+  //   });
+  // }
 
-  getPest() {
-    this.pestServiceObj.GetPests().subscribe((res) => {
-      if (res.count == 0) {
-        this.pestList = [];
-        this.showNotification(res.message, 4);
-      }
-      else if (res.count > 0) {
-        this.pestList = res.data;
-        console.log(this.pestList);
-      }
-    });
-  }
+  // getPest() {
+  //   this.pestServiceObj.GetPests().subscribe((res) => {
+  //     if (res.count == 0) {
+  //       this.pestList = [];
+  //       this.showNotification(res.message, 4);
+  //     }
+  //     else if (res.count > 0) {
+  //       this.pestList = res.data;
+  //       console.log(this.pestList);
+  //     }
+  //   });
+  // }
 
   getCrops() {
     this.cropServiceObj.GetCrops().subscribe((res) => {
@@ -145,22 +144,10 @@ export class CropsComponent implements OnInit {
     if(this.cropModels.crop_Name == '' || this.cropModels.crop_Name == undefined || this.cropModels.crop_Name == 'undefined'){
       msg = msg+'Enter Crop Name<br>';
     }
-    if(this.cropModels.no_Acerage == undefined || this.cropModels.no_Acerage == 'undefined'){
-      msg =  msg+'Refresh and try again<br>';
+    if(this.cropModels.crop_Image == '' || this.cropModels.crop_Image == undefined || this.cropModels.crop_Image == 'undefined'){
+      msg = msg+'Select Image<br>';
     }
-    if(this.cropModels.intensity == undefined || this.cropModels.intensity == 'undefined'){
-      msg =  msg+'Refresh and try again<br>';
-    }
-    if(this.cropModels.farmer_Id == 0 || this.cropModels.farmer_Id == undefined || this.cropModels.farmer_Id == 'undefined'){
-      msg =  msg+'Select Farmer<br>';
-    }
-    if(this.cropModels.farm_Id == 0 || this.cropModels.farm_Id == undefined || this.cropModels.farm_Id == 'undefined'){
-      msg =  msg+'Select Farm<br>';
-    }
-    if(this.cropModels.pest_Id == 0 || this.cropModels.pest_Id == undefined || this.cropModels.pest_Id == 'undefined'){
-      msg =  msg+'Select Pest<br>';
-    }
-    if(this.cropModels.crops_Id == 0 || this.cropModels.crops_Id == undefined || this.cropModels.crops_Id == 'undefined'){
+    if(this.cropModels.crop_Id == 0 || this.cropModels.crop_Id == undefined || this.cropModels.crop_Id == 'undefined'){
       msg =  msg+'Invalid Crop<br>';
     }
     if(msg == '')
@@ -171,7 +158,7 @@ export class CropsComponent implements OnInit {
           this.showNotification(res.message, 4);
         }
         else if (res.count > 0) {
-          if (res.data[0].crops_Id > 0) {
+          if (res.data[0].crop_Id > 0) {
             this.showAddUpdate = false;
             this.initialize();
             this.getCrops();
@@ -191,20 +178,8 @@ export class CropsComponent implements OnInit {
     if(this.cropModels.crop_Name == '' || this.cropModels.crop_Name == undefined || this.cropModels.crop_Name == 'undefined'){
       msg = msg+'Enter Crop Name<br>';
     }
-    if(this.cropModels.no_Acerage == undefined || this.cropModels.no_Acerage == 'undefined'){
-      msg =  msg+'Refresh and try again<br>';
-    }
-    if(this.cropModels.intensity == undefined || this.cropModels.intensity == 'undefined'){
-      msg =  msg+'Refresh and try again<br>';
-    }
-    if(this.cropModels.farmer_Id == 0 || this.cropModels.farmer_Id == undefined || this.cropModels.farmer_Id == 'undefined'){
-      msg =  msg+'Select Farmer<br>';
-    }
-    if(this.cropModels.farm_Id == 0 || this.cropModels.farm_Id == undefined || this.cropModels.farm_Id == 'undefined'){
-      msg =  msg+'Select Farm<br>';
-    }
-    if(this.cropModels.pest_Id == 0 || this.cropModels.pest_Id == undefined || this.cropModels.pest_Id == 'undefined'){
-      msg =  msg+'Select Pest<br>';
+    if(this.cropModels.crop_Image == '' || this.cropModels.crop_Image == undefined || this.cropModels.crop_Image == 'undefined'){
+      msg = msg+'Select Image<br>';
     }
     if(msg == '')
     {
@@ -214,7 +189,7 @@ export class CropsComponent implements OnInit {
           this.showNotification(res.message, 4);
         }
         else if (res.count > 0) {
-          if (res.data[0].crops_Id > 0) {
+          if (res.data[0].crop_Id > 0) {
             this.showAddUpdate = false;
             this.initialize();
             this.getCrops();
@@ -236,36 +211,21 @@ export class CropsComponent implements OnInit {
   //   return findedData.firstName;
   // }
   
-  getFarmById(FarmId){
-    let findedData = this.farmList.find(i => i.farm_Id === FarmId);
-    if (typeof findedData === 'undefined') {
-       return null;
-    }
-    return findedData.farm_Name;
-  }
+  // getFarmById(FarmId){
+  //   let findedData = this.farmList.find(i => i.farm_Id === FarmId);
+  //   if (typeof findedData === 'undefined') {
+  //      return null;
+  //   }
+  //   return findedData.farm_Name;
+  // }
   
-  getPestById(PestId){
-    let findedData = this.pestList.find(i => i.pest_Id === PestId);
-    if (typeof findedData === 'undefined') {
-       return null;
-    }
-    return findedData.pest_Name;
-  }
-
-  public createImgPath = (serverPath: string) => {
-    if(serverPath == "" || serverPath == 'undefined' || serverPath == undefined){
-      return environment.apiBASE+`Resources/default.png`;
-    }
-    return environment.apiBASE+`${this.getPestImage(serverPath)}`;
-  }
-
-  public getPestImage(PestId){
-    let findedData = this.pestList.find(i => i.pest_Id === PestId);
-    if (typeof findedData === 'undefined') {
-       return null;
-    }
-    return findedData.pest_Image;
-  }
+  // getPestById(PestId){
+  //   let findedData = this.pestList.find(i => i.pest_Id === PestId);
+  //   if (typeof findedData === 'undefined') {
+  //      return null;
+  //   }
+  //   return findedData.pest_Name;
+  // }
   
   showNotification(Message, type) {
     const types = ['', 'info', 'success', 'warning', 'danger'];
@@ -292,6 +252,36 @@ export class CropsComponent implements OnInit {
         '<a href="{3}" target="{4}" data-notify="url"></a>' +
         '</div>'
     });
+  }
+
+  public uploadFile = (files) => {
+    if (files.length === 0) {
+      return;
+    }
+    let fileToUpload = <File>files[0];
+    const formData = new FormData();
+    formData.append('file', fileToUpload, fileToUpload.name);
+    this.http.post(environment.apiURL+'upload?_context=Crop', formData, {reportProgress: true, observe: 'events'})
+      .subscribe(event => {
+        if (event.type === HttpEventType.UploadProgress)
+          this.progress = Math.round(100 * event.loaded / event.total);
+        else if (event.type === HttpEventType.Response) {
+          this.message = 'Upload success.';
+          this.uploadFinished(event.body);
+        }
+      });
+  }
+
+  public uploadFinished = (event) => {
+    this.imageResponse = event;
+    this.cropModels.crop_Image = this.imageResponse.dbPath;
+  }
+
+  public createImgPath = (serverPath: string) => {
+    if(serverPath == "" || serverPath == 'undefined' || serverPath == undefined){
+      return environment.apiBASE+`Resources/default.png`;
+    }
+    return environment.apiBASE+`${serverPath}`;
   }
 
 }

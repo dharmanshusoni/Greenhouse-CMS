@@ -60,7 +60,7 @@ export class PlantationComponent implements OnInit {
         this.showNotification(res.message, 4);
       }
       else if (res.count > 0) {
-        if (res.data[0].crops_Id > 0) {
+        if (res.data[0].crop_Id > 0) {
           this.cropsList = res.data;
         }
       }
@@ -177,7 +177,7 @@ export class PlantationComponent implements OnInit {
   }
 
   getCropById(CropId){
-    let findedData = this.cropsList.find(i => i.crops_Id === CropId);
+    let findedData = this.cropsList.find(i => i.crop_Id === CropId);
     if (typeof findedData === 'undefined') {
        return null;
     }

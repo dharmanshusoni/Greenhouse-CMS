@@ -1,0 +1,139 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header card-header-danger">
+            <h4 class="card-title" style="display: inline;">Pest Intensity</h4>
+            <button mat-button type="button" matTooltip="Add New" [matTooltipPosition]="'above'" class="pull-right"
+              style="display: inline;" (click)="initialize();showAddUpdate=true;">
+              <i class="material-icons">add</i>
+            </button>
+          </div>
+          <div class="card-body">
+            <form *ngIf="showAddUpdate">
+              <!-- <div class="row">
+                <div class="col-md-12">
+                  <mat-form-field appearance="fill">
+                    <mat-label>Farmer</mat-label>
+                    <mat-select [(ngModel)]="cropModels.farmer_Id" (selectionChange)="getFarmsByFarmerId(cropModels.farmer_Id)" >
+                      <mat-option *ngFor="let farmer of farmerList" [value]="farmer.id" >
+                        {{farmer.firstName}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div> -->
+              <div class="row">
+                <div class="col-md-12">
+                  <mat-form-field appearance="fill">
+                    <mat-label>Farm</mat-label>
+                    <mat-select [(ngModel)]="cropModels.farm_Id" >
+                      <mat-option *ngFor="let farm of farmList" [value]="farm.farm_Id" >
+                        {{farm.farm_Name}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <mat-form-field appearance="fill">
+                    <mat-label>Pest</mat-label>
+                    <mat-select [(ngModel)]="cropModels.pest_Id">
+                      <mat-option *ngFor="let pest of pestList" [value]="pest.pest_Id" >
+                        {{pest.pest_Name}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+              <!-- <div class="row">
+                <div class="col-md-12">
+                  <mat-form-field class="example-full-width">
+                    <input [(ngModel)]="cropModels.crop_Name" name="crop_Name" matInput placeholder="Crop Name"
+                      type="text" required>
+                  </mat-form-field>
+                </div>
+              </div> -->
+              <div class="row">
+                <div class="col-md-12">
+                  <mat-form-field appearance="fill">
+                    <mat-label>Crop</mat-label>
+                    <mat-select [(ngModel)]="cropModels.crop_Id">
+                      <mat-option *ngFor="let crop of cropList" [value]="crop.crop_Id" >
+                        {{crop.crop_Name}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+              <!-- <div class="row">
+                <div class="col-md-12">
+                  <mat-form-field class="example-full-width">
+                    <input [(ngModel)]="cropModels.no_Acerage" name="no_Acerage" matInput placeholder="No Acerage"
+                      type="text" required>
+                  </mat-form-field>
+                </div>
+              </div> -->
+              <!-- <div class="row">
+                <div class="col-md-12">
+                  <mat-form-field class="example-full-width">
+                    <input [(ngModel)]="cropModels.intensity" name="Intensity" matInput placeholder="Intensity"
+                      type="email" required>
+                  </mat-form-field>
+                </div>
+              </div> -->
+              <button mat-raised-button type="submit" class="btn btn-danger pull-right" (click)="Update()"
+                *ngIf="cropModels.crops_Id != 0">Update Crop</button>
+              <button mat-raised-button type="submit" class="btn btn-danger pull-right" (click)="Save()"
+                *ngIf="cropModels.crops_Id == 0">Save Crop</button>
+              <button mat-raised-button type="submit" class="btn pull-right"
+                (click)="initialize();showAddUpdate=false;">Cancel</button>
+              <div class="clearfix"></div>
+            </form>
+            <div *ngIf="!showAddUpdate" class="table-responsive">
+              <table class="table">
+                <thead class=" text-primary">
+                  <th>ID</th>
+                  <th>Crop</th>
+                  <!-- <th>No Acerage</th> -->
+                  <!-- <th>Intensity</th> -->
+                  <!-- <th>Farmer</th> -->
+                  <th>Farm</th>
+                  <th>Pest</th>
+                  <th></th>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of pestIntisityList; let i = index">
+                    <td>
+                      {{item.crops_Id}}
+                    </td>
+                    <td class="text-primary" >
+                      {{getCropById(item.crop_Id)}}
+                    </td>
+                    <!-- <td>
+                      {{item.no_Acerage}}
+                    </td> -->
+                    <!-- <td>
+                      {{item.intensity}}
+                    </td> -->
+                    <!-- <td class="text-primary" >{{getFarmerById(item.farmer_Id)}}</td> -->
+                    <td class="text-primary" >{{getFarmById(item.farm_Id)}}</td>
+                    <td class="text-primary" > <img [src]="createImgPath(item.pest_Id)" alt="pest picture" style="width:32px; height:32px;"> {{getPestById(item.pest_Id)}}</td>
+                    <td>
+                      <button mat-raised-button type="button" (click)="getCropDetails(item.crops_Id);" matTooltip="Edit" [matTooltipPosition]="'above'"
+                        class="btn btn-primary btn-link btn-sm btn-just-icon">
+                        <i class="material-icons">edit</i>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

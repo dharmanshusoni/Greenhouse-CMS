@@ -7,21 +7,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Repository.Crop
+namespace Repository.PestIntensity
 {
-    public class CropRepository : ICropInterface
+    public class PestIntensityRepository : IPestIntensityInterface
     {
         SqlConnection con;
-        public CropRepository()
+        public PestIntensityRepository()
         {
             con = new SqlConnection(Connections.Connect());
             SqlConnection.ClearAllPools();
         }
 
-        public object GetCropDetail(int cropId)
+        public object GetPestIntensityDetail(int pestIntensityId)
         {
             Result result = new Result();
-            string query = string.Format("GetCrops " + cropId);
+            string query = string.Format("GetPestIntensity " + pestIntensityId);
             using (SqlCommand cmd = new SqlCommand(query, con))
             {
                 con.Open();
@@ -31,10 +31,14 @@ namespace Repository.Crop
                     result.message = "Data Found";
                     while (reader.Read())
                     {
-                        Model.Crop crop = new Model.Crop();
-                        crop.Crop_Id = (reader.GetValue(0) != null) ? int.Parse(reader.GetInt32(0).ToString()) : 0;
-                        crop.Crop_Name = (reader.GetValue(1) != null) ? reader.GetString(1) : string.Empty;
-                        crop.Crop_Image= (reader.GetValue(2) != null) ? reader.GetString(2) : string.Empty;
+                        Model.PestIntensity crop = new Model.PestIntensity();
+                        crop.Crops_Id = (reader.GetValue(0) != null) ? int.Parse(reader.GetInt32(0).ToString()) : 0;
+                        crop.Crop_Id = (reader.IsDBNull(1)) ? 0 : int.Parse(reader.GetInt32(1).ToString());
+                        crop.No_Acerage = (reader.GetValue(2) != null) ? int.Parse(reader.GetInt32(2).ToString()) : 0;
+                        crop.Intensity = (reader.GetValue(3) != null) ? int.Parse(reader.GetInt32(3).ToString()) : 0;
+                        crop.Farmer_Id = (reader.GetValue(4) != null) ? int.Parse(reader.GetInt32(4).ToString()) : 0;
+                        crop.Farm_Id = (reader.GetValue(5) != null) ? int.Parse(reader.GetInt32(5).ToString()) : 0;
+                        crop.Pest_Id = (reader.GetValue(6) != null) ? int.Parse(reader.GetInt32(6).ToString()) : 0;
 
                         result.data.Add(crop);
                     }
@@ -51,18 +55,23 @@ namespace Repository.Crop
             return result;
         }
 
-        public object SaveCrop(Model.Crop cropData)
+        public object SavePestIntensity(Model.PestIntensity pestIntensityData)
         {
             Result result = new Result();
-            string query = string.Format("InUpDeCrops");
+            string query = string.Format("InUpDePestIntensity");
             using (SqlCommand cmd = new SqlCommand(query, con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@StatementType", "In");
                 cmd.Parameters.AddWithValue("@id", 0);
                 cmd.Parameters.AddWithValue("@Columns", "");
-                cmd.Parameters.AddWithValue("@Crop_Name", cropData.Crop_Name.Trim());
-                cmd.Parameters.AddWithValue("@Crop_Image", cropData.Crop_Image.Trim());
+                cmd.Parameters.AddWithValue("@No_Acerage", pestIntensityData.No_Acerage);
+                cmd.Parameters.AddWithValue("@Intensity", pestIntensityData.Intensity);
+                cmd.Parameters.AddWithValue("@Farmer_Id", pestIntensityData.Farmer_Id);
+                cmd.Parameters.AddWithValue("@Farm_Id", pestIntensityData.Farm_Id);
+                cmd.Parameters.AddWithValue("@Pest_Id", pestIntensityData.Pest_Id);
+                cmd.Parameters.AddWithValue("@Crop_Id", pestIntensityData.Crop_Id);
+
                 con.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
 
@@ -70,13 +79,13 @@ namespace Repository.Crop
                 {
                     while (reader.Read())
                     {
-                        Model.Crop crop = new Model.Crop();
-                        crop.Crop_Id = (reader.GetValue(0) != null) ? int.Parse(reader.GetInt32(0).ToString()) : 0;
-                        if (crop.Crop_Id == -101)
+                        Model.PestIntensity crop = new Model.PestIntensity();
+                        crop.Crops_Id = (reader.GetValue(0) != null) ? int.Parse(reader.GetInt32(0).ToString()) : 0;
+                        if (crop.Crops_Id == -101)
                         {
                             result.message = "Crop Already Exist";
                         }
-                        else if (crop.Crop_Id == -102)
+                        else if (crop.Crops_Id == -102)
                         {
                             result.message = "InActive Pest";
                         }
@@ -99,18 +108,22 @@ namespace Repository.Crop
             return result;
         }
 
-        public object UpdateCrop(Model.Crop cropData)
+        public object UpdatePestIntensity(Model.PestIntensity pestIntensityData)
         {
             Result result = new Result();
-            string query = string.Format("InUpDeCrops");
+            string query = string.Format("InUpDePestIntensity");
             using (SqlCommand cmd = new SqlCommand(query, con))
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 cmd.Parameters.AddWithValue("@StatementType", "Up");
-                cmd.Parameters.AddWithValue("@id", cropData.Crop_Id);
+                cmd.Parameters.AddWithValue("@id", pestIntensityData.Crops_Id);
                 cmd.Parameters.AddWithValue("@Columns", "");
-                cmd.Parameters.AddWithValue("@Crop_Name", cropData.Crop_Name.Trim());
-                cmd.Parameters.AddWithValue("@Crop_Image", cropData.Crop_Image.Trim());
+                cmd.Parameters.AddWithValue("@No_Acerage", pestIntensityData.No_Acerage);
+                cmd.Parameters.AddWithValue("@Intensity", pestIntensityData.Intensity);
+                cmd.Parameters.AddWithValue("@Farmer_Id", pestIntensityData.Farmer_Id);
+                cmd.Parameters.AddWithValue("@Farm_Id", pestIntensityData.Farm_Id);
+                cmd.Parameters.AddWithValue("@Pest_Id", pestIntensityData.Pest_Id);
+                cmd.Parameters.AddWithValue("@Crop_Id", pestIntensityData.Crop_Id);
 
                 con.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
@@ -118,17 +131,17 @@ namespace Repository.Crop
                 {
                     while (reader.Read())
                     {
-                        Model.Crop crop = new Model.Crop();
-                        crop.Crop_Id = (reader.GetValue(0) != null) ? int.Parse(reader.GetInt32(0).ToString()) : 0;
-                        if (crop.Crop_Id == -101)
+                        Model.PestIntensity crop = new Model.PestIntensity();
+                        crop.Crops_Id = (reader.GetValue(0) != null) ? int.Parse(reader.GetInt32(0).ToString()) : 0;
+                        if (crop.Crops_Id == -101)
                         {
                             result.message = "Crop Already Exist";
                         }
-                        else if (crop.Crop_Id == -102)
+                        else if (crop.Crops_Id == -102)
                         {
                             result.message = "InActive Crop";
                         }
-                        else if (crop.Crop_Id == -103)
+                        else if (crop.Crops_Id == -103)
                         {
                             result.message = "Crop Not Exist";
                         }

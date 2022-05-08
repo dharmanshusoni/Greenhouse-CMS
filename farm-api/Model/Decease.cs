@@ -11,6 +11,7 @@ namespace Model
       public int Decease_Id { get; set; }
       public string Decease_Name { get; set; }
       public int Crop_Id { get; set; }
-      public bool Stickey_Card_Updated { get; set; }
+      public int Stickey_Card_Id { get; set; }
+      public string Decease_Image { get; set; }
     }
 }

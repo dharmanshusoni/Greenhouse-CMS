@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { CropsService } from 'app/crops/crops.service';
 import { ApplicationService } from './application.service';
 declare var $: any;
 import { DatePipe } from '@angular/common';
 import { DeceaseService } from 'app/Decease/decease.service';
 import { UserService } from 'app/user-profile/User.service';
+import { UsersService } from 'app/user/Users.service';
 
 @Component({
   selector: 'app-application',
@@ -16,7 +16,7 @@ export class ApplicationComponent implements OnInit {
 
   applicationServiceObj: ApplicationService;
   deceaseServiceObj: DeceaseService;
-  usersServiceObj: UserService;
+  profileServiceObj: UsersService;
   showAddUpdate=false;
   applicationModels: any;
   applicationList: any;
@@ -26,11 +26,11 @@ export class ApplicationComponent implements OnInit {
   userId: any;
   datePipes : any;
 
-  constructor(applicationServiceObj: ApplicationService,deceaseServiceObj: DeceaseService,usersServiceObj: UserService,private datePipe: DatePipe, private router: Router) {
+  constructor(applicationServiceObj: ApplicationService,deceaseServiceObj: DeceaseService,profileServiceObj: UsersService,private datePipe: DatePipe, private router: Router) {
     this.applicationModels = {};
     this.applicationServiceObj = applicationServiceObj;
     this.deceaseServiceObj = deceaseServiceObj;
-    this.usersServiceObj = usersServiceObj;
+    this.profileServiceObj = profileServiceObj;
     this.datePipes = datePipe;
   }
 
@@ -91,15 +91,12 @@ export class ApplicationComponent implements OnInit {
   }
 
   getUsers(){
-    this.usersServiceObj.getProfileDetail(0).subscribe((res) => {
+    this.profileServiceObj.getUserDetail(this.userId,0).subscribe((res) => {
       if (res.count == 0) {
         this.showNotification(res.message, 4);
       }
       else if (res.count > 0) {
-        if (res.data[0].id > 0) {
           this.userList = res.data;
-          console.log(this.userList);
-        }
       }
     });
   }
@@ -239,11 +236,11 @@ export class ApplicationComponent implements OnInit {
   }
 
   getUserByID(UserId){
-    let findedData = this.userList.find(i => i.id === UserId);
+    let findedData = this.userList.find(i => i.user_Id === UserId);
     if (typeof findedData === 'undefined') {
        return null;
     }
-    return findedData.firstName;
+    return findedData.user_First_Name;
   }
 
   getDate(date){

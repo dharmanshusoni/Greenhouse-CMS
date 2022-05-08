@@ -10,6 +10,6 @@ namespace Repository.Crop
     {
         Object SaveCrop(Model.Crop crop);
         Object UpdateCrop(Model.Crop crop);
-        Object GetCropDetail(int cropId);
+        Object GetCropDetail(int CropId);
     }
 }

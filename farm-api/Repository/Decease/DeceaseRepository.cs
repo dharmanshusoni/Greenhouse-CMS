@@ -35,7 +35,8 @@ namespace Repository.Decease
                         decease.Decease_Id = (reader.GetValue(0) != null) ? int.Parse(reader.GetInt32(0).ToString()) : 0;
                         decease.Decease_Name = (reader.GetValue(1) != null) ? reader.GetString(1) : string.Empty;
                         decease.Crop_Id = (reader.GetValue(2) != null) ? int.Parse(reader.GetInt32(2).ToString()) : 0;
-                        decease.Stickey_Card_Updated = (reader.GetValue(3) != null) ? reader.GetBoolean(3) : false;
+                        decease.Stickey_Card_Id = (reader.GetValue(3) != null) ? int.Parse(reader.GetInt32(3).ToString()) : 0;
+                        decease.Decease_Image = (reader.IsDBNull(4)) ? string.Empty : reader.GetString(4);
 
                         result.data.Add(decease);
                     }
@@ -64,7 +65,9 @@ namespace Repository.Decease
                 cmd.Parameters.AddWithValue("@Columns", "");
                 cmd.Parameters.AddWithValue("@Decease_Name", deceaseData.Decease_Name.Trim());
                 cmd.Parameters.AddWithValue("@Crop_Id", deceaseData.Crop_Id);
-                cmd.Parameters.AddWithValue("@Stickey_Card_Updated", deceaseData.Stickey_Card_Updated);
+                cmd.Parameters.AddWithValue("@Stickey_Card_Id", deceaseData.Stickey_Card_Id);
+                cmd.Parameters.AddWithValue("@Decease_Image", deceaseData.Decease_Image);
+
                 con.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
 
@@ -113,7 +116,9 @@ namespace Repository.Decease
                 cmd.Parameters.AddWithValue("@Columns", "");
                 cmd.Parameters.AddWithValue("@Decease_Name", deceaseData.Decease_Name.Trim());
                 cmd.Parameters.AddWithValue("@Crop_Id", deceaseData.Crop_Id);
-                cmd.Parameters.AddWithValue("@Stickey_Card_Updated", deceaseData.Stickey_Card_Updated);
+                cmd.Parameters.AddWithValue("@Stickey_Card_Id", deceaseData.Stickey_Card_Id);
+                cmd.Parameters.AddWithValue("@Decease_Image", deceaseData.Decease_Image);
+
                 con.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
                 if (reader.HasRows)

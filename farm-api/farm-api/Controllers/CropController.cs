@@ -53,17 +53,9 @@ namespace farm_api.Controllers
             {
                 return JsonConvert.SerializeObject(new Result { message = "Insert Crop Name" });
             }
-            if (crop.Farmer_Id == 0)
+            if (crop.Crop_Image == "")
             {
-                return JsonConvert.SerializeObject(new Result { message = "Select Farmer" });
-            }
-            if (crop.Farm_Id == 0)
-            {
-                return JsonConvert.SerializeObject(new Result { message = "Select Farm" });
-            }
-            if (crop.Pest_Id == 0)
-            {
-                return JsonConvert.SerializeObject(new Result { message = "Select Pest" });
+                return JsonConvert.SerializeObject(new Result { message = "Select Image" });
             }
             else
             {
@@ -76,7 +68,7 @@ namespace farm_api.Controllers
         [Route("UpdateCrop")]
         public Object UpdateCrop([FromBody] Crop crop)
         {
-            if (crop.Crops_Id == 0)
+            if (crop.Crop_Id == 0)
             {
                 return JsonConvert.SerializeObject(new Result { message = "Invalid Crop" });
             }
@@ -84,17 +76,9 @@ namespace farm_api.Controllers
             {
                 return JsonConvert.SerializeObject(new Result { message = "Insert Crop Name" });
             }
-            if (crop.Farmer_Id == 0)
+            if (crop.Crop_Image == "")
             {
-                return JsonConvert.SerializeObject(new Result { message = "Select Farmer" });
-            }
-            if (crop.Farm_Id == 0)
-            {
-                return JsonConvert.SerializeObject(new Result { message = "Select Farm" });
-            }
-            if (crop.Pest_Id == 0)
-            {
-                return JsonConvert.SerializeObject(new Result { message = "Select Pest" });
+                return JsonConvert.SerializeObject(new Result { message = "Select Image" });
             }
             else
             {

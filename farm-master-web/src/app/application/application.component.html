@@ -41,8 +41,8 @@
                     <mat-form-field appearance="fill">
                       <mat-label>Assign To</mat-label>
                       <mat-select [(ngModel)]="applicationModels.application_Assigned_To" >
-                        <mat-option *ngFor="let user of userList" [value]="user.id" >
-                          {{user.firstName}}
+                        <mat-option *ngFor="let user of userList" [value]="user.user_Id" >
+                          {{user.user_First_Name}}
                         </mat-option>
                       </mat-select>
                     </mat-form-field>
@@ -68,7 +68,7 @@
                     <th>Name</th>
                     <th>Application Type</th>
                     <th>Assigned To</th>
-                    <th>Assigned By</th>
+                    <!-- <th>Assigned By</th> -->
                     <th>Decease</th>
                     <th>Date</th>
                     <th></th>
@@ -87,9 +87,9 @@
                       <td >
                         {{getUserByID(item.application_Assigned_To)}}
                       </td>
-                      <td>
+                      <!-- <td>
                         {{getUserByID(item.application_who_Assigned)}}
-                      </td>
+                      </td> -->
                       <td>
                         {{getDeceaseById(item.decease_Id)}}
                       </td>
