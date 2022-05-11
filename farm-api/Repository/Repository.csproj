@@ -49,6 +49,8 @@
     <Compile Include="Connections.cs" />
     <Compile Include="Crop\ICropInterface.cs" />
     <Compile Include="Crop\CropRepository.cs" />
+    <Compile Include="FarmLayout\FarmLayoutRepository.cs" />
+    <Compile Include="FarmLayout\IFarmLayoutInterface.cs" />
     <Compile Include="PestIntensity\IPestIntensityInterface.cs" />
     <Compile Include="PestIntensity\PestIntensityRepository.cs" />
     <Compile Include="Decease\IDeceaseInterface.cs" />

@@ -6,11 +6,14 @@ import { map } from 'rxjs/operators';
 import { environment } from 'environments/environment';
 
 const api_URL = environment.apiURL;
-const api_BASE_FARM_GET = 'farm?FarmerId=';
-const api_BASE_FARM_GET_BY_ID = 'GetFarmsForFarm?FarmId=';
-const api_BASE_FARM = 'farm/';
-const api_SAVE_FARM = 'SaveFarm/';
-const api_UPDATE_FARM = 'UpdateFarm/';
+const api_BASE_FARMLAYOUT = 'FarmLayout/';
+
+const api_BASE_PHASE_GET = 'GetPhase?FarmId=';
+const api_SAVE_PHASE = 'SavePhase/';
+
+const api_BASE_HOUSE_GET = 'GetHouse?PhaseId=';
+const api_SAVE_HOUSE = 'SaveHouse/';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -20,7 +23,7 @@ export class FarmLayoutService {
   constructor(private http: HttpClient) {
   }
 
-  GetFarmsForFarmer(farmerId): Observable<any> {
+  GetPhase(farmId): Observable<any> {
     const headers = {
       'content-type': 'application/json',
       'Access-Control-Allow-Origin': '*',
@@ -28,45 +31,45 @@ export class FarmLayoutService {
       'Access-Control-Allow-Credentials': 'true'
     }
 
-    return this.http.get(api_URL + api_BASE_FARM_GET + farmerId, { 'headers': headers }).pipe(map(data => {
+    return this.http.get(api_URL + api_BASE_FARMLAYOUT + api_BASE_PHASE_GET + farmId, { 'headers': headers }).pipe(map(data => {
       if (data === null) return throwError("null data");
       return data;
     }));
   }
 
-  getFarmDetail(FarmId): Observable<any> {
+  SavePhase(phase: any): Observable<any> {
     const headers = {
       'content-type': 'application/json',
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT',
       'Access-Control-Allow-Credentials': 'true'
     }
-    return this.http.get(api_URL + api_BASE_FARM + api_BASE_FARM_GET_BY_ID + FarmId, { 'headers': headers }).pipe(map(data => {
+    const body = JSON.stringify(phase);
+    return this.http.post(api_URL + api_BASE_FARMLAYOUT + api_SAVE_PHASE, body, { 'headers': headers });
+  }
+
+  GetHouse(phaseId): Observable<any> {
+    const headers = {
+      'content-type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT',
+      'Access-Control-Allow-Credentials': 'true'
+    }
+
+    return this.http.get(api_URL + api_BASE_FARMLAYOUT + api_BASE_HOUSE_GET + phaseId, { 'headers': headers }).pipe(map(data => {
       if (data === null) return throwError("null data");
       return data;
     }));
   }
 
-  SaveFarm(farm: any): Observable<any> {
+  SaveHouse(house: any): Observable<any> {
     const headers = {
       'content-type': 'application/json',
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT',
       'Access-Control-Allow-Credentials': 'true'
     }
-    const body = JSON.stringify(farm);
-    return this.http.post(api_URL + api_BASE_FARM + api_SAVE_FARM, body, { 'headers': headers });
+    const body = JSON.stringify(house);
+    return this.http.post(api_URL + api_BASE_FARMLAYOUT + api_SAVE_HOUSE, body, { 'headers': headers });
   }
-
-  UpdateFarm(farm: any): Observable<any> {
-    const headers = {
-      'content-type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT',
-      'Access-Control-Allow-Credentials': 'true'
-    }
-    const body = JSON.stringify(farm);
-    return this.http.post(api_URL + api_BASE_FARM + api_UPDATE_FARM, body, { 'headers': headers });
-  }
-
 }
