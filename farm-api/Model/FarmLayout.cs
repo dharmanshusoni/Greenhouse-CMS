@@ -8,6 +8,12 @@ namespace Model
 {
     public class FarmLayout
     {
+        public int Farm_Layout_Id { get; set; }
+        public int House { get; set; }
+        public int Zone { get; set; }
+        public int Phases { get; set; }
+        public int Rows { get; set; }
+        public int Farm_Id { get; set; }
     }
 
     public class Phase

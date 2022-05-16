@@ -13,6 +13,51 @@ namespace farm_api.Controllers
     {
         public IFarmLayoutInterface repository = new FarmLayoutRepository();
 
+        #region Layout
+        [EnableCors()]
+        [HttpGet]
+        [Route("GetLayout")]
+        public Object GetLayout(int FarmLayoutId, int FarmId)
+        {
+            if (FarmId < 0)
+            {
+                return JsonConvert.SerializeObject(new Result { message = "No Layout Found" });
+            }
+            else
+            {
+                return repository.GetLayout(FarmLayoutId, FarmId);
+            }
+
+        }
+
+        [EnableCors()]
+        [HttpPost]
+        [Route("SaveLayout")]
+        public Object SaveLayout([FromBody] FarmLayout layout)
+        {
+            if (layout.Zone == 0)
+            {
+                return JsonConvert.SerializeObject(new Result { message = "Insert Zone" });
+            }
+            if (layout.Farm_Id == 0)
+            {
+                return JsonConvert.SerializeObject(new Result { message = "Select Farm" });
+            }
+            if (layout.Phases == 0)
+            {
+                return JsonConvert.SerializeObject(new Result { message = "Select Phases" });
+            }
+            if (layout.House == 0)
+            {
+                return JsonConvert.SerializeObject(new Result { message = "Select House" });
+            }
+            else
+            {
+                return repository.SaveLayout(layout);
+            }
+        }
+        #endregion
+
         #region Phase
         [EnableCors()]
         [HttpGet]

@@ -19,6 +19,95 @@ namespace Repository.FarmLayout
         }
 
         #region Phase
+        public object GetLayout(int farmLayoutId,int farmId)
+        {
+            Result result = new Result();
+            string query = string.Format("GetFarmLayout " + farmLayoutId + ", " + farmId);
+            using (SqlCommand cmd = new SqlCommand(query, con))
+            {
+                con.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    result.message = "Data Found";
+                    while (reader.Read())
+                    {
+                        Model.FarmLayout phase = new Model.FarmLayout();
+                        phase.Farm_Layout_Id = (reader.GetValue(0) != null) ? int.Parse(reader.GetInt32(0).ToString()) : 0;
+                        phase.House = (reader.GetValue(2) != null) ? int.Parse(reader.GetInt32(2).ToString()) : 0;
+                        phase.Zone = (reader.GetValue(3) != null) ? int.Parse(reader.GetInt32(3).ToString()) : 0;
+                        phase.Phases = (reader.GetValue(4) != null) ? int.Parse(reader.GetInt32(4).ToString()) : 0;
+                        phase.Rows = (reader.GetValue(5) != null) ? int.Parse(reader.GetInt32(5).ToString()) : 0;
+                        phase.Farm_Id = (reader.GetValue(6) != null) ? int.Parse(reader.GetInt32(6).ToString()) : 0;
+                        result.data.Add(phase);
+                    }
+                }
+                else
+                {
+                    result.message = "No Data Found";
+                }
+                con.Close();
+            }
+            result.data_name = "Layout";
+            result.status = 1;
+            result.count = result.data.Count;
+            return result;
+        }
+
+        public object SaveLayout(Model.FarmLayout layoutData)
+        {
+            Result result = new Result();
+            string query = string.Format("InUpDeFarmLayout");
+            using (SqlCommand cmd = new SqlCommand(query, con))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@StatementType", "In");
+                cmd.Parameters.AddWithValue("@id", 0);
+                cmd.Parameters.AddWithValue("@Columns", "");
+                cmd.Parameters.AddWithValue("@House", layoutData.House);
+                cmd.Parameters.AddWithValue("@Zone", (layoutData.Zone));
+                cmd.Parameters.AddWithValue("@Phases", (layoutData.Phases));
+                cmd.Parameters.AddWithValue("@Rows", (layoutData.Rows));
+                cmd.Parameters.AddWithValue("@Farm_Id", (layoutData.Farm_Id));
+
+                con.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        Model.FarmLayout layout = new Model.FarmLayout();
+                        layout.Farm_Layout_Id = (reader.GetValue(0) != null) ? int.Parse(reader.GetInt32(0).ToString()) : 0;
+                        if (layout.Farm_Layout_Id == -101)
+                        {
+                            result.message = "Layout Already Exist";
+                        }
+                        else if (layout.Farm_Layout_Id == -102)
+                        {
+                            result.message = "InActive Layout";
+                        }
+                        else
+                        {
+                            result.message = "Data Saved";
+                            result.data.Add(layout);
+                        }
+                    }
+                }
+                else
+                {
+                    result.message = "Unable to process request";
+                }
+                con.Close();
+            }
+            result.status = 1;
+            result.count = result.data.Count;
+            result.data_name = "Layout";
+            return result;
+        }
+        #endregion
+
+        #region Phase
         public object GetPhase(int farmId)
         {
             Result result = new Result();
