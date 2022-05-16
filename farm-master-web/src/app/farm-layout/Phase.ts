@@ -10,3 +10,13 @@ export class Phase {
     house_Name:string;
     house_Id:number;
  }
+
+
+ export class Layout { 
+   farm_Layout_Id:number;
+   phases:number;
+   zone:number;
+   house:number;
+   rows:number;
+   farm_Id:number;
+}

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FarmService } from 'app/farm/Farm.service';
 import { FarmLayoutService } from './farm-layout.service';
-import { Phase,House } from './Phase';
+import { Layout,Phase,House } from './Phase';
 declare var $: any;
 
 @Component({
@@ -17,9 +17,11 @@ export class FarmLayoutComponent implements OnInit {
   showAddUpdate=false;
   phaseModels: Phase;
   houseModels: House;
+  layoutModels: Layout;
   phaseList:any;
   farmList: any;
   houseList:any;
+  layoutList:any;
   userId:any;
   farmId = 0;
   phaseId = 0;
@@ -29,9 +31,13 @@ export class FarmLayoutComponent implements OnInit {
     this.farmServiceObj = farmServiceObj;
     this.farmList = [];
     this.phaseList = [];
+    this.layoutList = [];
   }
 
   initialize() {
+    this.layoutModels = new Layout();
+    this.layoutModels.farm_Layout_Id = 0;
+
     this.phaseModels = new Phase();
     this.phaseModels.phase_Id = 0;
 
@@ -53,6 +59,18 @@ export class FarmLayoutComponent implements OnInit {
       this.initialize();
     }
 
+  }
+
+  getLayout(LayoutId,farmId){
+    this.farmLayoutServiceObj.GetFarmLayout(LayoutId,farmId).subscribe((res) => {
+      if (res.count == 0) {
+        this.farmList = [];
+        this.showNotification(res.message, 4);
+      }
+      else if (res.count > 0) {
+          this.farmList = res.data;
+      }
+    });
   }
 
   getPhase(farmId){
@@ -89,6 +107,45 @@ export class FarmLayoutComponent implements OnInit {
         this.farmList = res.data;
      }
     });
+  }
+
+  SaveLayout(){
+    this.layoutModels.farm_Id = this.farmId;
+    var msg = '';
+    if(this.layoutModels.farm_Id == 0 || this.layoutModels.farm_Id == undefined ){
+      msg = msg+'Select Farm<br>';
+    }
+    if(this.layoutModels.zone == 0 || this.layoutModels.zone == undefined){
+      msg = msg+'Select Zone<br>';
+    }
+    if(this.layoutModels.phases == 0 || this.layoutModels.phases == undefined){
+      msg = msg+'Select Phase<br>';
+    }
+    if(this.layoutModels.rows == 0 || this.layoutModels.rows == undefined){
+      msg = msg+'Select Rows<br>';
+    }
+    if(this.layoutModels.house == 0 || this.layoutModels.house == undefined){
+      msg = msg+'Select House<br>';
+    }
+    if(msg == '')
+    {
+      this.farmLayoutServiceObj.SaveFarmLayout(this.layoutModels).subscribe((res) => {
+        if (res.count == 0) {
+          this.showNotification(res.message, 4);
+        }
+        else if (res.count > 0) {
+          if (res.data[0].farm_Layout_Id > 0) {
+            this.showAddUpdate = false;
+            this.initialize();
+            this.getLayout(0,this.farmId);
+            this.showNotification('Data Saved Successfull', 2);
+          }
+        }
+      });
+    }
+    else{
+      this.showNotification(msg, 3);
+    }
   }
 
   SavePhase(){

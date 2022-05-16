@@ -11,7 +11,7 @@
             <div class="col-md-4" class="pull-right" style="display: inline;color: white;margin-top: -10px;">
               <mat-form-field appearance="fill">
                 <mat-label>Farm</mat-label>
-                <mat-select [(ngModel)]="farmId" (selectionChange)="getPhase($event.value)">
+                <mat-select [(ngModel)]="farmId" (selectionChange)="getLayout(0,$event.value)">
                   <mat-option *ngFor="let farm of farmList" [value]="farm.farm_Id">
                     {{farm.farm_Name}}
                   </mat-option>
@@ -21,36 +21,43 @@
 
           </div>
           <div *ngIf="showAddUpdate" class="card-body">
-            <form >
+            <form>
               <div class="row">
                 <div class="col-md-12">
                   <mat-form-field class="example-full-width">
-                    <input [(ngModel)]="phaseModels.phase_Name" name="Name"  matInput placeholder="Name" type="text" required >
+                    <input [(ngModel)]="layoutModels.phases" name="phases"  matInput placeholder="phases" type="text" required >
+                  </mat-form-field>
+                </div>
+              </div>
+              <!-- <div class="row">
+                <div class="col-md-12">
+                  <mat-form-field class="example-full-width">
+                    <input [(ngModel)]="layoutModels.zone" name="zone"  matInput placeholder="zone" type="text" required >
+                  </mat-form-field>
+                </div>
+              </div> -->
+              <div class="row">
+                <div class="col-md-12">
+                  <mat-form-field class="example-full-width">
+                    <input [(ngModel)]="layoutModels.house" name="house"  matInput placeholder="house" type="text" required >
                   </mat-form-field>
                 </div>
               </div>
               <div class="row">
                 <div class="col-md-12">
                   <mat-form-field class="example-full-width">
-                    <input [(ngModel)]="phaseModels.phase_Name" name="Name"  matInput placeholder="Name" type="text" required >
+                    <input [(ngModel)]="layoutModels.rows" name="rows"  matInput placeholder="rows" type="text" required >
                   </mat-form-field>
                 </div>
               </div>
-              <div class="row">
+              <!-- <div class="row">
                 <div class="col-md-12">
                   <mat-form-field class="example-full-width">
                     <input [(ngModel)]="phaseModels.phase_Name" name="Name"  matInput placeholder="Name" type="text" required >
                   </mat-form-field>
                 </div>
-              </div>
-              <div class="row">
-                <div class="col-md-12">
-                  <mat-form-field class="example-full-width">
-                    <input [(ngModel)]="phaseModels.phase_Name" name="Name"  matInput placeholder="Name" type="text" required >
-                  </mat-form-field>
-                </div>
-              </div>
-              <button mat-raised-button type="submit" class="btn btn-danger pull-right" (click)="SavePhase()" *ngIf="phaseModels.phase_Id == 0">Save Phase</button>
+              </div> -->
+              <button mat-raised-button type="submit" class="btn btn-danger pull-right" (click)="SaveLayout()" *ngIf="layoutModels.farm_Layout_Id == 0">Save Phase</button>
               <button mat-raised-button type="submit" class="btn pull-right" (click)="initialize();showAddUpdate=false;">Cancel</button>
               <div class="clearfix"></div>
             </form>
