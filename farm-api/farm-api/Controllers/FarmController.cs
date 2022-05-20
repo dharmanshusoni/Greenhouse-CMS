@@ -77,6 +77,14 @@ namespace farm_api.Controllers
             {
                 return JsonConvert.SerializeObject(new Result { message = "Insert PostalCode" });
             }
+            if (farm.Farm_Grower_Name == "")
+            {
+                return JsonConvert.SerializeObject(new Result { message = "Insert Grower" });
+            }
+            if (farm.Farm_Phone_No == "")
+            {
+                return JsonConvert.SerializeObject(new Result { message = "Insert Phone No" });
+            }
             else
             {
                 return repository.SaveFarm(farm);
@@ -119,6 +127,14 @@ namespace farm_api.Controllers
             if (farm.PostalCode == "")
             {
                 return JsonConvert.SerializeObject(new Result { message = "Insert PostalCode" });
+            }
+            if (farm.Farm_Grower_Name == "")
+            {
+                return JsonConvert.SerializeObject(new Result { message = "Insert Grower" });
+            }
+            if (farm.Farm_Phone_No == "")
+            {
+                return JsonConvert.SerializeObject(new Result { message = "Insert Phone No" });
             }
             else
             {

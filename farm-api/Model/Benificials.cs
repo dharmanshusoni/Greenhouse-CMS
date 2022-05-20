@@ -12,5 +12,6 @@ namespace Model
         public string Benificial_Name { get; set; }
         public string Benificial_Description { get; set; }
         public string Benificial_Image { get; set; }
+        public string Benificial_Pests { get; set; }
     }
 }

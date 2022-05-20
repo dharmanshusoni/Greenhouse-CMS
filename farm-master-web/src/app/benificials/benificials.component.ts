@@ -1,6 +1,7 @@
 import { HttpClient, HttpEventType } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { PestService } from 'app/pest/Pest.service';
 import { environment } from 'environments/environment';
 import { BenificialsService } from './Benificials.service';
 declare var $: any;
@@ -13,18 +14,22 @@ declare var $: any;
 export class BenificialsComponent implements OnInit {
 
   benificialsServiceObj: BenificialsService;
+  pestServiceObj: PestService;
   showAddUpdate=false;
   benificialModels: any;
   benificialList: any;
+  pestList: any;
   userId: any;
   farmId: any;
   public progress: number;
   public message: string;
   public imageResponse: {dbPath: ''};
 
-  constructor(benificialsServiceObj: BenificialsService, private router: Router,private http: HttpClient) {
+  constructor(benificialsServiceObj: BenificialsService,pestServiceObj: PestService, private router: Router,private http: HttpClient) {
     this.benificialModels = {};
+    this.pestList = [];
     this.benificialsServiceObj = benificialsServiceObj;
+    this.pestServiceObj = pestServiceObj;
   }
 
   initialize() {
@@ -33,6 +38,8 @@ export class BenificialsComponent implements OnInit {
     this.benificialModels.benificial_Name = '';
     this.benificialModels.benificial_Description = '';
     this.benificialModels.benificial_Image = '';
+    this.benificialModels.benificial_Pests = '';
+    this.getPest();
   }
 
   ngOnInit() {
@@ -62,6 +69,18 @@ export class BenificialsComponent implements OnInit {
     });
   }
 
+  getPest() {
+    this.pestServiceObj.GetPests().subscribe((res) => {
+      if (res.count == 0) {
+        this.pestList = [];
+        this.showNotification(res.message, 4);
+      }
+      else if (res.count > 0) {
+        this.pestList = res.data;
+      }
+    });
+  }
+
   getBenificialDetails(BenificialId) {
     this.benificialsServiceObj.getBenificialDetail(BenificialId).subscribe((res) => {
       if (res.count == 0) {
@@ -70,6 +89,7 @@ export class BenificialsComponent implements OnInit {
       }
       else if (res.count > 0) {
           this.benificialModels = res.data[0];
+          this.benificialModels.benificial_Pests = JSON.parse("[" + this.benificialModels.benificial_Pests + "]");
           this.showAddUpdate = true;
       }
     });
@@ -77,6 +97,7 @@ export class BenificialsComponent implements OnInit {
 
   Update(){
     var msg = '';
+    this.benificialModels.benificial_Pests = this.benificialModels.benificial_Pests.toString(); 
     if(this.benificialModels.benificial_Name == '' || this.benificialModels.benificial_Name == undefined || this.benificialModels.benificial_Name == 'undefined'){
       msg = msg+'Enter Benificial Name<br>';
     }
@@ -88,6 +109,9 @@ export class BenificialsComponent implements OnInit {
     }
     if(this.benificialModels.benificials_ID == 0 || this.benificialModels.benificials_ID == undefined || this.benificialModels.benificials_ID == 'undefined'){
       msg =  msg+'Invalid Benificial<br>';
+    }
+    if(this.benificialModels.benificial_Pests == '' || this.benificialModels.benificial_Pests == undefined || this.benificialModels.benificial_Pests == 'undefined'){
+      msg =  msg+'Select Pests<br>';
     }
     if(msg == '')
     {
@@ -112,6 +136,7 @@ export class BenificialsComponent implements OnInit {
 
   Save(){
     var msg = '';
+    this.benificialModels.benificial_Pests = this.benificialModels.benificial_Pests.toString(); 
     if(this.benificialModels.benificial_Name == '' || this.benificialModels.benificial_Name == undefined || this.benificialModels.benificial_Name == 'undefined'){
       msg = msg+'Enter Benificial Name<br>';
     }
@@ -120,6 +145,9 @@ export class BenificialsComponent implements OnInit {
     }
     if(this.benificialModels.benificial_Image == '' || this.benificialModels.benificial_Image == undefined || this.benificialModels.benificial_Image == 'undefined'){
       msg =  msg+'Select Image<br>';
+    }
+    if(this.benificialModels.benificial_Pests == '' || this.benificialModels.benificial_Pests == undefined || this.benificialModels.benificial_Pests == 'undefined'){
+      msg =  msg+'Select Pests<br>';
     }
     if(msg == '')
     {
@@ -167,6 +195,27 @@ export class BenificialsComponent implements OnInit {
         '<a href="{3}" target="{4}" data-notify="url"></a>' +
         '</div>'
     });
+  }
+
+  getPestsByIds(IDs){
+    var names = '';
+    var aID = JSON.parse("[" + IDs + "]");
+    let findedData = this.pestList;
+    if (typeof findedData === 'undefined') {
+       return null;
+    }
+    for (var i = 0; i < findedData.length; i++) {
+      for (var j = 0; j < aID.length; j++) {
+        if(aID[j] == findedData[i].pest_Id){
+          names += findedData[i].pest_Name+ ', ';
+        }
+      }
+    }
+    names = names.trim();   
+    if(names.substr(names.length - 1) == ",") 
+      return names.slice(0, -1);
+    else
+      return names;
   }
 
   public uploadFile = (files) => {

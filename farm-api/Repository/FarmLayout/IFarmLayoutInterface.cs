@@ -11,6 +11,7 @@ namespace Repository.FarmLayout
         #region FarmLayout
         Object GetLayout(int farmLayoutId, int farmId);
         Object SaveLayout(Model.FarmLayout layoutData);
+        Object UpdateLayout(Model.FarmLayout layoutData);
         #endregion
 
         #region Phase

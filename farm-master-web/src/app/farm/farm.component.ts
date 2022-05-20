@@ -26,14 +26,18 @@ export class FarmComponent implements OnInit {
     this.farmModels = {};
     this.farmModels.id = 0;
     this.farmModels.farm_Id = 0;
-    this.farmModels.Farmer_Id = 0;
-    this.farmModels.Farm_Name = '';
-    this.farmModels.Farm_Address = '';
-    this.farmModels.Farm_Address_2 = '';
-    this.farmModels.City = '';
-    this.farmModels.State = '';
-    this.farmModels.Country = '';
-    this.farmModels.PostalCode = '';
+    this.farmModels.farmer_Id = 0;
+    this.farmModels.farm_Name = '';
+    this.farmModels.farm_Address = '';
+    this.farmModels.farm_Address_2 = '';
+    this.farmModels.city = '';
+    this.farmModels.state = '';
+    this.farmModels.country = '';
+    this.farmModels.postalCode = '';
+    this.farmModels.farm_Phone_No = '';
+    this.farmModels.farm_Grower_Name = '';
+    this.farmModels.farm_Acres = 0;
+
     this.AddNewFarm = true;
   }
 
@@ -110,6 +114,12 @@ export class FarmComponent implements OnInit {
     if (this.farmModels.postalCode == '' || this.farmModels.postalCode == undefined || this.farmModels.postalCode == 'undefined') {
       msg = msg + 'Enter PostalCode<br>';
     }
+    if (this.farmModels.farm_Grower_Name == '' || this.farmModels.farm_Grower_Name == undefined || this.farmModels.farm_Grower_Name == 'undefined') {
+      msg = msg + 'Enter Grower<br>';
+    }
+    if (this.farmModels.farm_Phone_No == '' || this.farmModels.farm_Phone_No == undefined || this.farmModels.farm_Phone_No == 'undefined') {
+      msg = msg + 'Enter Phone no<br>';
+    }
     if (msg == '') {
       this.farmServiceObj.UpdateFarm(this.farmModels).subscribe((res) => {
         if (res.count == 0) {
@@ -158,6 +168,12 @@ export class FarmComponent implements OnInit {
     }
     if (this.farmModels.postalCode == '' || this.farmModels.postalCode == undefined || this.farmModels.postalCode == 'undefined') {
       msg = msg + 'Enter PostalCode<br>';
+    }
+    if (this.farmModels.farm_Grower_Name == '' || this.farmModels.farm_Grower_Name == undefined || this.farmModels.farm_Grower_Name == 'undefined') {
+      msg = msg + 'Enter Grower<br>';
+    }
+    if (this.farmModels.farm_Phone_No == '' || this.farmModels.farm_Phone_No == undefined || this.farmModels.farm_Phone_No == 'undefined') {
+      msg = msg + 'Enter Phone no<br>';
     }
     if (msg == '') {
       this.farmServiceObj.SaveFarm(this.farmModels).subscribe((res) => {

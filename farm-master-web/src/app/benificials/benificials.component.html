@@ -14,6 +14,7 @@
                 <div class="row">
                   <div class="col-md-12">
                     <mat-form-field class="example-full-width">
+                      <mat-label>Benificial Name</mat-label>
                       <input [(ngModel)]="benificialModels.benificial_Name" name="benificial_Name"  matInput placeholder="Benificial Name" type="text" required >
                     </mat-form-field>
                   </div>
@@ -21,7 +22,20 @@
                 <div class="row">
                   <div class="col-md-12">
                     <mat-form-field class="example-full-width">
+                      <mat-label>Benificial Description</mat-label>
                       <input [(ngModel)]="benificialModels.benificial_Description" name="benificial_Description" matInput placeholder="Benificial Description" type="text" required >
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12">
+                    <mat-form-field appearance="fill">
+                      <mat-label>Pests</mat-label>
+                      <mat-select [(ngModel)]="benificialModels.benificial_Pests" multiple >
+                        <mat-option *ngFor="let pest of pestList" [value]="pest.pest_Id" >
+                          {{pest.pest_Name}}
+                        </mat-option>
+                      </mat-select>
                     </mat-form-field>
                   </div>
                 </div>
@@ -33,7 +47,7 @@
                     <div class="row" style="margin-bottom:15px;">
                       <div class="col-md-3">
                         <input type="file" accept="image/*" #file placeholder="Choose file" (change)="uploadFile(file.files)" style="display:none;">
-                        <button type="button" class="btn btn-success" (click)="file.click()">Upload File</button>
+                        <button type="button" class="btn btn-success" (click)="file.click()">Select Image</button>
                       </div>
                       <div class="col-md-4">
                         <span class="upload" *ngIf="progress > 0">
@@ -62,6 +76,7 @@
                     <th>Image</th>
                     <th>Benificials</th>
                     <th>Description</th>
+                    <th>Pests</th>
                     <th></th>
                   </thead>
                   <tbody>
@@ -75,8 +90,11 @@
                       <td  class="text-primary" >
                         {{item.benificial_Name}}
                       </td>
-                      <td>
+                      <td style="width: 60%;" >
                         {{item.benificial_Description}}
+                      </td>
+                      <td>
+                        {{getPestsByIds(item.benificial_Pests)}}
                       </td>
                       <td>
                         <button mat-raised-button type="button" (click)="getBenificialDetails(item.benificials_ID);" matTooltip="Edit" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">

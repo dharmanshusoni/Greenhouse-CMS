@@ -17,5 +17,8 @@ namespace Model
         public string State { get; set; }
         public string Country { get; set; }
         public string PostalCode { get; set; }
+        public string Farm_Phone_No { get; set; }
+        public string Farm_Grower_Name { get; set; }
+        public int Farm_Acres { get; set; }
     }
 }

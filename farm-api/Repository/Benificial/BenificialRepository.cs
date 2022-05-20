@@ -36,6 +36,7 @@ namespace Repository.Benificial
                         benificials.Benificial_Name = (reader.GetValue(1) != null) ? reader.GetString(1) : string.Empty;
                         benificials.Benificial_Description = (reader.GetValue(2) != null) ? reader.GetString(2) : string.Empty;
                         benificials.Benificial_Image = (reader.GetValue(3) != null) ? reader.GetString(3) : string.Empty;
+                        benificials.Benificial_Pests = (!reader.IsDBNull(4)) ? reader.GetString(4) : string.Empty ;
 
                         result.data.Add(benificials);
                     }
@@ -65,6 +66,8 @@ namespace Repository.Benificial
                 cmd.Parameters.AddWithValue("@Benificial_Name", benificialData.Benificial_Name.Trim());
                 cmd.Parameters.AddWithValue("@Benificial_Description", benificialData.Benificial_Description.Trim());
                 cmd.Parameters.AddWithValue("@Benificial_Image", benificialData.Benificial_Image.Trim());
+                cmd.Parameters.AddWithValue("@Benificial_Pests", benificialData.Benificial_Pests.Trim()); 
+
                 con.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
 
@@ -114,6 +117,8 @@ namespace Repository.Benificial
                 cmd.Parameters.AddWithValue("@Benificial_Name", benificialData.Benificial_Name.Trim());
                 cmd.Parameters.AddWithValue("@Benificial_Description", benificialData.Benificial_Description.Trim());
                 cmd.Parameters.AddWithValue("@Benificial_Image", benificialData.Benificial_Image.Trim());
+                cmd.Parameters.AddWithValue("@Benificial_Pests", benificialData.Benificial_Pests.Trim());
+
                 con.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
                 if (reader.HasRows)

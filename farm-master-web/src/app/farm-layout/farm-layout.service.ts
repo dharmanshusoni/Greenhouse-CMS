@@ -10,6 +10,7 @@ const api_BASE_FARMLAYOUT = 'FarmLayout/';
 
 const api_BASE_LAYOUT_GET = 'GetLayout?FarmLayoutId=';
 const api_SAVE_LAYOUT = 'SaveLayout/';
+const api_UPDATE_LAYOUT = 'UpdateLayout/';
 
 const api_BASE_PHASE_GET = 'GetPhase?FarmId=';
 const api_SAVE_PHASE = 'SavePhase/';
@@ -49,6 +50,17 @@ export class FarmLayoutService {
     }
     const body = JSON.stringify(layout);
     return this.http.post(api_URL + api_BASE_FARMLAYOUT + api_SAVE_LAYOUT, body, { 'headers': headers });
+  }
+
+  UpdateFarmLayout(layout: any): Observable<any> {
+    const headers = {
+      'content-type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT',
+      'Access-Control-Allow-Credentials': 'true'
+    }
+    const body = JSON.stringify(layout);
+    return this.http.post(api_URL + api_BASE_FARMLAYOUT + api_UPDATE_LAYOUT, body, { 'headers': headers });
   }
 
   GetPhase(farmId): Observable<any> {

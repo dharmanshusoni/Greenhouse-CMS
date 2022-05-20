@@ -41,7 +41,10 @@ namespace Repository.Farm
                         farm.State = (reader.GetValue(6) != null) ? reader.GetString(6) : string.Empty;
                         farm.Country = (reader.GetValue(7) != null) ? reader.GetString(7) : string.Empty;
                         farm.PostalCode = (reader.GetValue(8) != null) ? reader.GetString(8) : string.Empty;
-                        
+                        farm.Farm_Phone_No = (!reader.IsDBNull(9)) ? reader.GetString(9) : string.Empty;
+                        farm.Farm_Grower_Name = (!reader.IsDBNull(10)) ? reader.GetString(10) : string.Empty;
+                        farm.Farm_Acres = (!reader.IsDBNull(11)) ? int.Parse(reader.GetInt32(11).ToString()) : 0;
+
                         result.data.Add(farm);
                     }
                 }
@@ -80,6 +83,9 @@ namespace Repository.Farm
                         farm.State = (reader.GetValue(6) != null) ? reader.GetString(6) : string.Empty;
                         farm.Country = (reader.GetValue(7) != null) ? reader.GetString(7) : string.Empty;
                         farm.PostalCode = (reader.GetValue(8) != null) ? reader.GetString(8) : string.Empty;
+                        farm.Farm_Phone_No = (!reader.IsDBNull(9)) ? reader.GetString(9) : string.Empty;
+                        farm.Farm_Grower_Name = (!reader.IsDBNull(10)) ? reader.GetString(10) : string.Empty;
+                        farm.Farm_Acres = (!reader.IsDBNull(11)) ? int.Parse(reader.GetInt32(11).ToString()) : 0;
 
                         result.data.Add(farm);
                     }
@@ -114,6 +120,9 @@ namespace Repository.Farm
                 cmd.Parameters.AddWithValue("@Country", ((farmData.Country)).Trim());
                 cmd.Parameters.AddWithValue("@PostalCode", ((farmData.PostalCode)).Trim());
                 cmd.Parameters.AddWithValue("@Farmer_Id", farmData.Farmer_Id);
+                cmd.Parameters.AddWithValue("@Farm_Phone_No", ((farmData.Farm_Phone_No)).Trim());
+                cmd.Parameters.AddWithValue("@Farm_Grower_Name", ((farmData.Farm_Grower_Name)).Trim());
+                cmd.Parameters.AddWithValue("@Farm_Acres", farmData.Farm_Acres);
 
                 //var returnParameter = cmd.Parameters.Add("@ErrorCode", SqlDbType.Int);
                 //returnParameter.Direction = ParameterDirection.ReturnValue;
@@ -175,6 +184,9 @@ namespace Repository.Farm
                 cmd.Parameters.AddWithValue("@Country", ((farmData.Country)).Trim());
                 cmd.Parameters.AddWithValue("@PostalCode", ((farmData.PostalCode)).Trim());
                 cmd.Parameters.AddWithValue("@Farmer_Id", farmData.Farmer_Id);
+                cmd.Parameters.AddWithValue("@Farm_Phone_No", ((farmData.Farm_Phone_No)).Trim());
+                cmd.Parameters.AddWithValue("@Farm_Grower_Name", ((farmData.Farm_Grower_Name)).Trim());
+                cmd.Parameters.AddWithValue("@Farm_Acres", farmData.Farm_Acres);
 
                 //var returnParameter = cmd.Parameters.Add("@ErrorCode", SqlDbType.Int);
                 //returnParameter.Direction = ParameterDirection.ReturnValue;

@@ -56,6 +56,37 @@ namespace farm_api.Controllers
                 return repository.SaveLayout(layout);
             }
         }
+
+        [EnableCors()]
+        [HttpPost]
+        [Route("UpdateLayout")]
+        public Object UpdateLayout([FromBody] FarmLayout layout)
+        {
+            if (layout.Farm_Layout_Id == 0)
+            {
+                return JsonConvert.SerializeObject(new Result { message = "Select Layout" });
+            }
+            if (layout.Zone == 0)
+            {
+                return JsonConvert.SerializeObject(new Result { message = "Insert Zone" });
+            }
+            if (layout.Farm_Id == 0)
+            {
+                return JsonConvert.SerializeObject(new Result { message = "Select Farm" });
+            }
+            if (layout.Phases == 0)
+            {
+                return JsonConvert.SerializeObject(new Result { message = "Select Phases" });
+            }
+            if (layout.House == 0)
+            {
+                return JsonConvert.SerializeObject(new Result { message = "Select House" });
+            }
+            else
+            {
+                return repository.UpdateLayout(layout);
+            }
+        }
         #endregion
 
         #region Phase

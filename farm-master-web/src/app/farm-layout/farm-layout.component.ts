@@ -25,6 +25,11 @@ export class FarmLayoutComponent implements OnInit {
   userId:any;
   farmId = 0;
   phaseId = 0;
+  // phaseCardSize = 0;
+  // houseCardSize = 0;
+  // rowCardSize = 0;
+  popup = false
+  name = 'Farm';
 
   constructor(farmLayoutServiceObj: FarmLayoutService,farmServiceObj: FarmService, private router: Router) {
     this.farmLayoutServiceObj = farmLayoutServiceObj;
@@ -64,11 +69,35 @@ export class FarmLayoutComponent implements OnInit {
   getLayout(LayoutId,farmId){
     this.farmLayoutServiceObj.GetFarmLayout(LayoutId,farmId).subscribe((res) => {
       if (res.count == 0) {
-        this.farmList = [];
+        this.layoutList = [];
         this.showNotification(res.message, 4);
       }
       else if (res.count > 0) {
-          this.farmList = res.data;
+          this.layoutList = res.data;
+          // if(this.layoutList[0].house == 1){
+          //   this.phaseCardSize = 12;
+          //   this.houseCardSize = 6;
+          //   this.rowCardSize = 6;
+          // }
+          // else{
+          //   this.phaseCardSize = 12;
+          //   this.houseCardSize = 6;
+          //   this.rowCardSize = 6;
+          // }
+      }
+    });
+  }
+
+  getLayoutById(LayoutId,farmId){
+    this.farmLayoutServiceObj.GetFarmLayout(LayoutId,farmId).subscribe((res) => {
+      if (res.count == 0) {
+        this.layoutList = [];
+        this.showNotification(res.message, 4);
+      }
+      else if (res.count > 0) {
+          this.layoutList = res.data;
+          this.layoutModels = this.layoutList[0];
+          this.showAddUpdate = true;
       }
     });
   }
@@ -111,6 +140,7 @@ export class FarmLayoutComponent implements OnInit {
 
   SaveLayout(){
     this.layoutModels.farm_Id = this.farmId;
+    this.layoutModels.zone = this.layoutModels.phases;
     var msg = '';
     if(this.layoutModels.farm_Id == 0 || this.layoutModels.farm_Id == undefined ){
       msg = msg+'Select Farm<br>';
@@ -139,6 +169,49 @@ export class FarmLayoutComponent implements OnInit {
             this.initialize();
             this.getLayout(0,this.farmId);
             this.showNotification('Data Saved Successfull', 2);
+          }
+        }
+      });
+    }
+    else{
+      this.showNotification(msg, 3);
+    }
+  }
+
+  UpdateLayout(){
+    this.layoutModels.farm_Id = this.farmId;
+    this.layoutModels.zone = this.layoutModels.phases;
+    var msg = '';
+    if(this.layoutModels.farm_Layout_Id == 0 || this.layoutModels.farm_Layout_Id == undefined ){
+      msg = msg+'Select Layout<br>';
+    }
+    if(this.layoutModels.farm_Id == 0 || this.layoutModels.farm_Id == undefined ){
+      msg = msg+'Select Farm<br>';
+    }
+    if(this.layoutModels.zone == 0 || this.layoutModels.zone == undefined){
+      msg = msg+'Select Zone<br>';
+    }
+    if(this.layoutModels.phases == 0 || this.layoutModels.phases == undefined){
+      msg = msg+'Select Phase<br>';
+    }
+    if(this.layoutModels.rows == 0 || this.layoutModels.rows == undefined){
+      msg = msg+'Select Rows<br>';
+    }
+    if(this.layoutModels.house == 0 || this.layoutModels.house == undefined){
+      msg = msg+'Select House<br>';
+    }
+    if(msg == '')
+    {
+      this.farmLayoutServiceObj.UpdateFarmLayout(this.layoutModels).subscribe((res) => {
+        if (res.count == 0) {
+          this.showNotification(res.message, 4);
+        }
+        else if (res.count > 0) {
+          if (res.data[0].farm_Layout_Id > 0) {
+            this.showAddUpdate = false;
+            this.initialize();
+            this.getLayout(0,this.farmId);
+            this.showNotification('Data Updated Successfull', 2);
           }
         }
       });
@@ -242,4 +315,8 @@ export class FarmLayoutComponent implements OnInit {
         '</div>'
     });
   }
+
+  counter(i: number) {
+    return new Array(i);
+}
 }

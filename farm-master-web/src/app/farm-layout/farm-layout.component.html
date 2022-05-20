@@ -25,20 +25,15 @@
               <div class="row">
                 <div class="col-md-12">
                   <mat-form-field class="example-full-width">
+                    <mat-label>Phases</mat-label>
                     <input [(ngModel)]="layoutModels.phases" name="phases"  matInput placeholder="phases" type="text" required >
                   </mat-form-field>
                 </div>
               </div>
-              <!-- <div class="row">
-                <div class="col-md-12">
-                  <mat-form-field class="example-full-width">
-                    <input [(ngModel)]="layoutModels.zone" name="zone"  matInput placeholder="zone" type="text" required >
-                  </mat-form-field>
-                </div>
-              </div> -->
               <div class="row">
                 <div class="col-md-12">
                   <mat-form-field class="example-full-width">
+                    <mat-label>Houses</mat-label>
                     <input [(ngModel)]="layoutModels.house" name="house"  matInput placeholder="house" type="text" required >
                   </mat-form-field>
                 </div>
@@ -46,6 +41,7 @@
               <div class="row">
                 <div class="col-md-12">
                   <mat-form-field class="example-full-width">
+                    <mat-label>Rows</mat-label>
                     <input [(ngModel)]="layoutModels.rows" name="rows"  matInput placeholder="rows" type="text" required >
                   </mat-form-field>
                 </div>
@@ -57,7 +53,8 @@
                   </mat-form-field>
                 </div>
               </div> -->
-              <button mat-raised-button type="submit" class="btn btn-danger pull-right" (click)="SaveLayout()" *ngIf="layoutModels.farm_Layout_Id == 0">Save Phase</button>
+              <button mat-raised-button type="submit" class="btn btn-danger pull-right" (click)="SaveLayout()" *ngIf="layoutModels.farm_Layout_Id == 0">Save Layout</button>
+              <button mat-raised-button type="submit" class="btn btn-danger pull-right" (click)="UpdateLayout()" *ngIf="layoutModels.farm_Layout_Id > 0">Upadate Layout</button> 
               <button mat-raised-button type="submit" class="btn pull-right" (click)="initialize();showAddUpdate=false;">Cancel</button>
               <div class="clearfix"></div>
             </form>
@@ -66,14 +63,45 @@
       </div>
     </div>
     
-    <div class="row" *ngIf="!showAddUpdate" >
-      <div class="col-md-6 card" style="display: inline;" *ngFor="let item of phaseList; let i = index">
-          <h4 class="card-title" style="display: inline;">{{item.phase_Name}}</h4>
-          <button *ngIf="farmId > 0" mat-button type="button" matTooltip="Add House" [matTooltipPosition]="'above'" class="pull-right" style="display: inline;" (click)="initialize();showAddUpdate=true;" >
-            <i class="material-icons" >add</i> House
-          </button>
+    <div class="row" *ngIf="!showAddUpdate && layoutList.length>0">
+
+      <div class="col-md-12 card" style="display: inline;" *ngFor="let phase of counter(layoutList[0].phases); let i = index">
+        <h4 class="card-title" style="display: inline;"><u>phase</u> - {{i+1}}</h4><button
+          (click)="getLayoutById(layoutList[0].farm_Layout_Id,0)"
+          style="background-color:transparent;border: transparent;float: right;">edit</button>
+      
+        <div class="row">
+          <div class="col-md-12 card" *ngFor="let hous of counter(layoutList[0].house); let ib = index">
+            <h4 class="card-title" style="display: inline;"><u>house</u> - {{ib+1}}</h4>
+      
+            <div class="row">
+              <div class="col-md-6 card" style="margin: 20px 0px 0px 0px;box-shadow: none;"
+                *ngFor="let row of counter(layoutList[0].rows); let ibs = index">
+                <h4 class="card-title" style="display: inline;background-color: rgb(97, 216, 97);padding: 20px;">
+                  Row - {{ibs+1}}
+                  <button type="button" mat-raised-button class="btn btn-success" (click)="popup = true">
+                    + Post
+                   </button>
+                </h4>
+              </div>
+            </div>
+      
+          </div>
+        </div>
+        
       </div>
+
     </div>
 
   </div>
+</div>
+
+<div class="overlay" *ngIf="popup">
+	<div class="popup">
+		<h2>Posts</h2>
+		<a class="close" (click)="popup = false">&times;</a>
+		<div class="content">
+		  Post section
+		</div>
+	</div>
 </div>
