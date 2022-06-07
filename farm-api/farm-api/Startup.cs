@@ -40,7 +40,7 @@ namespace farm_api
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseStaticFiles();// For the wwwroot folder
+            app.UseStaticFiles();
 
             app.UseStaticFiles(new StaticFileOptions
             {
@@ -48,13 +48,6 @@ namespace farm_api
                             Path.Combine(Directory.GetCurrentDirectory(), "Resources")),
                 RequestPath = "/Resources"
             });
-            //Enable directory browsing
-            //app.UseDirectoryBrowser(new DirectoryBrowserOptions
-            //{
-            //    FileProvider = new PhysicalFileProvider(
-            //                Path.Combine(Directory.GetCurrentDirectory(), "Resources")),
-            //    RequestPath = "/Resources"
-            //});
 
             app.UseHttpsRedirection();
 

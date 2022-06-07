@@ -31,6 +31,22 @@ namespace farm_api.Controllers
         }
 
         [EnableCors()]
+        [HttpGet]
+        [Route("GetLayoutData")]
+        public Object GetLayoutData(int FarmLayoutId)
+        {
+            if (FarmLayoutId < 0)
+            {
+                return JsonConvert.SerializeObject(new Result { message = "No Layout Data Found" });
+            }
+            else
+            {
+                return repository.GetLayoutData(FarmLayoutId);
+            }
+
+        }
+
+        [EnableCors()]
         [HttpPost]
         [Route("SaveLayout")]
         public Object SaveLayout([FromBody] FarmLayout layout)
@@ -50,6 +66,10 @@ namespace farm_api.Controllers
             if (layout.House == 0)
             {
                 return JsonConvert.SerializeObject(new Result { message = "Select House" });
+            }
+            if (layout.Posts == 0)
+            {
+                return JsonConvert.SerializeObject(new Result { message = "Select Posts" });
             }
             else
             {
@@ -82,6 +102,10 @@ namespace farm_api.Controllers
             {
                 return JsonConvert.SerializeObject(new Result { message = "Select House" });
             }
+            if (layout.Posts == 0)
+            {
+                return JsonConvert.SerializeObject(new Result { message = "Select Posts" });
+            }
             else
             {
                 return repository.UpdateLayout(layout);
@@ -90,81 +114,81 @@ namespace farm_api.Controllers
         #endregion
 
         #region Phase
-        [EnableCors()]
-        [HttpGet]
-        [Route("GetPhase")]
-        public Object GetPhase(int FarmId)
-        {
-            if (FarmId < 0)
-            {
-                return JsonConvert.SerializeObject(new Result { message = "No Phase Found" });
-            }
-            else
-            {
-                return repository.GetPhase(FarmId);
-            }
+        //[EnableCors()]
+        //[HttpGet]
+        //[Route("GetPhase")]
+        //public Object GetPhase(int FarmId)
+        //{
+        //    if (FarmId < 0)
+        //    {
+        //        return JsonConvert.SerializeObject(new Result { message = "No Phase Found" });
+        //    }
+        //    else
+        //    {
+        //        return repository.GetPhase(FarmId);
+        //    }
 
-        }
+        //}
 
-        [EnableCors()]
-        [HttpPost]
-        [Route("SavePhase")]
-        public Object SavePhase([FromBody] Phase phase)
-        {
-            if (phase.Phase_Name == "")
-            {
-                return JsonConvert.SerializeObject(new Result { message = "Insert Name" });
-            }
-            if (phase.Farm_Id == 0)
-            {
-                return JsonConvert.SerializeObject(new Result { message = "Select Farm" });
-            }
-            if (phase.Farmer_Id == 0)
-            {
-                return JsonConvert.SerializeObject(new Result { message = "Select Farmer" });
-            }
-            else
-            {
-                return repository.SavePhase(phase);
-            }
-        }
+        //[EnableCors()]
+        //[HttpPost]
+        //[Route("SavePhase")]
+        //public Object SavePhase([FromBody] Phase phase)
+        //{
+        //    if (phase.Phase_Name == "")
+        //    {
+        //        return JsonConvert.SerializeObject(new Result { message = "Insert Name" });
+        //    }
+        //    if (phase.Farm_Id == 0)
+        //    {
+        //        return JsonConvert.SerializeObject(new Result { message = "Select Farm" });
+        //    }
+        //    if (phase.Farmer_Id == 0)
+        //    {
+        //        return JsonConvert.SerializeObject(new Result { message = "Select Farmer" });
+        //    }
+        //    else
+        //    {
+        //        return repository.SavePhase(phase);
+        //    }
+        //}
         #endregion
 
         #region House
-        [EnableCors()]
-        [HttpGet]
-        [Route("GetHouse")]
-        public Object GetHouse(int PhaseId)
-        {
-            if (PhaseId < 0)
-            {
-                return JsonConvert.SerializeObject(new Result { message = "No House Found" });
-            }
-            else
-            {
-                return repository.GetHouse(PhaseId);
-            }
+        //[EnableCors()]
+        //[HttpGet]
+        //[Route("GetHouse")]
+        //public Object GetHouse(int PhaseId)
+        //{
+        //    if (PhaseId < 0)
+        //    {
+        //        return JsonConvert.SerializeObject(new Result { message = "No House Found" });
+        //    }
+        //    else
+        //    {
+        //        return repository.GetHouse(PhaseId);
+        //    }
 
-        }
+        //}
 
-        [EnableCors()]
-        [HttpPost]
-        [Route("SaveHouse")]
-        public Object SaveHouse([FromBody] House house)
-        {
-            if (house.House_Name == "")
-            {
-                return JsonConvert.SerializeObject(new Result { message = "Insert Name" });
-            }
-            if (house.Phase_Id == 0)
-            {
-                return JsonConvert.SerializeObject(new Result { message = "Select Phase" });
-            }
-            else
-            {
-                return repository.SaveHouse(house);
-            }
-        }
+        //[EnableCors()]
+        //[HttpPost]
+        //[Route("SaveHouse")]
+        //public Object SaveHouse([FromBody] House house)
+        //{
+        //    if (house.House_Name == "")
+        //    {
+        //        return JsonConvert.SerializeObject(new Result { message = "Insert Name" });
+        //    }
+        //    if (house.Phase_Id == 0)
+        //    {
+        //        return JsonConvert.SerializeObject(new Result { message = "Select Phase" });
+        //    }
+        //    else
+        //    {
+        //        return repository.SaveHouse(house);
+        //    }
+        //}
         #endregion
     }
 }

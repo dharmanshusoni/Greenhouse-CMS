@@ -11,7 +11,6 @@ export class Phase {
     house_Id:number;
  }
 
-
  export class Layout { 
    farm_Layout_Id:number;
    phases:number;
@@ -19,4 +18,5 @@ export class Phase {
    house:number;
    rows:number;
    farm_Id:number;
+   posts:number;
 }

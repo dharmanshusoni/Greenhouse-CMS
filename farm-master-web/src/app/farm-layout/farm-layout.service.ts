@@ -9,6 +9,7 @@ const api_URL = environment.apiURL;
 const api_BASE_FARMLAYOUT = 'FarmLayout/';
 
 const api_BASE_LAYOUT_GET = 'GetLayout?FarmLayoutId=';
+const api_BASE_LAYOUT_DATA_GET = 'GetLayoutData?FarmLayoutId=';
 const api_SAVE_LAYOUT = 'SaveLayout/';
 const api_UPDATE_LAYOUT = 'UpdateLayout/';
 
@@ -36,6 +37,20 @@ export class FarmLayoutService {
     }
 
     return this.http.get(api_URL + api_BASE_FARMLAYOUT + api_BASE_LAYOUT_GET + farmLayoutId+'&FarmId=' +farmId, { 'headers': headers }).pipe(map(data => {
+      if (data === null) return throwError("null data");
+      return data;
+    }));
+  }
+
+  GetFarmLayoutData(farmLayoutId): Observable<any> {
+    const headers = {
+      'content-type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT',
+      'Access-Control-Allow-Credentials': 'true'
+    }
+
+    return this.http.get(api_URL + api_BASE_FARMLAYOUT + api_BASE_LAYOUT_DATA_GET + farmLayoutId , { 'headers': headers }).pipe(map(data => {
       if (data === null) return throwError("null data");
       return data;
     }));

@@ -33,6 +33,9 @@ import { MatCheckboxModule} from '@angular/material/checkbox';
 import { UserComponent } from 'app/user/user.component';
 import { StickeyCardComponent } from 'app/stickey-card/stickey-card.component';
 import { PestIntensityComponent } from 'app/pest-intensity/pest-intensity.component';
+import {MatSliderModule} from '@angular/material/slider';
+import {MatIconModule} from '@angular/material/icon';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -48,6 +51,8 @@ import { PestIntensityComponent } from 'app/pest-intensity/pest-intensity.compon
     MatDatepickerModule,
     MatNativeDateModule,
     MatCheckboxModule,
+    MatSliderModule,
+    MatIconModule
   ],
   declarations: [
     DashboardComponent,

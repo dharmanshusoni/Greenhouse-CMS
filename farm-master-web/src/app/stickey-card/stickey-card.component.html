@@ -64,7 +64,7 @@
                         <img [src]="createImgPath(item.stickey_Card_Image)" alt="pest picture" style="width:64px; height:64px;border-radius: 50%;">
                       </td>
                       <td class="text-primary"  [ngStyle]="{'background-color': item.stickey_Card_color}" (click)="getStickeyCardDetails(item.stickeyCard_Id);" >
-                        {{item.stickey_Card_color}}
+                        <!-- {{item.stickey_Card_color}} -->
                       </td>
                       <td>
                         <button mat-raised-button type="button" (click)="getStickeyCardDetails(item.stickeyCard_Id);" matTooltip="Edit" [matTooltipPosition]="'above'" class="btn btn-primary btn-link btn-sm btn-just-icon">

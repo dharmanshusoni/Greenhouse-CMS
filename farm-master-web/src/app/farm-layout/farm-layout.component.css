@@ -6,24 +6,26 @@
     right: 0;
     background: rgba(0, 0, 0, 0.7);
     transition: opacity 500ms;
-  visibility: visible;
+    visibility: visible;
     opacity: 1;
+    z-index: 1;
   }
   
   .popup {
-    margin: 70px auto;
+    margin: 8% auto;
     padding: 20px;
     background: #fff;
     border-radius: 5px;
-    width: 30%;
+    width: 40%;
     position: relative;
     transition: all 5s ease-in-out;
   }
   
-  .popup h2 {
+  .popup h3 {
     margin-top: 0;
     color: #333;
     font-family: Tahoma, Arial, sans-serif;
+    display: inline;
   }
   .popup .close {
     position: absolute;
@@ -43,10 +45,81 @@
     max-height: 30%;
     overflow: auto;
   }
-  
+
+  .col-md-2 label{
+    font-size: larger;
+    margin: 12px;
+  }
+
   @media screen and (max-width: 700px){
     
     .popup{
       width: 70%;
     }
   }
+  .slider-width{
+    width: 100%;
+  }
+
+  label{
+    color: black;
+  }
+
+.img-box{
+  text-align: center;
+  border-style: solid;
+  border-width: thin;
+  border-color: green;
+  margin: 0px;
+  border-radius: 3px;
+}
+
+.chklabel {
+  border: 1px solid #fff;
+  padding: 10px;
+  display: block;
+  position: relative;
+  margin: 10px;
+  cursor: pointer;
+}
+
+.chklabel:before {
+  background-color: white;
+  color: white;
+  content: " ";
+  display: block;
+  border-radius: 50%;
+  border: 1px solid grey;
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  width: 25px;
+  height: 25px;
+  text-align: center;
+  line-height: 28px;
+  transition-duration: 0.4s;
+  transform: scale(0);
+}
+
+.chklabel img {
+  height: 100px;
+  width: 100px;
+  transition-duration: 0.2s;
+  transform-origin: 50% 50%;
+}
+
+:checked + label {
+  border-color: #ddd;
+}
+
+:checked + label:before {
+  content: "✓";
+  background-color: grey;
+  transform: scale(1);
+}
+
+:checked + label img {
+  transform: scale(0.9);
+  box-shadow: 0 0 5px #333;
+  z-index: -1;
+}

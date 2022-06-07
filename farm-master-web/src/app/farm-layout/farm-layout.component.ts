@@ -1,8 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { BenificialsService } from 'app/benificials/Benificials.service';
+import { CropsService } from 'app/crops/crops.service';
+import { DeceaseService } from 'app/Decease/decease.service';
 import { FarmService } from 'app/farm/Farm.service';
+import { PestService } from 'app/pest/Pest.service';
+import { environment } from 'environments/environment';
 import { FarmLayoutService } from './farm-layout.service';
-import { Layout,Phase,House } from './Phase';
+import { Layout, Phase, House } from './Phase';
 declare var $: any;
 
 @Component({
@@ -11,29 +16,65 @@ declare var $: any;
   styleUrls: ['./farm-layout.component.css']
 })
 export class FarmLayoutComponent implements OnInit {
-  
+
+
+  /* #region  Variables */
   farmLayoutServiceObj: FarmLayoutService;
+  pestServiceObj: PestService;
+  cropServiceObj: CropsService;
   farmServiceObj: FarmService;
-  showAddUpdate=false;
+  benificialsServiceObj: BenificialsService;
+  deceaseServiceObj: DeceaseService;
+  showAddUpdate = false;
+  showHouseCrop = false;
   phaseModels: Phase;
   houseModels: House;
   layoutModels: Layout;
-  phaseList:any;
+  phaseList: any;
   farmList: any;
-  houseList:any;
-  layoutList:any;
-  userId:any;
+  houseList: any;
+  layoutList: any;
+  userId: any;
   farmId = 0;
   phaseId = 0;
-  // phaseCardSize = 0;
-  // houseCardSize = 0;
-  // rowCardSize = 0;
   popup = false
   name = 'Farm';
+  cropList: any;
+  pestList: any;
+  benificialList: any;
+  pest_Id: number;
+  crop_Id: number;
+  benificials_ID: number;
+  decease_Id: number;
+  deceaseList: any;
+  CurrentDate: any;
+  CurrentWeek: any;
+  startDate:any;
+  selectedRow = {
+    phase: 0,
+    house: 0,
+    row: 0,
+    posts: 0,
+  }
+  selectedRowIDs = {
+    phase: 0,
+    house: 0,
+    row: 0,
+    posts: 0,
+  }
 
-  constructor(farmLayoutServiceObj: FarmLayoutService,farmServiceObj: FarmService, private router: Router) {
+  HouseCropImage:any;
+  IntensityColor='#f5f3c4';
+  /* #endregion */
+
+  /* #region  OnInit */
+  constructor(farmLayoutServiceObj: FarmLayoutService, farmServiceObj: FarmService,deceaseServiceObj: DeceaseService, cropServiceObj: CropsService, pestServiceObj: PestService, benificialsServiceObj: BenificialsService, private router: Router) {
     this.farmLayoutServiceObj = farmLayoutServiceObj;
     this.farmServiceObj = farmServiceObj;
+    this.pestServiceObj = pestServiceObj;
+    this.cropServiceObj = cropServiceObj;
+    this.benificialsServiceObj = benificialsServiceObj;
+    this.deceaseServiceObj = deceaseServiceObj;
     this.farmList = [];
     this.phaseList = [];
     this.layoutList = [];
@@ -50,6 +91,12 @@ export class FarmLayoutComponent implements OnInit {
     this.houseModels.house_Id = 0;
 
     this.getFarmsByFarmerId(this.userId);
+    this.getPest();
+    this.getCrops();
+    this.getBenificials();
+    this.DateSettings();
+    this.getDeceases();
+   
   }
 
   ngOnInit() {
@@ -65,100 +112,83 @@ export class FarmLayoutComponent implements OnInit {
     }
 
   }
+  /* #endregion */
 
-  getLayout(LayoutId,farmId){
-    this.farmLayoutServiceObj.GetFarmLayout(LayoutId,farmId).subscribe((res) => {
+  /* #region  Layout */
+  getLayout(LayoutId, farmId) {
+    this.farmLayoutServiceObj.GetFarmLayout(LayoutId, farmId).subscribe((res) => {
       if (res.count == 0) {
         this.layoutList = [];
         this.showNotification(res.message, 4);
       }
       else if (res.count > 0) {
-          this.layoutList = res.data;
-          // if(this.layoutList[0].house == 1){
-          //   this.phaseCardSize = 12;
-          //   this.houseCardSize = 6;
-          //   this.rowCardSize = 6;
-          // }
-          // else{
-          //   this.phaseCardSize = 12;
-          //   this.houseCardSize = 6;
-          //   this.rowCardSize = 6;
-          // }
+        this.layoutList = res.data;        
+        this.HouseCropImage = new Array(this.layoutList[0].house);
+        this.getLayoutData(farmId);
+        for (let index = 0; index < this.layoutList[1].house; index++) {
+          this.HouseCropImage[index] = 
+            {
+              CropId : 0,
+              CropName : '',
+              HouseId : index,
+              Src:'',
+              show:false
+            }
+        }
       }
     });
   }
 
-  getLayoutById(LayoutId,farmId){
-    this.farmLayoutServiceObj.GetFarmLayout(LayoutId,farmId).subscribe((res) => {
-      if (res.count == 0) {
-        this.layoutList = [];
-        this.showNotification(res.message, 4);
-      }
-      else if (res.count > 0) {
-          this.layoutList = res.data;
-          this.layoutModels = this.layoutList[0];
-          this.showAddUpdate = true;
-      }
-    });
-  }
-
-  getPhase(farmId){
-    this.farmLayoutServiceObj.GetPhase(farmId).subscribe((res) => {
+  getLayoutData(LayoutId) {
+    this.farmLayoutServiceObj.GetFarmLayoutData(LayoutId).subscribe((res) => {
       if (res.count == 0) {
         this.phaseList = [];
         this.showNotification(res.message, 4);
       }
       else if (res.count > 0) {
-          this.phaseList = res.data;
+        this.phaseList = res.data;
+        console.log(res.data)
       }
     });
   }
 
-  getHouse(phaseId){
-    this.farmLayoutServiceObj.GetHouse(phaseId).subscribe((res) => {
+  getLayoutById(LayoutId, farmId) {
+    this.farmLayoutServiceObj.GetFarmLayout(LayoutId, farmId).subscribe((res) => {
       if (res.count == 0) {
-        this.houseList = [];
+        this.layoutList = [];
         this.showNotification(res.message, 4);
       }
       else if (res.count > 0) {
-          this.houseList = res.data;
+        this.layoutList = res.data;
+        this.layoutModels = this.layoutList[0];
+        this.showAddUpdate = true;
       }
     });
   }
 
-  getFarmsByFarmerId(userId) {
-    this.farmServiceObj.GetFarmsForFarmer(userId).subscribe((res) => {
-      if (res.count == 0) {
-        this.farmList = [];
-        this.showNotification(res.message, 4);
-      }
-      else if (res.count > 0) {
-        this.farmList = res.data;
-     }
-    });
-  }
-
-  SaveLayout(){
+  SaveLayout() {
     this.layoutModels.farm_Id = this.farmId;
     this.layoutModels.zone = this.layoutModels.phases;
     var msg = '';
-    if(this.layoutModels.farm_Id == 0 || this.layoutModels.farm_Id == undefined ){
-      msg = msg+'Select Farm<br>';
+    if (this.layoutModels.farm_Id == 0 || this.layoutModels.farm_Id == undefined) {
+      msg = msg + 'Select Farm<br>';
     }
-    if(this.layoutModels.zone == 0 || this.layoutModels.zone == undefined){
-      msg = msg+'Select Zone<br>';
+    if (this.layoutModels.zone == 0 || this.layoutModels.zone == undefined) {
+      msg = msg + 'Select Zone<br>';
     }
-    if(this.layoutModels.phases == 0 || this.layoutModels.phases == undefined){
-      msg = msg+'Select Phase<br>';
+    if (this.layoutModels.phases == 0 || this.layoutModels.phases == undefined) {
+      msg = msg + 'Select Phase<br>';
     }
-    if(this.layoutModels.rows == 0 || this.layoutModels.rows == undefined){
-      msg = msg+'Select Rows<br>';
+    if (this.layoutModels.rows == 0 || this.layoutModels.rows == undefined) {
+      msg = msg + 'Select Rows<br>';
     }
-    if(this.layoutModels.house == 0 || this.layoutModels.house == undefined){
-      msg = msg+'Select House<br>';
+    if (this.layoutModels.house == 0 || this.layoutModels.house == undefined) {
+      msg = msg + 'Select House<br>';
     }
-    if(msg == '')
-    {
+    if (this.layoutModels.posts == 0 || this.layoutModels.posts == undefined) {
+      msg = msg + 'Select Posts<br>';
+    }
+    if (msg == '') {
       this.farmLayoutServiceObj.SaveFarmLayout(this.layoutModels).subscribe((res) => {
         if (res.count == 0) {
           this.showNotification(res.message, 4);
@@ -167,41 +197,43 @@ export class FarmLayoutComponent implements OnInit {
           if (res.data[0].farm_Layout_Id > 0) {
             this.showAddUpdate = false;
             this.initialize();
-            this.getLayout(0,this.farmId);
+            this.getLayout(0, this.farmId);
             this.showNotification('Data Saved Successfull', 2);
           }
         }
       });
     }
-    else{
+    else {
       this.showNotification(msg, 3);
     }
   }
 
-  UpdateLayout(){
+  UpdateLayout() {
     this.layoutModels.farm_Id = this.farmId;
     this.layoutModels.zone = this.layoutModels.phases;
     var msg = '';
-    if(this.layoutModels.farm_Layout_Id == 0 || this.layoutModels.farm_Layout_Id == undefined ){
-      msg = msg+'Select Layout<br>';
+    if (this.layoutModels.farm_Layout_Id == 0 || this.layoutModels.farm_Layout_Id == undefined) {
+      msg = msg + 'Select Layout<br>';
     }
-    if(this.layoutModels.farm_Id == 0 || this.layoutModels.farm_Id == undefined ){
-      msg = msg+'Select Farm<br>';
+    if (this.layoutModels.farm_Id == 0 || this.layoutModels.farm_Id == undefined) {
+      msg = msg + 'Select Farm<br>';
     }
-    if(this.layoutModels.zone == 0 || this.layoutModels.zone == undefined){
-      msg = msg+'Select Zone<br>';
+    if (this.layoutModels.zone == 0 || this.layoutModels.zone == undefined) {
+      msg = msg + 'Select Zone<br>';
     }
-    if(this.layoutModels.phases == 0 || this.layoutModels.phases == undefined){
-      msg = msg+'Select Phase<br>';
+    if (this.layoutModels.phases == 0 || this.layoutModels.phases == undefined) {
+      msg = msg + 'Select Phase<br>';
     }
-    if(this.layoutModels.rows == 0 || this.layoutModels.rows == undefined){
-      msg = msg+'Select Rows<br>';
+    if (this.layoutModels.rows == 0 || this.layoutModels.rows == undefined) {
+      msg = msg + 'Select Rows<br>';
     }
-    if(this.layoutModels.house == 0 || this.layoutModels.house == undefined){
-      msg = msg+'Select House<br>';
+    if (this.layoutModels.house == 0 || this.layoutModels.house == undefined) {
+      msg = msg + 'Select House<br>';
     }
-    if(msg == '')
-    {
+    if (this.layoutModels.posts == 0 || this.layoutModels.posts == undefined) {
+      msg = msg + 'Select Posts<br>';
+    }
+    if (msg == '') {
       this.farmLayoutServiceObj.UpdateFarmLayout(this.layoutModels).subscribe((res) => {
         if (res.count == 0) {
           this.showNotification(res.message, 4);
@@ -210,85 +242,111 @@ export class FarmLayoutComponent implements OnInit {
           if (res.data[0].farm_Layout_Id > 0) {
             this.showAddUpdate = false;
             this.initialize();
-            this.getLayout(0,this.farmId);
+            this.getLayout(0, this.farmId);
             this.showNotification('Data Updated Successfull', 2);
           }
         }
       });
     }
-    else{
+    else {
       this.showNotification(msg, 3);
     }
+  }
+  /* #endregion */
+
+  /* #region  Phase and House */
+  getPhase(farmId) {
+    // this.farmLayoutServiceObj.GetPhase(farmId).subscribe((res) => {
+    //   if (res.count == 0) {
+    //     this.phaseList = [];
+    //     this.showNotification(res.message, 4);
+    //   }
+    //   else if (res.count > 0) {
+    //     this.phaseList = res.data;
+    //   }
+    // });
   }
 
-  SavePhase(){
-    this.phaseModels.farm_Id = this.farmId;
-    this.phaseModels.farmer_Id = this.userId;
-    console.log(this.phaseModels);
-    var msg = '';
-    if(this.phaseModels.farm_Id == 0 || this.phaseModels.farm_Id == undefined ){
-      msg = msg+'Select Farm<br>';
-    }
-    if(this.phaseModels.farmer_Id == 0 || this.phaseModels.farmer_Id == undefined){
-      msg = msg+'Select Farmer<br>';
-    }
-    if(this.phaseModels.phase_Name == "" || this.phaseModels.phase_Name == undefined || this.phaseModels.phase_Name == "undefined"){
-      msg = msg+'Enter Phase Name<br>';
-    }
-    if(msg == '')
-    {
-      this.farmLayoutServiceObj.SavePhase(this.phaseModels).subscribe((res) => {
-        console.log(res);
-        if (res.count == 0) {
-          this.showNotification(res.message, 4);
-        }
-        else if (res.count > 0) {
-          if (res.data[0].phase_Id > 0) {
-            this.showAddUpdate = false;
-            this.initialize();
-            this.getPhase(this.farmId);
-            this.showNotification('Data Saved Successfull', 2);
-          }
-        }
-      });
-    }
-    else{
-      this.showNotification(msg, 3);
-    }
+  getHouse(phaseId) {
+    // this.farmLayoutServiceObj.GetHouse(phaseId).subscribe((res) => {
+    //   if (res.count == 0) {
+    //     this.houseList = [];
+    //     this.showNotification(res.message, 4);
+    //   }
+    //   else if (res.count > 0) {
+    //     this.houseList = res.data;
+    //   }
+    // });
   }
 
-  SaveHouse(){
-    this.houseModels.phase_Id = this.phaseId;
-    console.log(this.phaseModels);
-    var msg = '';
-    if(this.houseModels.phase_Id == 0 || this.houseModels.phase_Id == undefined ){
-      msg = msg+'Select Phase<br>';
-    }
-    if(this.houseModels.house_Name == "" || this.houseModels.house_Name == undefined || this.houseModels.house_Name == "undefined"){
-      msg = msg+'Enter House Name<br>';
-    }
-    if(msg == '')
-    {
-      this.farmLayoutServiceObj.SaveHouse(this.houseModels).subscribe((res) => {
-        console.log(res);
-        if (res.count == 0) {
-          this.showNotification(res.message, 4);
-        }
-        else if (res.count > 0) {
-          if (res.data[0].house_Id > 0) {
-            this.showAddUpdate = false;
-            this.initialize();
-            this.getPhase(this.farmId);
-            this.showNotification('Data Saved Successfull', 2);
-          }
-        }
-      });
-    }
-    else{
-      this.showNotification(msg, 3);
-    }
+  /* #endregion */
+
+  /* #region  Drop Down */
+  getPest() {
+    this.pestServiceObj.GetPests().subscribe((res) => {
+      if (res.count == 0) {
+        this.pestList = [];
+        this.showNotification(res.message, 4);
+      }
+      else if (res.count > 0) {
+        this.pestList = res.data;
+        console.log(this.pestList);
+      }
+    });
   }
- 
+
+  getCrops() {
+    this.cropServiceObj.GetCrops().subscribe((res) => {
+      if (res.count == 0) {
+        this.cropList = [];
+        this.showNotification(res.message, 4);
+      }
+      else if (res.count > 0) {
+        this.cropList = res.data;
+      }
+    });
+  }
+
+  getBenificials() {
+    this.benificialsServiceObj.GetBenificials().subscribe((res) => {
+      if (res.count == 0) {
+        this.benificialList = [];
+        this.showNotification(res.message, 4);
+      }
+      else if (res.count > 0) {
+        this.benificialList = res.data;
+      }
+    });
+  }
+
+  getDeceases() {
+    this.deceaseServiceObj.GetDeceases().subscribe((res) => {
+      if (res.count == 0) {
+        this.deceaseList = [];
+        this.showNotification(res.message, 4);
+      }
+      else if (res.count > 0) {
+          this.deceaseList = res.data;
+      }
+    });
+  }
+  /* #endregion */
+
+  /* #region  Detail */
+  getFarmsByFarmerId(userId) {
+    this.farmServiceObj.GetFarmsForFarmer(userId).subscribe((res) => {
+      if (res.count == 0) {
+        this.farmList = [];
+        this.showNotification(res.message, 4);
+      }
+      else if (res.count > 0) {
+        this.farmList = res.data;
+      }
+    });
+  }
+  /* #endregion */
+
+  /* #region  General */
   showNotification(Message, type) {
     const types = ['', 'info', 'success', 'warning', 'danger'];
     $.notify({
@@ -318,5 +376,111 @@ export class FarmLayoutComponent implements OnInit {
 
   counter(i: number) {
     return new Array(i);
-}
+  }
+
+  openPost(postsId,postsNo,rowId,rowNo, houseId,houseNo, phaseId,phaseNo) {
+    this.selectedRow = {
+      phase: phaseNo,
+      house: houseNo,
+      row: rowNo,
+      posts: postsNo
+    }
+
+    this.selectedRowIDs = {
+      phase: phaseId,
+      house: houseId,
+      row: rowId,
+      posts: postsId
+    }
+
+    console.log(this.selectedRow);
+    this.popup = true;
+  }
+  
+  DateSettings(){
+    this.CurrentDate = new Date();
+    this.startDate = new Date(this.CurrentDate.getFullYear(), 0, 1);
+    var days = Math.floor((this.CurrentDate - this.startDate) / (24 * 60 * 60 * 1000));
+    this.CurrentWeek = Math.ceil( (this.CurrentDate.getDay() + 1 + days) / 7);
+  }
+
+  public saveHouseCrop = (CropId,houseID) => {
+    let findedData = this.cropList.find(i => i.crop_Id === CropId);
+    if (typeof findedData === 'undefined') {
+       return null;
+    }
+    if(findedData.crop_Image == "" || findedData.crop_Image == 'undefined' || findedData.crop_Image == undefined){
+      return environment.apiBASE+`Resources/default.png`;
+    }
+    this.HouseCropImage[houseID].CropId = CropId;
+    this.HouseCropImage[houseID].HouseId = houseID;
+    this.HouseCropImage[houseID].Src = environment.apiBASE+`${findedData.crop_Image}`;
+    this.HouseCropImage[houseID].CropName = findedData.crop_Name;
+    this.HouseCropImage[houseID].show = true;
+  }
+
+  OnIntensityChange(value){
+    if(value >= 0 && value <= 33)
+    {
+      this.IntensityColor = "#f5f3c4";
+    }
+    if(value >= 34 && value <= 66)
+    {
+      this.IntensityColor = "#f5ddc4";
+    }
+    if(value >= 67)
+    {
+      this.IntensityColor = "#f5c4c4";
+    }
+  }
+
+  CreateFarmLayout(){
+    this.layoutList
+  }
+
+  public getPestImage(PestId){
+    let findedData = this.pestList.find(i => i.pest_Id === PestId);
+    if (typeof findedData === 'undefined') {
+       return environment.apiBASE+`Resources/default.png`;
+    }
+    if(findedData.pest_Image == "" || findedData.pest_Image == 'undefined' || findedData.pest_Image == undefined){
+      return environment.apiBASE+`Resources/default.png`;
+    }
+    return environment.apiBASE+`${findedData.pest_Image}`;
+  }
+
+  public getPestName(PestId){
+    let findedData = this.pestList.find(i => i.pest_Id === PestId);
+    if (typeof findedData === 'undefined') {
+       return null;
+    }
+    return findedData.pest_Name;
+  }
+
+  public getDeceaseImage(DeceaseId){
+    let findedData = this.deceaseList.find(i => i.decease_Id === DeceaseId);
+    if (typeof findedData === 'undefined') {
+       return environment.apiBASE+`Resources/default.png`;
+    }
+    if(findedData.decease_Image == "" || findedData.decease_Image == 'undefined' || findedData.decease_Image == undefined){
+      return environment.apiBASE+`Resources/default.png`;
+    }
+    return environment.apiBASE+`${findedData.decease_Image}`;
+  }
+
+  public getDeceaseName(DeceaseId){
+    let findedData = this.deceaseList.find(i => i.decease_Id === DeceaseId);
+    if (typeof findedData === 'undefined') {
+       return null;
+    }
+    return findedData.decease_Name;
+  }
+
+  public createSimpleImgPath = (serverPath: string) => {
+    if(serverPath == "" || serverPath == 'undefined' || serverPath == undefined){
+      return environment.apiBASE+`Resources/default.png`;
+    }
+    return environment.apiBASE+`${serverPath}`;
+  }
+  /* #endregion */
 }
