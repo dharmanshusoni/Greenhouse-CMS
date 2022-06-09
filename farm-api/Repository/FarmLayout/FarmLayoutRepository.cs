@@ -56,7 +56,6 @@ namespace Repository.FarmLayout
             result.count = result.data.Count;
             return result;
         }
-
         public object SaveLayout(Model.FarmLayout layoutData)
         {
             Result result = new Result();
@@ -114,7 +113,6 @@ namespace Repository.FarmLayout
             result.data_name = "Layout";
             return result;
         }
-
         public object UpdateLayout(Model.FarmLayout layoutData)
         {
             Result result = new Result();
@@ -171,7 +169,6 @@ namespace Repository.FarmLayout
             result.data_name = "Layout";
             return result;
         }
-
         public object GetLayoutData(int farmLayoutId)
         {
             try
@@ -360,6 +357,60 @@ namespace Repository.FarmLayout
             result.data_name = "Row";
             return result;
         }
+        public object UpdateRowCrop(Model.Row rowData)
+        {
+            Result result = new Result();
+            string query = string.Format("InUpDeRow");
+            using (SqlCommand cmd = new SqlCommand(query, con))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@StatementType", "UpCrop");
+                cmd.Parameters.AddWithValue("@id", rowData.RowId);
+                cmd.Parameters.AddWithValue("@Columns", "");
+                cmd.Parameters.AddWithValue("@Row_No", rowData.RowNo);
+                cmd.Parameters.AddWithValue("@Crop_Id", (rowData.CropId));
+                cmd.Parameters.AddWithValue("@House_Id", (rowData.HouseId));
+
+                con.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        Model.Row row = new Model.Row();
+                        row.RowId = (reader.GetValue(0) != null) ? int.Parse(reader.GetInt32(0).ToString()) : 0;
+                        if (row.RowId == -101)
+                        {
+                            result.message = "Row Already Exist";
+                        }
+                        else if (row.RowId == -102)
+                        {
+                            result.message = "InActive Row";
+                        }
+                        else if (row.RowId == -103)
+                        {
+                            result.message = "Not Exist";
+                        }
+                        else
+                        {
+                            rowData.RowId = row.RowId;
+                            result.message = "Data Saved";
+                            result.data.Add(row);
+                        }
+                    }
+                }
+                else
+                {
+                    result.message = "Unable to process request";
+                }
+                con.Close();
+            }
+            result.status = 1;
+            result.count = result.data.Count;
+            result.data_name = "Row";
+            return result;
+        }
         #endregion
 
         #region Post
@@ -445,6 +496,60 @@ namespace Repository.FarmLayout
 
             // Return the week of our adjusted day
             return CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(time, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
+        }
+        public object UpdatePostData(Model.Post postData)
+        {
+            Result result = new Result();
+            string query = string.Format("InUpDePost");
+            using (SqlCommand cmd = new SqlCommand(query, con))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@StatementType", "Up");
+                cmd.Parameters.AddWithValue("@id", postData.PostId);
+                cmd.Parameters.AddWithValue("@Columns", "");
+                cmd.Parameters.AddWithValue("@Post_No", postData.PostNo);
+                cmd.Parameters.AddWithValue("@Pest_Id", (postData.PestId));
+                cmd.Parameters.AddWithValue("@Benificials_Ids", (postData.BenificialsId));
+                cmd.Parameters.AddWithValue("@Intensity", (postData.Intensity));
+                cmd.Parameters.AddWithValue("@Comment", (postData.Comment));
+                cmd.Parameters.AddWithValue("@Row_Id", (postData.RowId));
+                cmd.Parameters.AddWithValue("@Week", (postData.Week));
+                cmd.Parameters.AddWithValue("@CreatedDate", DateTime.Now);
+
+                con.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        Model.Post post = new Model.Post();
+                        post.PostId = (reader.GetValue(0) != null) ? int.Parse(reader.GetInt32(0).ToString()) : 0;
+                        if (post.PostId == -101)
+                        {
+                            result.message = "Post Already Exist";
+                        }
+                        else if (post.PostId == -102)
+                        {
+                            result.message = "InActive Post";
+                        }
+                        else
+                        {
+                            result.message = "Data Saved";
+                            result.data.Add(post);
+                        }
+                    }
+                }
+                else
+                {
+                    result.message = "Unable to process request";
+                }
+                con.Close();
+            }
+            result.status = 1;
+            result.count = result.data.Count;
+            result.data_name = "Post";
+            return result;
         }
         #endregion
 
@@ -580,6 +685,57 @@ namespace Repository.FarmLayout
             if (result.message.Contains("Data Saved"))
             {
                 CreateRow(layoutData, houseData);
+            }
+
+            result.status = 1;
+            result.count = result.data.Count;
+            result.data_name = "House";
+            return result;
+        }
+        public object UpdateHouseCrop(Model.House houseData)
+        {
+            Result result = new Result();
+            string query = string.Format("InUpDeHouse");
+            using (SqlCommand cmd = new SqlCommand(query, con))
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@StatementType", "Up");
+                cmd.Parameters.AddWithValue("@id", houseData.HouseId);
+                cmd.Parameters.AddWithValue("@Columns", "");
+                cmd.Parameters.AddWithValue("@House_No", houseData.HouseNo);
+                cmd.Parameters.AddWithValue("@Crop_Id", (houseData.CropId));
+                cmd.Parameters.AddWithValue("@Phase_Id", (houseData.PhaseId));
+
+                con.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        Model.House house = new Model.House();
+                        house.HouseId = (reader.GetValue(0) != null) ? int.Parse(reader.GetInt32(0).ToString()) : 0;
+                        if (house.HouseId == -101)
+                        {
+                            result.message = "House Already Exist";
+                        }
+                        else if (house.HouseId == -102)
+                        {
+                            result.message = "InActive House";
+                        }
+                        else
+                        {
+                            houseData.HouseId = house.HouseId;
+                            result.message = "Data Saved";
+                            result.data.Add(house);
+                        }
+                    }
+                }
+                else
+                {
+                    result.message = "Unable to process request";
+                }
+                con.Close();
             }
 
             result.status = 1;

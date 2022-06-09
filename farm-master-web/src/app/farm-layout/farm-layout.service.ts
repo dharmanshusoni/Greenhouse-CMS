@@ -12,6 +12,8 @@ const api_BASE_LAYOUT_GET = 'GetLayout?FarmLayoutId=';
 const api_BASE_LAYOUT_DATA_GET = 'GetLayoutData?FarmLayoutId=';
 const api_SAVE_LAYOUT = 'SaveLayout/';
 const api_UPDATE_LAYOUT = 'UpdateLayout/';
+const api_UPDATE_LAYOUTCROP = 'UpdateCrop/';
+const api_UPDATE_POST_DATA = 'UpdatePost/';
 
 const api_BASE_PHASE_GET = 'GetPhase?FarmId=';
 const api_SAVE_PHASE = 'SavePhase/';
@@ -76,6 +78,28 @@ export class FarmLayoutService {
     }
     const body = JSON.stringify(layout);
     return this.http.post(api_URL + api_BASE_FARMLAYOUT + api_UPDATE_LAYOUT, body, { 'headers': headers });
+  }
+
+  UpdateFarmLayoutCrop(house: any): Observable<any> {
+    const headers = {
+      'content-type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT',
+      'Access-Control-Allow-Credentials': 'true'
+    }
+    const body = JSON.stringify(house);
+    return this.http.post(api_URL + api_BASE_FARMLAYOUT + api_UPDATE_LAYOUTCROP, body, { 'headers': headers });
+  }
+
+  UpdatePostData(post: any): Observable<any> {
+    const headers = {
+      'content-type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT',
+      'Access-Control-Allow-Credentials': 'true'
+    }
+    const body = JSON.stringify(post);
+    return this.http.post(api_URL + api_BASE_FARMLAYOUT + api_UPDATE_POST_DATA, body, { 'headers': headers });
   }
 
   GetPhase(farmId): Observable<any> {

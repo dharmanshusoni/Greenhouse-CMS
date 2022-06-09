@@ -111,6 +111,48 @@ namespace farm_api.Controllers
                 return repository.UpdateLayout(layout);
             }
         }
+
+        [EnableCors()]
+        [HttpPost]
+        [Route("UpdateCrop")]
+        public Object UpdateCrop([FromBody] House layout)
+        {
+            if (layout.CropId == 0)
+            {
+                return JsonConvert.SerializeObject(new Result { message = "Select Crop" });
+            }
+            if (layout.HouseId == 0)
+            {
+                return JsonConvert.SerializeObject(new Result { message = "Select House" });
+            }
+            else
+            {
+                Row rData = new Row();
+                rData.CropId = layout.CropId;
+                rData.HouseId = layout.HouseId;
+                Object a = repository.UpdateRowCrop(rData);
+                return repository.UpdateHouseCrop(layout);
+            }
+        }
+
+        [EnableCors()]
+        [HttpPost]
+        [Route("UpdatePost")]
+        public Object UpdatePost([FromBody] Post postData)
+        {
+            if (postData.PostId == 0)
+            {
+                return JsonConvert.SerializeObject(new Result { message = "Select Post" });
+            }
+            if (postData.Week == 0)
+            {
+                return JsonConvert.SerializeObject(new Result { message = "Select Week" });
+            }
+            else
+            {
+                return repository.UpdatePostData(postData);
+            }
+        }
         #endregion
 
         #region Phase

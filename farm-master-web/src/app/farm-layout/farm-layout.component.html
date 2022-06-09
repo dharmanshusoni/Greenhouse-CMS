@@ -100,7 +100,7 @@
                   <div class="col-md-4" *ngIf="showHouseCrop">
                     <mat-form-field appearance="fill">
                       <mat-label>Crop</mat-label>
-                      <mat-select [(ngModel)]="hous.cropId" (selectionChange)="saveHouseCrop($event.value,ib)">
+                      <mat-select [(ngModel)]="hous.cropId" (selectionChange)="saveHouseCrop($event.value,hous.houseId)">
                         <mat-option *ngFor="let crop of cropList" [value]="crop.crop_Id">
                           {{crop.crop_Name}}
                         </mat-option>
@@ -129,12 +129,12 @@
                             P{{ibsp+1}}
                           </button>
                         </div>
-                        <div *ngIf="HouseCropImage[ib].show === true" class="box stack-top"
+                        <div *ngIf="hous.cropId > 0" class="box stack-top"
                           style="box-shadow: none;margin: 0px;position: absolute;">
                           <button type="button" mat-raised-button class="btn btn-just-icon"
                             style="width: 200px;margin: 15% 0px 0px 100%;background-color: white;color: green;z-index: 1;">
-                            <img [src]="HouseCropImage[ib].Src" style="height: 100%;">
-                            {{HouseCropImage[ib].CropName}}
+                            <img [src]="getCropImage(hous.cropId)" style="height: 100%;">
+                            {{getCropName(hous.cropId)}}
                           </button>
                         </div>
                       </div>
@@ -178,8 +178,8 @@
           <img [src]="getDeceaseImage(decease_Id)" alt="Decease" style="width:50px; height:50px;">
           <div>{{getDeceaseName(decease_Id)}}</div>
         </div>
-        <div *ngIf="value != null" class="col-sm-4 img-box" [ngStyle]="{'background-color': IntensityColor}">
-          <div>Intensity  {{value}}%</div>
+        <div *ngIf="ivalue != 0" class="col-sm-4 img-box" [ngStyle]="{'background-color': IntensityColor}">
+          <div>Intensity  {{ivalue}}%</div>
         </div>
     </div>
     </div>
@@ -240,8 +240,8 @@
           <label >Intensity</label>
         </div>
         <div class="col-md-10">
-          <mat-slider class="slider-width" [max]="100" [min]="1" [step]="1" (change)="OnIntensityChange(value)"
-            [thumbLabel]="true" [(ngModel)]="value"
+          <mat-slider class="slider-width" [max]="100" [min]="1" [step]="1" (change)="OnIntensityChange(ivalue)"
+            [thumbLabel]="true" [(ngModel)]="ivalue"
             aria-labelledby="intensity-label">
           </mat-slider>
         </div>
@@ -257,13 +257,14 @@
             <textarea matInput
             cdkTextareaAutosize
             #autosize="cdkTextareaAutosize"
+            [(ngModel)]="comment"
             cdkAutosizeMinRows="3"></textarea>
           </mat-form-field>
         </div>
       </div>
 
       <div class="row" style="font-size: 12px">
-        <button mat-raised-button type="submit" class="btn btn-danger pull-right" >Save Data</button>
+        <button mat-raised-button type="submit" class="btn btn-danger pull-right" (click)="savePost()" >Save Data</button>
       </div>
 		</div>
 	</div>

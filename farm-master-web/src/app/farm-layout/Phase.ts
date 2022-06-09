@@ -6,9 +6,10 @@ export class Phase {
  }
 
  export class House { 
-    phase_Id:number;
-    house_Name:string;
-    house_Id:number;
+   HouseId:number;
+   HouseNo:number;
+   CropId:number;
+   PhaseId:number;
  }
 
  export class Layout { 
@@ -19,4 +20,15 @@ export class Phase {
    rows:number;
    farm_Id:number;
    posts:number;
+ }
+
+ export class Post { 
+  PostId:number;
+  PostNo:number;
+  PestId:number;
+  BenificialsId:string;
+  Intensity:number;
+  Comment:string;
+  Week :number;
+  RowId:number;
 }

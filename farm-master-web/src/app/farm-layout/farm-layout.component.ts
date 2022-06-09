@@ -7,7 +7,7 @@ import { FarmService } from 'app/farm/Farm.service';
 import { PestService } from 'app/pest/Pest.service';
 import { environment } from 'environments/environment';
 import { FarmLayoutService } from './farm-layout.service';
-import { Layout, Phase, House } from './Phase';
+import { Layout, Phase, House, Post } from './Phase';
 declare var $: any;
 
 @Component({
@@ -63,8 +63,9 @@ export class FarmLayoutComponent implements OnInit {
     posts: 0,
   }
 
-  HouseCropImage:any;
   IntensityColor='#f5f3c4';
+  ivalue=0;
+  comment='';
   /* #endregion */
 
   /* #region  OnInit */
@@ -88,7 +89,6 @@ export class FarmLayoutComponent implements OnInit {
     this.phaseModels.phase_Id = 0;
 
     this.houseModels = new House();
-    this.houseModels.house_Id = 0;
 
     this.getFarmsByFarmerId(this.userId);
     this.getPest();
@@ -123,18 +123,7 @@ export class FarmLayoutComponent implements OnInit {
       }
       else if (res.count > 0) {
         this.layoutList = res.data;        
-        this.HouseCropImage = new Array(this.layoutList[0].house);
         this.getLayoutData(farmId);
-        for (let index = 0; index < this.layoutList[1].house; index++) {
-          this.HouseCropImage[index] = 
-            {
-              CropId : 0,
-              CropName : '',
-              HouseId : index,
-              Src:'',
-              show:false
-            }
-        }
       }
     });
   }
@@ -392,9 +381,56 @@ export class FarmLayoutComponent implements OnInit {
       row: rowId,
       posts: postsId
     }
-
-    console.log(this.selectedRow);
+    console.log(this.selectedRowIDs);
+    let pData = this.phaseList.find(i => i.phaseId === phaseId);
+    if(pData!=null){
+      let hData = pData.houseData.find(i => i.houseId === houseId);
+      if(hData!=null){
+        let rData = hData.rowData.find(i => i.rowId === rowId);
+        if(rData!=null){
+          let poData = rData.postData.find(i => i.postId === postsId);
+          console.log(poData);
+          this.CurrentWeek = poData.week;
+          this.comment = poData.comment;
+          this.decease_Id = Number(poData.benificialsId);
+          this.ivalue = poData.intensity;
+          this.pest_Id = poData.pestId;
+        }
+      }
+    }
+    
+    // let postData = new Post();
+    // postData.PostId = this.selectedRowIDs.posts;
+    // postData.Week = this.CurrentWeek;
+    // postData.PestId = this.pest_Id;
+    // postData.Intensity = this.ivalue; 
+    // postData.Comment = this.comment;
+    // postData.BenificialsId = this.decease_Id.toString();
+    // postData.RowId = this.selectedRowIDs.row;
     this.popup = true;
+  }
+
+  savePost() {
+    let postData = new Post();
+    postData.PostId = this.selectedRowIDs.posts;
+    postData.Week = this.CurrentWeek;
+    postData.PestId = this.pest_Id;
+    postData.Intensity = this.ivalue; 
+    postData.Comment = this.comment;
+    postData.BenificialsId = this.decease_Id.toString();
+    postData.RowId = this.selectedRowIDs.row;
+    console.log(postData);
+    this.farmLayoutServiceObj.UpdatePostData(postData).subscribe((res) => {
+      if (res.count == 0) {
+        this.showNotification(res.message, 4);
+      }
+      else if (res.count > 0) {
+          this.showAddUpdate = false;
+          this.initialize();
+          this.getLayout(0, this.farmId);
+          this.showNotification('Data Updated Successfull', 2);
+      }
+    });
   }
   
   DateSettings(){
@@ -405,18 +441,19 @@ export class FarmLayoutComponent implements OnInit {
   }
 
   public saveHouseCrop = (CropId,houseID) => {
-    let findedData = this.cropList.find(i => i.crop_Id === CropId);
-    if (typeof findedData === 'undefined') {
-       return null;
-    }
-    if(findedData.crop_Image == "" || findedData.crop_Image == 'undefined' || findedData.crop_Image == undefined){
-      return environment.apiBASE+`Resources/default.png`;
-    }
-    this.HouseCropImage[houseID].CropId = CropId;
-    this.HouseCropImage[houseID].HouseId = houseID;
-    this.HouseCropImage[houseID].Src = environment.apiBASE+`${findedData.crop_Image}`;
-    this.HouseCropImage[houseID].CropName = findedData.crop_Name;
-    this.HouseCropImage[houseID].show = true;
+    this.houseModels.HouseId = houseID;
+    this.houseModels.CropId = CropId;
+    this.farmLayoutServiceObj.UpdateFarmLayoutCrop(this.houseModels).subscribe((res) => {
+      if (res.count == 0) {
+        this.showNotification(res.message, 4);
+      }
+      else if (res.count > 0) {
+          this.showAddUpdate = false;
+          this.initialize();
+          this.getLayout(0, this.farmId);
+          this.showNotification('Data Updated Successfull', 2);
+      }
+    });
   }
 
   OnIntensityChange(value){
@@ -436,6 +473,25 @@ export class FarmLayoutComponent implements OnInit {
 
   CreateFarmLayout(){
     this.layoutList
+  }
+
+  public getCropImage(CropId){
+    let findedData = this.cropList.find(i => i.crop_Id === CropId);
+    if (typeof findedData === 'undefined') {
+       return environment.apiBASE+`Resources/default.png`;
+    }
+    if(findedData.crop_Image == "" || findedData.crop_Image == 'undefined' || findedData.crop_Image == undefined){
+      return environment.apiBASE+`Resources/default.png`;
+    }
+    return environment.apiBASE+`${findedData.crop_Image}`;
+  }
+
+  public getCropName(CropId){
+    let findedData = this.cropList.find(i => i.crop_Id === CropId);
+    if (typeof findedData === 'undefined') {
+       return null;
+    }
+    return findedData.crop_Name;
   }
 
   public getPestImage(PestId){

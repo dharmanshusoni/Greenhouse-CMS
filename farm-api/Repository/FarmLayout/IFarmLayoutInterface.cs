@@ -15,14 +15,16 @@ namespace Repository.FarmLayout
         Object GetLayoutData(int farmLayoutId);
         #endregion
 
-        #region Phase
-        //Object GetPhase(int farmId);
-        //Object SavePhase(Model.Phase phaseData);
+        #region House
+        Object UpdateHouseCrop(Model.House house);
         #endregion
 
-        #region House
-        //Object GetHouse(int phaseId);
-        //Object SaveHouse(Model.House houseData);
+        #region Row
+        Object UpdateRowCrop(Model.Row row);
+        #endregion
+
+        #region
+        Object UpdatePostData(Model.Post post);
         #endregion
     }
 }
