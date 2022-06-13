@@ -395,19 +395,11 @@ export class FarmLayoutComponent implements OnInit {
           this.decease_Id = Number(poData.benificialsId);
           this.ivalue = poData.intensity;
           this.pest_Id = poData.pestId;
+          this.popup = true;
         }
       }
     }
-    
-    // let postData = new Post();
-    // postData.PostId = this.selectedRowIDs.posts;
-    // postData.Week = this.CurrentWeek;
-    // postData.PestId = this.pest_Id;
-    // postData.Intensity = this.ivalue; 
-    // postData.Comment = this.comment;
-    // postData.BenificialsId = this.decease_Id.toString();
-    // postData.RowId = this.selectedRowIDs.row;
-    this.popup = true;
+
   }
 
   savePost() {

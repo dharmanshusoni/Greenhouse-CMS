@@ -107,6 +107,16 @@
                       </mat-select>
                     </mat-form-field>
                   </div>
+                  <div class="col-md-4" *ngIf="showHouseCrop">
+                    <mat-form-field appearance="fill">
+                      <mat-label>Crop</mat-label>
+                      <mat-select [(ngModel)]="hous.cropId" (selectionChange)="saveHouseCrop($event.value,hous.houseId)">
+                        <mat-option *ngFor="let crop of cropList" [value]="crop.crop_Id">
+                          {{crop.crop_Name}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
                 </div>
               </div>
         
