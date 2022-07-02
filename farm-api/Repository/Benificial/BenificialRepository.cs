@@ -53,6 +53,41 @@ namespace Repository.Benificial
             return result;
         }
 
+        public object GetBenificialDetailByPestId(int PestId)
+        {
+            Result result = new Result();
+            string query = string.Format("GetBenificialsByPestId " + PestId);
+            using (SqlCommand cmd = new SqlCommand(query, con))
+            {
+                con.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    result.message = "Data Found";
+                    while (reader.Read())
+                    {
+                        Model.Benificials benificials = new Model.Benificials();
+                        benificials.Benificials_ID = (reader.GetValue(0) != null) ? int.Parse(reader.GetInt32(0).ToString()) : 0;
+                        benificials.Benificial_Name = (reader.GetValue(1) != null) ? reader.GetString(1) : string.Empty;
+                        benificials.Benificial_Description = (reader.GetValue(2) != null) ? reader.GetString(2) : string.Empty;
+                        benificials.Benificial_Image = (reader.GetValue(3) != null) ? reader.GetString(3) : string.Empty;
+                        benificials.Benificial_Pests = (!reader.IsDBNull(4)) ? reader.GetString(4) : string.Empty;
+
+                        result.data.Add(benificials);
+                    }
+                }
+                else
+                {
+                    result.message = "No Data Found";
+                }
+                con.Close();
+            }
+            result.data_name = "Benificials";
+            result.status = 1;
+            result.count = result.data.Count;
+            return result;
+        }
+
         public object SaveBenificial(Model.Benificials benificialData)
         {
             Result result = new Result();

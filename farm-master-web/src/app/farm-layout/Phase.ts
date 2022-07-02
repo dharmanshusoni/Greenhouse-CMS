@@ -31,4 +31,6 @@ export class Phase {
   Comment:string;
   Week :number;
   RowId:number;
+  DeceaseId:number;
+  Pic:string;
 }

@@ -7,6 +7,7 @@ import { environment } from 'environments/environment';
 
 const api_URL = environment.apiURL;
 const api_BASE_BENIFICIAL_GET = 'GetBenificialDetail?BenificialsId=';
+const api_BASE_BENIFICIALBYPEST_GET = 'GetBenificialDetailByPestId?PestId=';
 const api_BASE_BENIFICIAL = 'Benificial/';
 const api_SAVE_BENIFICIAL = 'SaveBenificial/';
 const api_UPDATE_BENIFICIAL = 'UpdateBenificial/';
@@ -41,6 +42,19 @@ export class BenificialsService {
       'Access-Control-Allow-Credentials': 'true'
     }
     return this.http.get(api_URL + api_BASE_BENIFICIAL + api_BASE_BENIFICIAL_GET + BenificialId, { 'headers': headers }).pipe(map(data => {
+      if (data === null) return throwError("null data");
+      return data;
+    }));
+  }
+
+  getBenificialDetailByPestId(PestId): Observable<any> {
+    const headers = {
+      'content-type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT',
+      'Access-Control-Allow-Credentials': 'true'
+    }
+    return this.http.get(api_URL + api_BASE_BENIFICIAL + api_BASE_BENIFICIALBYPEST_GET + PestId, { 'headers': headers }).pipe(map(data => {
       if (data === null) return throwError("null data");
       return data;
     }));

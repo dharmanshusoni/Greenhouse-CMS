@@ -11,5 +11,6 @@ namespace Repository.Benificial
         Object SaveBenificial(Model.Benificials benificial);
         Object UpdateBenificial(Model.Benificials benificial);
         Object GetBenificialDetail(int benificialId);
+        Object GetBenificialDetailByPestId(int pestId); 
     }
 }

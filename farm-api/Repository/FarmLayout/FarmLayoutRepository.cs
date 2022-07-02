@@ -247,6 +247,9 @@ namespace Repository.FarmLayout
                                                                             post.RowId = (postReader.GetValue(6) != null) ? int.Parse(postReader.GetInt32(6).ToString()) : 0;
                                                                             post.Week = (postReader.GetValue(7) != null) ? int.Parse(postReader.GetInt32(7).ToString()) : 0;
                                                                             post.CreatedDate = (postReader.GetValue(8) != null) ? Convert.ToDateTime(postReader.GetDateTime(8)) : DateTime.Now;
+                                                                            post.DeceaseId = (!postReader.IsDBNull(9)) ? int.Parse(postReader.GetInt32(9).ToString()) : 0;
+                                                                            post.Pic = (postReader.IsDBNull(10)) ? string.Empty : postReader.GetString(10).ToString();
+                                                                            
                                                                             row.PostData.Add(post);
                                                                         }
                                                                     }
@@ -447,6 +450,8 @@ namespace Repository.FarmLayout
                 cmd.Parameters.AddWithValue("@Row_Id", (postData.RowId));
                 cmd.Parameters.AddWithValue("@Week", (postData.Week));
                 cmd.Parameters.AddWithValue("@CreatedDate", (postData.CreatedDate));
+                cmd.Parameters.AddWithValue("@Decease_Id", (postData.DeceaseId));
+                cmd.Parameters.AddWithValue("@Pic", (postData.Pic));
 
                 con.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
@@ -515,6 +520,8 @@ namespace Repository.FarmLayout
                 cmd.Parameters.AddWithValue("@Row_Id", (postData.RowId));
                 cmd.Parameters.AddWithValue("@Week", (postData.Week));
                 cmd.Parameters.AddWithValue("@CreatedDate", DateTime.Now);
+                cmd.Parameters.AddWithValue("@Decease_Id", (postData.DeceaseId));
+                cmd.Parameters.AddWithValue("@Pic", (postData.Pic));
 
                 con.Open();
                 SqlDataReader reader = cmd.ExecuteReader();

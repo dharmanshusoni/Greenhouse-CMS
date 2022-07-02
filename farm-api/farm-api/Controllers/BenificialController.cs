@@ -45,6 +45,22 @@ namespace farm_api.Controllers
         }
 
         [EnableCors()]
+        [HttpGet]
+        [Route("GetBenificialDetailByPestId")]
+        public Object GetBenificialDetailByPestId(int PestId)
+        {
+            if (PestId < 0)
+            {
+                return JsonConvert.SerializeObject(new Result { message = "No Benificial Found" });
+            }
+            else
+            {
+                return repository.GetBenificialDetailByPestId(PestId);
+            }
+
+        }
+
+        [EnableCors()]
         [HttpPost]
         [Route("SaveBenificial")]
         public Object SaveBenificial([FromBody] Benificials benificials)

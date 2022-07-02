@@ -28,6 +28,8 @@ namespace Model
         public string Comment { get; set; }
         public int Week { get; set; }
         public int RowId { get; set; }
+        public int DeceaseId { get; set; }
+        public string Pic { get; set; }
         public DateTime CreatedDate { get; set; }
     }
 

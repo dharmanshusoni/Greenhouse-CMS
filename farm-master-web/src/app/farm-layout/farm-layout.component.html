@@ -222,7 +222,7 @@
         <div class="col-md-10">
           <mat-form-field appearance="fill">
             <mat-label>Pest</mat-label>
-            <mat-select [(ngModel)]="pest_Id">
+            <mat-select [(ngModel)]="pest_Id" (selectionChange)="getBenificials(pest_Id)">
               <mat-option *ngFor="let pest of pestList" [value]="pest.pest_Id" >
                 {{pest.pest_Name}}
               </mat-option>

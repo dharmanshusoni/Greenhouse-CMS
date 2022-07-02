@@ -93,7 +93,7 @@ export class FarmLayoutComponent implements OnInit {
     this.getFarmsByFarmerId(this.userId);
     this.getPest();
     this.getCrops();
-    this.getBenificials();
+    //this.getBenificials();
     this.DateSettings();
     this.getDeceases();
    
@@ -296,11 +296,11 @@ export class FarmLayoutComponent implements OnInit {
     });
   }
 
-  getBenificials() {
-    this.benificialsServiceObj.GetBenificials().subscribe((res) => {
+  getBenificials(pest_Id) {
+    console.log("getting data for pest "+pest_Id);
+    this.benificialsServiceObj.getBenificialDetailByPestId(pest_Id).subscribe((res) => {
       if (res.count == 0) {
         this.benificialList = [];
-        this.showNotification(res.message, 4);
       }
       else if (res.count > 0) {
         this.benificialList = res.data;
@@ -396,6 +396,7 @@ export class FarmLayoutComponent implements OnInit {
           this.ivalue = poData.intensity;
           this.pest_Id = poData.pestId;
           this.popup = true;
+          this.getBenificials(this.pest_Id);
         }
       }
     }
@@ -411,6 +412,8 @@ export class FarmLayoutComponent implements OnInit {
     postData.Comment = this.comment;
     postData.BenificialsId = this.decease_Id.toString();
     postData.RowId = this.selectedRowIDs.row;
+    postData.DeceaseId = this.decease_Id;
+    postData.Pic = "Resources/default.png"
     console.log(postData);
     this.farmLayoutServiceObj.UpdatePostData(postData).subscribe((res) => {
       if (res.count == 0) {
