@@ -275,6 +275,21 @@
         </div>
       </div>
 
+      <div class="row">
+          <div class="col-md-4" >
+              <input type="file" accept="image/*" #file placeholder="Choose file" (change)="uploadFile(file.files)" style="display:none;">
+              <button type="button" class="btn btn-success" (click)="file.click()">Select Image</button>
+          </div>
+          <div class="col-md-8" >
+            <span><img [src]="createImgPath(post_Image)" alt="post picture" style="width:120px; height:120px;"></span>
+            <span class="upload" *ngIf="progress > 0">
+              {{progress}}%
+            </span>
+            <span class="upload" *ngIf="message">
+              {{message}}
+            </span>
+          </div>
+      </div>
 
       <div class="row" style="font-size: 12px">
         <div class="col-md-12" >
@@ -293,6 +308,7 @@
 
       <div class="row" style="font-size: 12px">
         <button mat-raised-button type="submit" class="btn btn-danger pull-right" (click)="savePost()" >Save Data</button>
+        <button mat-raised-button type="submit" class="btn pull-left" (click)="getPreviousWeekData()" >Previous Data</button>
       </div>
 		</div>
 	</div>

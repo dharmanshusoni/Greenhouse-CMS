@@ -1,3 +1,4 @@
+import { HttpClient, HttpEventType } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { BenificialsService } from 'app/benificials/Benificials.service';
@@ -66,10 +67,14 @@ export class FarmLayoutComponent implements OnInit {
   IntensityColor='#f5f3c4';
   ivalue=0;
   comment='';
+  public progress: number;
+  public message: string;
+  public imageResponse: {dbPath: ''};
+  public post_Image:string;
   /* #endregion */
 
   /* #region  OnInit */
-  constructor(farmLayoutServiceObj: FarmLayoutService, farmServiceObj: FarmService,deceaseServiceObj: DeceaseService, cropServiceObj: CropsService, pestServiceObj: PestService, benificialsServiceObj: BenificialsService, private router: Router) {
+  constructor(private http: HttpClient,farmLayoutServiceObj: FarmLayoutService, farmServiceObj: FarmService,deceaseServiceObj: DeceaseService, cropServiceObj: CropsService, pestServiceObj: PestService, benificialsServiceObj: BenificialsService, private router: Router) {
     this.farmLayoutServiceObj = farmLayoutServiceObj;
     this.farmServiceObj = farmServiceObj;
     this.pestServiceObj = pestServiceObj;
@@ -382,6 +387,8 @@ export class FarmLayoutComponent implements OnInit {
       posts: postsId
     }
     console.log(this.selectedRowIDs);
+    
+    this.DateSettings();
     let pData = this.phaseList.find(i => i.phaseId === phaseId);
     if(pData!=null){
       let hData = pData.houseData.find(i => i.houseId === houseId);
@@ -389,18 +396,71 @@ export class FarmLayoutComponent implements OnInit {
         let rData = hData.rowData.find(i => i.rowId === rowId);
         if(rData!=null){
           let poData = rData.postData.find(i => i.postId === postsId);
-          console.log(poData);
-          this.CurrentWeek = poData.week;
-          this.comment = poData.comment;
-          this.decease_Id = Number(poData.benificialsId);
-          this.ivalue = poData.intensity;
-          this.pest_Id = poData.pestId;
-          this.popup = true;
+          if(this.CurrentWeek == poData.week){
+            this.CurrentWeek = poData.week;
+            this.comment = poData.comment;
+            this.decease_Id = Number(poData.benificialsId);
+            this.ivalue = poData.intensity;
+            this.pest_Id = poData.pestId;
+            this.post_Image =  poData.pic;
+          }
+          else{
+            this.comment = "";
+            this.decease_Id = 0;
+            this.ivalue = 0;
+            this.pest_Id = 0;
+            this.post_Image =  "";
+          }
           this.getBenificials(this.pest_Id);
+          this.popup = true;
         }
       }
     }
+  }
 
+  getPreviousWeekData(){
+    this.CurrentWeek = this.CurrentWeek -1;
+    let pData = this.phaseList.find(i => i.phaseId === this.selectedRowIDs.phase);
+    if(pData!=null){
+      let hData = pData.houseData.find(i => i.houseId === this.selectedRowIDs.house);
+      if(hData!=null){
+        let rData = hData.rowData.find(i => i.rowId === this.selectedRowIDs.row);
+        if(rData!=null){
+          try {
+            console.log(rData.postData);
+            let poData = rData.postData.find(i => i.week === this.CurrentWeek && i.postId === this.selectedRowIDs.posts);
+            console.log(rData.postData);
+            if(this.CurrentWeek == poData.week){
+              this.CurrentWeek = poData.week;
+              this.comment = poData.comment;
+              this.decease_Id = Number(poData.benificialsId);
+              this.ivalue = poData.intensity;
+              this.pest_Id = poData.pestId;
+              this.post_Image =  poData.pic;
+            }
+            else{
+              //this.DateSettings();
+              this.comment = "";
+              this.decease_Id = 0;
+              this.ivalue = 0;
+              this.pest_Id = 0;
+              this.post_Image = "";
+            }
+          }
+          catch(err) {
+            this.comment = "";
+            this.decease_Id = 0;
+            this.ivalue = 0;
+            this.pest_Id = 0;
+            this.post_Image = "";
+          }
+          
+          this.getBenificials(this.pest_Id);
+          this.popup = true;
+        }
+
+      }
+    }
   }
 
   savePost() {
@@ -413,7 +473,7 @@ export class FarmLayoutComponent implements OnInit {
     postData.BenificialsId = this.decease_Id.toString();
     postData.RowId = this.selectedRowIDs.row;
     postData.DeceaseId = this.decease_Id;
-    postData.Pic = "Resources/default.png"
+    postData.Pic = this.post_Image;
     console.log(postData);
     this.farmLayoutServiceObj.UpdatePostData(postData).subscribe((res) => {
       if (res.count == 0) {
@@ -528,6 +588,36 @@ export class FarmLayoutComponent implements OnInit {
   }
 
   public createSimpleImgPath = (serverPath: string) => {
+    if(serverPath == "" || serverPath == 'undefined' || serverPath == undefined){
+      return environment.apiBASE+`Resources/default.png`;
+    }
+    return environment.apiBASE+`${serverPath}`;
+  }
+
+  public uploadFile = (files) => {
+    if (files.length === 0) {
+      return;
+    }
+    let fileToUpload = <File>files[0];
+    const formData = new FormData();
+    formData.append('file', fileToUpload, fileToUpload.name);
+    this.http.post(environment.apiURL+'upload?_context=Post', formData, {reportProgress: true, observe: 'events'})
+      .subscribe(event => {
+        if (event.type === HttpEventType.UploadProgress)
+          this.progress = Math.round(100 * event.loaded / event.total);
+        else if (event.type === HttpEventType.Response) {
+          this.message = 'Upload success.';
+          this.uploadFinished(event.body);
+        }
+      });
+  }
+
+  public uploadFinished = (event) => {
+    this.imageResponse = event;
+    this.post_Image = this.imageResponse.dbPath;
+  }
+
+  public createImgPath = (serverPath: string) => {
     if(serverPath == "" || serverPath == 'undefined' || serverPath == undefined){
       return environment.apiBASE+`Resources/default.png`;
     }
