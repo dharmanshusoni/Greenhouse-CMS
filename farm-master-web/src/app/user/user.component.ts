@@ -133,6 +133,10 @@ export class UserComponent implements OnInit {
     if (this.userModels.user_Phone == '' || this.userModels.user_Phone == undefined || this.userModels.user_Phone == 'undefined') {
       msg = msg + 'Enter Phone No<br>';
     }
+    if (this.userModels.user_Image == '' || this.userModels.user_Image == undefined || this.userModels.user_Image == 'undefined') {
+      //msg =  msg+'Select Image<br>';
+      this.userModels.user_Image = "Resources/default.png";
+    }
     if (msg == '') {
       this.profileServiceObj.UpdateUser(this.userModels).subscribe((res) => {
         console.log(res);
@@ -171,6 +175,10 @@ export class UserComponent implements OnInit {
     }
     if (this.userModels.user_Phone == '' || this.userModels.user_Phone == undefined || this.userModels.user_Phone == 'undefined') {
       msg = msg + 'Enter Phone No<br>';
+    }
+    if (this.userModels.user_Image == '' || this.userModels.user_Image == undefined || this.userModels.user_Image == 'undefined') {
+      //msg =  msg+'Select Image<br>';
+      this.userModels.user_Image = "Resources/default.png";
     }
     if (msg == '') {
       this.profileServiceObj.SaveUser(this.userModels).subscribe((res) => {

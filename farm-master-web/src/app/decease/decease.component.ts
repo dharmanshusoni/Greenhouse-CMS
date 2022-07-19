@@ -126,7 +126,8 @@ export class DeceaseComponent implements OnInit {
       msg =  msg+'Invalid Stickey Card<br>';
     }
     if(this.deceaseModels.decease_Image == '' || this.deceaseModels.decease_Image == undefined || this.deceaseModels.decease_Image == 'undefined'){
-      msg = msg+'Enter Decease Image<br>';
+      //msg =  msg+'Select Image<br>';
+      this.deceaseModels.decease_Image = "Resources/default.png";
     }
     if(msg == '')
     {
@@ -162,7 +163,8 @@ export class DeceaseComponent implements OnInit {
       msg =  msg+'Invalid Stickey Card<br>';
     }
     if(this.deceaseModels.decease_Image == '' || this.deceaseModels.decease_Image == undefined || this.deceaseModels.decease_Image == 'undefined'){
-      msg = msg+'Enter Decease Image<br>';
+      //msg =  msg+'Select Image<br>';
+      this.deceaseModels.decease_Image = "Resources/default.png";
     }
     if(msg == '')
     {

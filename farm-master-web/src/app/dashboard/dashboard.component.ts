@@ -1,6 +1,10 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { FarmService } from 'app/farm/Farm.service';
+import { UsersService } from 'app/user/Users.service';
 import * as Chartist from 'chartist';
+declare var $: any;
 
 @Component({
   selector: 'app-dashboard',
@@ -8,8 +12,19 @@ import * as Chartist from 'chartist';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
-      
-  constructor(private router: Router) { }
+     
+  profileServiceObj: UsersService;
+  userList: any;
+  userTypeList: any;
+  userId: any;
+
+  weekNoFilter:'';
+  yearFilter:'';
+  years = [2020,2021,2022];
+
+  constructor(profileServiceObj: UsersService, private router: Router,private http: HttpClient) {
+    this.profileServiceObj = profileServiceObj;
+   }
   startAnimationForLineChart(chart){
       let seq: any, delays: any, durations: any;
       seq = 0;
@@ -75,6 +90,9 @@ export class DashboardComponent implements OnInit {
       }
       else{
         console.log('user logged in : '+sessionStorage.getItem('userId'));
+        this.getUserType(0);
+        this.userId = sessionStorage.getItem('userId');
+       this.getAllUsers();
       }
      
 
@@ -155,6 +173,56 @@ export class DashboardComponent implements OnInit {
 
       //start animation for the Emails Subscription Chart
       this.startAnimationForBarChart(websiteViewsChart);
+  }
+  getUserType(userTypeId){
+    this.profileServiceObj.getUserType(userTypeId).subscribe((res) => {
+      if (res.count == 0) {
+        this.showNotification(res.message, 4);
+      }
+      else if (res.count > 0) {
+          this.userTypeList = res.data;
+        }
+    });
+  }
+  getAllUsers() {
+    this.profileServiceObj.getUserDetail(this.userId,0).subscribe((res) => {
+      if (res.count == 0) {
+        this.showNotification(res.message, 4);
+      }
+      else if (res.count > 0) {
+          this.userList = res.data;
+      }
+    });
+  }
+  counter(i: number) {
+    if(i>0)
+      return new Array(i+1);
+  }
+  showNotification(Message, type) {
+    const types = ['', 'info', 'success', 'warning', 'danger'];
+    $.notify({
+      icon: "notifications",
+      message: Message
+
+    }, {
+      type: types[type],
+      timer: 1000,
+      placement: {
+        from: 'top',
+        align: 'center'
+      },
+      template:
+        '<div data-notify="container" class="col-xl-4 col-lg-4 col-11 col-sm-4 col-md-4 alert alert-{0} alert-with-icon" role="alert">' +
+        '<button mat-button  type="button" aria-hidden="true" class="close mat-button" data-notify="dismiss">  <i class="material-icons">close</i></button>' +
+        '<i class="material-icons" data-notify="icon">notifications</i> ' +
+        '<span data-notify="title">{1}</span> ' +
+        '<span data-notify="message">{2}</span>' +
+        '<div class="progress" data-notify="progressbar">' +
+        '<div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>' +
+        '</div>' +
+        '<a href="{3}" target="{4}" data-notify="url"></a>' +
+        '</div>'
+    });
   }
 
 }

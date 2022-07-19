@@ -78,10 +78,11 @@ export class StickeyCardComponent implements OnInit {
   Update(){
     var msg = '';
     if(this.stickeyCardModels.stickey_Card_color == '' || this.stickeyCardModels.stickey_Card_color == undefined || this.stickeyCardModels.stickey_Card_color == 'undefined'){
-      msg = msg+'Enter Pest Name<br>';
+      msg = msg+'Enter Color<br>';
     }
     if(this.stickeyCardModels.stickey_Card_Image == '' || this.stickeyCardModels.stickey_Card_Image == undefined || this.stickeyCardModels.stickey_Card_Image == 'undefined'){
-      msg =  msg+'Enter Details<br>';
+      //msg =  msg+'Select Image<br>';
+      this.stickeyCardModels.stickey_Card_Image = "Resources/default.png";
     }
     if(this.stickeyCardModels.stickeyCard_Id == 0 || this.stickeyCardModels.stickeyCard_Id == undefined || this.stickeyCardModels.stickeyCard_Id == 'undefined'){
       msg =  msg+'Invalid Pest<br>';
@@ -111,10 +112,11 @@ export class StickeyCardComponent implements OnInit {
   Save(){
     var msg = '';
     if(this.stickeyCardModels.stickey_Card_color == '' || this.stickeyCardModels.stickey_Card_color == undefined || this.stickeyCardModels.stickey_Card_color == 'undefined'){
-      msg = msg+'Enter Pest Name<br>';
+      msg = msg+'Enter Color<br>';
     }
     if(this.stickeyCardModels.stickey_Card_Image == '' || this.stickeyCardModels.stickey_Card_Image == undefined || this.stickeyCardModels.stickey_Card_Image == 'undefined'){
-      msg =  msg+'Enter Details<br>';
+      //msg =  msg+'Select Image<br>';
+      this.stickeyCardModels.stickey_Card_Image = "Resources/default.png";
     }
     if(msg == '')
     {

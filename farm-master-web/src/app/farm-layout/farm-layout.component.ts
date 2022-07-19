@@ -463,6 +463,51 @@ export class FarmLayoutComponent implements OnInit {
     }
   }
 
+  getNextWeekData(){
+    this.CurrentWeek = this.CurrentWeek +1;
+    let pData = this.phaseList.find(i => i.phaseId === this.selectedRowIDs.phase);
+    if(pData!=null){
+      let hData = pData.houseData.find(i => i.houseId === this.selectedRowIDs.house);
+      if(hData!=null){
+        let rData = hData.rowData.find(i => i.rowId === this.selectedRowIDs.row);
+        if(rData!=null){
+          try {
+            console.log(rData.postData);
+            let poData = rData.postData.find(i => i.week === this.CurrentWeek && i.postId === this.selectedRowIDs.posts);
+            console.log(rData.postData);
+            if(this.CurrentWeek == poData.week){
+              this.CurrentWeek = poData.week;
+              this.comment = poData.comment;
+              this.decease_Id = Number(poData.benificialsId);
+              this.ivalue = poData.intensity;
+              this.pest_Id = poData.pestId;
+              this.post_Image =  poData.pic;
+            }
+            else{
+              //this.DateSettings();
+              this.comment = "";
+              this.decease_Id = 0;
+              this.ivalue = 0;
+              this.pest_Id = 0;
+              this.post_Image = "";
+            }
+          }
+          catch(err) {
+            this.comment = "";
+            this.decease_Id = 0;
+            this.ivalue = 0;
+            this.pest_Id = 0;
+            this.post_Image = "";
+          }
+          
+          this.getBenificials(this.pest_Id);
+          this.popup = true;
+        }
+
+      }
+    }
+  }
+
   savePost() {
     let postData = new Post();
     postData.PostId = this.selectedRowIDs.posts;

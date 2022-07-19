@@ -1,6 +1,6 @@
 <div class="main-content">
   <div class="container-fluid">
-      <div class="row">
+      <!-- <div class="row">
           <div class="col-lg-3 col-md-6 col-sm-6">
               <div class="card card-stats">
                   <div class="card-header card-header-warning card-header-icon">
@@ -68,6 +68,41 @@
                   </div>
               </div>
           </div>
+      </div> -->
+      <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="row" style="margin: 4px;">
+                    <div class="col-md-6">
+                        <mat-label>Week</mat-label>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Week</mat-label>
+                            <mat-select [(ngModel)]="weekNoFilter">
+                                <mat-option *ngFor="let in of counter(52) ;let i = index" [value]="weekNoFilter">
+                                    {{i}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-6">
+                        <mat-label>Year</mat-label>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Year</mat-label>
+                            <mat-select [(ngModel)]="yearFilter">
+                                <mat-option *ngFor="let year of years;" [value]="yearFilter">
+                                    {{year}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                Filter
+            </div>
+        </div>
       </div>
       <div class="row">
           <div class="col-md-4">
@@ -370,40 +405,29 @@
               <div class="card">
                   <div class="card-header card-header-warning">
                       <h4 class="card-title">Employees Stats</h4>
-                      <p class="card-category">New employees on 15th September, 2016</p>
                   </div>
                   <div class="card-body table-responsive">
                       <table class="table table-hover">
                           <thead class="text-warning">
                               <th>ID</th>
                               <th>Name</th>
-                              <th>Salary</th>
-                              <th>Country</th>
+                              <th>Email</th>
+                              <th>Phone</th>
                           </thead>
                           <tbody>
-                              <tr>
-                                  <td>1</td>
-                                  <td>Dakota Rice</td>
-                                  <td>$36,738</td>
-                                  <td>Niger</td>
-                              </tr>
-                              <tr>
-                                  <td>2</td>
-                                  <td>Minerva Hooper</td>
-                                  <td>$23,789</td>
-                                  <td>Curaçao</td>
-                              </tr>
-                              <tr>
-                                  <td>3</td>
-                                  <td>Sage Rodriguez</td>
-                                  <td>$56,142</td>
-                                  <td>Netherlands</td>
-                              </tr>
-                              <tr>
-                                  <td>4</td>
-                                  <td>Philip Chaney</td>
-                                  <td>$38,735</td>
-                                  <td>Korea, South</td>
+                            <tr *ngFor="let item of userList; let i = index">
+                                <td>
+                                  {{item.user_Id}}
+                                </td>
+                                <td>
+                                  {{item.user_First_Name}} {{item.user_Last_Name}}
+                                </td>
+                                <td class="text-primary" (click)="getUserDetail(userId,item.user_Id)">
+                                  {{item.user_Email_Id}}
+                                </td>
+                                <td class="text-primary" (click)="getUserDetail(userId,item.user_Id)">
+                                  {{item.user_Phone}}
+                                </td>
                               </tr>
                           </tbody>
                       </table>

@@ -105,7 +105,8 @@ export class BenificialsComponent implements OnInit {
       msg =  msg+'Enter Details<br>';
     }
     if(this.benificialModels.benificial_Image == '' || this.benificialModels.benificial_Image == undefined || this.benificialModels.benificial_Image == 'undefined'){
-      msg =  msg+'Select Image<br>';
+      //msg =  msg+'Select Image<br>';
+      this.benificialModels.benificial_Image = "Resources/default.png";
     }
     if(this.benificialModels.benificials_ID == 0 || this.benificialModels.benificials_ID == undefined || this.benificialModels.benificials_ID == 'undefined'){
       msg =  msg+'Invalid Benificial<br>';
@@ -144,7 +145,8 @@ export class BenificialsComponent implements OnInit {
       msg =  msg+'Enter Details<br>';
     }
     if(this.benificialModels.benificial_Image == '' || this.benificialModels.benificial_Image == undefined || this.benificialModels.benificial_Image == 'undefined'){
-      msg =  msg+'Select Image<br>';
+      //msg =  msg+'Select Image<br>';
+      this.benificialModels.benificial_Image = "Resources/default.png";
     }
     if(this.benificialModels.benificial_Pests == '' || this.benificialModels.benificial_Pests == undefined || this.benificialModels.benificial_Pests == 'undefined'){
       msg =  msg+'Select Pests<br>';

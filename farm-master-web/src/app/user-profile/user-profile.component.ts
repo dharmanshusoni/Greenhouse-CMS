@@ -173,6 +173,10 @@ export class UserProfileComponent implements OnInit {
     if (this.userModels.phone == '' || this.userModels.phone == undefined || this.userModels.phone == 'undefined') {
       msg = msg + 'Enter Phone No<br>';
     }
+    if (this.userModels.image == '' || this.userModels.image == undefined || this.userModels.image == 'undefined') {
+      //msg = msg + 'Enter Phone No<br>';
+      this.userModels.image = "Resources/default.png";
+    }
     if (msg == '') {
       this.profileServiceObj.UpdateProfile(this.userModels).subscribe((res) => {
         console.log(res);

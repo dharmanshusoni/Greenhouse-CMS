@@ -89,7 +89,8 @@ export class PestComponent implements OnInit {
       msg =  msg+'Refresh and try again<br>';
     }
     if(this.pestModels.pest_Image == '' || this.pestModels.pest_Image == undefined || this.pestModels.pest_Image == 'undefined'){
-      msg =  msg+'Select Image<br>';
+      //msg =  msg+'Select Image<br>';
+      this.pestModels.pest_Image = "Resources/default.png";
     }
     if(this.pestModels.pest_Id == 0 || this.pestModels.pest_Id == undefined || this.pestModels.pest_Id == 'undefined'){
       msg =  msg+'Invalid Pest<br>';
@@ -128,7 +129,8 @@ export class PestComponent implements OnInit {
       msg =  msg+'Refresh and try again<br>';
     }
     if(this.pestModels.pest_Image == '' || this.pestModels.pest_Image == undefined || this.pestModels.pest_Image == 'undefined'){
-      msg =  msg+'Select Image<br>';
+      //msg =  msg+'Select Image<br>';
+      this.pestModels.pest_Image = "Resources/default.png";
     }
     if(msg == '')
     {

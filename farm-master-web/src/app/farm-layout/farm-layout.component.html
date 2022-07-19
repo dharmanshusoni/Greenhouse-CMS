@@ -199,11 +199,11 @@
       </div>
       <div class="col-sm-6 row">
         <div *ngIf="getPestName(pest_Id) != null" class="col-sm-4 img-box" >
-          <img [src]="getPestImage(pest_Id)" alt="Pest" style="width:50px; height:50px;">
+          <img [src]="getPestImage(pest_Id)" alt="Pest" style="width:20px; height:20px;">
           <div>{{getPestName(pest_Id)}}</div>
         </div>
         <div *ngIf="getDeceaseName(decease_Id) != null" class="col-sm-4 img-box">
-          <img [src]="getDeceaseImage(decease_Id)" alt="Decease" style="width:50px; height:50px;">
+          <img [src]="getDeceaseImage(decease_Id)" alt="Decease" style="width:20px; height:20px;">
           <div>{{getDeceaseName(decease_Id)}}</div>
         </div>
         <div *ngIf="ivalue != 0" class="col-sm-4 img-box" [ngStyle]="{'background-color': IntensityColor}">
@@ -281,7 +281,7 @@
               <button type="button" class="btn btn-success" (click)="file.click()">Select Image</button>
           </div>
           <div class="col-md-8" >
-            <span><img [src]="createImgPath(post_Image)" alt="post picture" style="width:120px; height:120px;"></span>
+            <span><img [src]="createImgPath(post_Image)" alt="post picture" style="width:80px; height:80px;"></span>
             <span class="upload" *ngIf="progress > 0">
               {{progress}}%
             </span>
@@ -307,8 +307,13 @@
       </div>
 
       <div class="row" style="font-size: 12px">
+        <button mat-raised-button type="submit" class="btn pull-left" (click)="getPreviousWeekData()" >
+          <mat-icon>keyboard_arrow_left</mat-icon>
+        </button>
         <button mat-raised-button type="submit" class="btn btn-danger pull-right" (click)="savePost()" >Save Data</button>
-        <button mat-raised-button type="submit" class="btn pull-left" (click)="getPreviousWeekData()" >Previous Data</button>
+        <button mat-raised-button type="submit" class="btn pull-left" (click)="getNextWeekData()" >
+          <mat-icon>keyboard_arrow_right</mat-icon>
+        </button>
       </div>
 		</div>
 	</div>
