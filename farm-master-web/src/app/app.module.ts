@@ -22,6 +22,7 @@ import {
   AgmCoreModule
 } from '@agm/core';
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
+import { HomeComponent } from './home/home.component';
 //import { LoginComponent } from './login/login.component';
 
 @NgModule({
@@ -39,7 +40,8 @@ import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.compon
   ],
   declarations: [
     AppComponent,
-    AdminLayoutComponent
+    AdminLayoutComponent,
+    HomeComponent
   ],
   providers: [],
   bootstrap: [AppComponent]
